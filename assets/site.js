@@ -19,7 +19,7 @@ window.ERAS_READY = window.ERAS_READY || [];
 (function(){
 const $ = (s, r=document) => r.querySelector(s);
 const el = (tag, attrs={}, html='') => { const e = document.createElement(tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (html) e.innerHTML = html; return e; };
-const LAT = s => String(s).replace(/(Cod\.arab\. \d+|Arabe \d+|K \d{3,4}|QUR \d+|ms\. ?[A-Z]?\.? ?\d+[\w./-]*|R\. ?\d+|Or\. ?\d+|O\. ?Bj\. ?\d+|RES\/\d+|A \d{4}|\d{4}\.\d+|Gallica|IIIF|BSB|BnF|MDZ)/g, '<bdi dir="ltr">$1</bdi>');
+const LAT = s => String(s).replace(/(Cod\.arab\. \d+|Arabe \d+|K \d{3,4}|QUR \d+|ms\. ?[A-Z]?\.? ?\d+[\w./-]*|R\. ?\d+|Or\. ?\d+|O\. ?Bj\. ?\d+|O\. ?Vet\. ?\d+|Mscr\.Dresd\.Ea\.\d+|RES\/\d+|A \d{4}|\d{4}\.\d+|Gallica|IIIF|BSB|BnF|MDZ)/g, '<bdi dir="ltr">$1</bdi>');
 const ST = {
   s:{ok:['b-ok','باقٍ'], no:['b-no','مفقود']},
   c:{ok:['b-ok','تام'], part:['b-part','ناقص'], unk:['b-mut','التمام غير معلوم']},
