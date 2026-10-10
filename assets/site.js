@@ -101,6 +101,39 @@ function header(title, withPres, navLinks){
 </header>`;
 }
 
+/* ---------- structured data (schema.org JSON-LD); rendered into #app so the prerendered HTML carries it ---------- */
+const SITE = 'https://hibrh.github.io/masahif-al-maghrib/';
+const plain = s => String(s||'').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim();
+const abs = (path, u) => /^https?:/.test(u) ? u : SITE + path + String(u).replace(/^\.\//,'');
+const ldTag = o => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g,'\\u003c')}</script>`;
+const PERSON = {'@type':'Person','@id':SITE+'#author', name:AUTHOR.name, alternateName:'Ibrahim Hassani Idrissi', jobTitle:AUTHOR.role, address:{'@type':'PostalAddress', addressLocality:'فاس', addressCountry:'MA'}, sameAs:['https://github.com/hibrh'].concat(waLink?[waLink]:[])};
+const WEBSITE = {'@type':'WebSite','@id':SITE+'#site', url:SITE, name:'مصاحف المغرب', alternateName:'Masahif al-Maghrib: dated Qur\u2019an manuscripts of Morocco', inLanguage:'ar', author:{'@id':SITE+'#author'}, publisher:{'@id':SITE+'#author'}};
+function ldEra(E){
+  const era = ERAS.find(e=>e.key===E.key), url = SITE + era.path;
+  const plateUrl = p => p.url || abs(era.path, `plates/${p.f}.jpg`);
+  const item = i => {
+    const o = {'@type':'Manuscript','@id':url+'#'+i.id, url:url+'#'+i.id, name:plain(i.title), genre:'مصحف', inLanguage:'ar',
+      description:plain([i.dateH, i.short].filter(Boolean).join('، '))};
+    if (i.y0) o.dateCreated = i.y1 ? `${i.y0}/${i.y1}` : String(i.y0);
+    if (i.plates && i.plates.length) o.image = i.plates.slice(0,4).map(plateUrl);
+    if (i.links && i.links.length) o.sameAs = i.links.map(l=>l[1]).filter(u=>/^https?:/.test(u));
+    return o;
+  };
+  const page = {'@type':'CollectionPage','@id':url+'#page', url, name:E.name, inLanguage:'ar',
+    description:plain(E.card || E.sub), isPartOf:{'@id':SITE+'#site'}, author:{'@id':SITE+'#author'},
+    about:{'@type':'Thing', name:'المصاحف المخطوطة المؤرخة في '+E.name.replace(/^مصاحف /,'عصر ')},
+    breadcrumb:{'@type':'BreadcrumbList', itemListElement:[{'@type':'ListItem',position:1,name:'مصاحف المغرب',item:SITE},{'@type':'ListItem',position:2,name:E.name,item:url}]},
+    mainEntity:{'@type':'ItemList', numberOfItems:E.items.length, itemListElement:E.items.map((i,k)=>({'@type':'ListItem', position:k+1, item:item(i)}))}};
+  if (E.hero) page.primaryImageOfPage = {'@type':'ImageObject', url:abs(era.path, E.hero.f), caption:plain(E.hero.alt)};
+  return ldTag({'@context':'https://schema.org','@graph':[WEBSITE, PERSON, page]});
+}
+function ldHub(ready){
+  const page = {'@type':'CollectionPage','@id':SITE+'#page', url:SITE, name:'مصاحف المغرب', inLanguage:'ar', isPartOf:{'@id':SITE+'#site'}, author:{'@id':SITE+'#author'},
+    description:'المصاحف المؤرَّخة المعروفة الصاحب في عصور المغرب، من الأدارسة إلى العلويين: ما وصلنا منها وما ضاع، وما يُتصفَّح اليوم في مصدره.',
+    hasPart:ready.map(e=>({'@type':'CollectionPage','@id':SITE+e.path+'#page', url:SITE+e.path, name:ERAS_DATA[e.key].name}))};
+  return ldTag({'@context':'https://schema.org','@graph':[WEBSITE, PERSON, page]});
+}
+
 /* ================= ERA PAGE ================= */
 function renderEra(E){
   const items = E.items;
@@ -168,7 +201,7 @@ ${railHTML(E.key)}
   </div></section>
 </main>
 <footer><div class="wrap"><div>${E.name} · ${E.footer}</div><div><a href="${ROOT || './'}">مصاحف المغرب: كل العصور</a></div>${byline()}</div></footer>
-${commonOverlays()}`;
+${commonOverlays()}${ldEra(E)}`;
   $('#app').innerHTML = html;
 
   /* tally + matrix */
@@ -408,7 +441,7 @@ ${railHTML('hub')}
       <div class="note"><h3>العينات</h3><p style="font-size:17px">العينات مقاطع مقرَّبة من الكتابة نفسها، مأخوذة من المصاحف المرقمنة في مكتباتها، أو من صور منشورة بترخيص مفتوح. أما المصاحف التي صورها محفوظة الحقوق فنحيل إلى مواضع نشرها.</p></div></div>
   </div></section>
 </main>
-<footer><div class="wrap"><div>مصاحف المغرب · ${window.HUB_FOOTER||''}</div><div><a href="https://hibrh.github.io/khizanat-almuwahhidin/">خزانة الموحدين</a></div>${byline()}</div></footer>`;
+<footer><div class="wrap"><div>مصاحف المغرب · ${window.HUB_FOOTER||''}</div><div><a href="https://hibrh.github.io/khizanat-almuwahhidin/">خزانة الموحدين</a></div>${byline()}</div></footer>${ldHub(ready)}`;
   $('#app').innerHTML = html;
 
   /* grand timeline */
