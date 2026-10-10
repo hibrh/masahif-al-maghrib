@@ -99,7 +99,7 @@ function header(title, withPres, navLinks){
     <a class="brand" href="#top"><svg style="color:var(--gold)"><use href="#star"/></svg>${title}</a>
     <nav class="nav" aria-label="أقسام الصفحة">${navLinks}</nav>
     <button class="btn icon-btn" id="themeBtn" type="button" aria-label="تبديل المظهر" title="تبديل المظهر">◐</button>
-    ${withPres ? '<button class="btn gold" id="presBtn" type="button">▶ <span>وضع العرض</span></button>' : ''}
+    ${withPres ? '<button class="btn gold" id="presBtn" type="button">▶ <span class="lbl-long">وضع العرض</span></button>' : ''}
   </div>
 </header>`;
 }
@@ -190,11 +190,11 @@ ${railHTML(E.key)}
   ${E.hasScale!==false ? `<section id="scale"><div class="wrap">
     <div class="sec-head"><div><div class="kicker">المقاسات والمسطرة</div><h2>${star}الصفحات على مقياس واحد</h2>
       <p>رُسمت الصفحات بنسبها الحقيقية وعلى مقياس واحد، وفي كل منها عدد أسطرها.</p></div></div>
-    <div class="scale"><div class="scale-row" id="scaleRow"></div><div class="scale-foot">الإطار المتقطع لمقاس غير منشور، رُسم بنسبته التقريبية فقط.</div></div>
+    <div class="scale"><div class="scale-row" id="scaleRow"></div><div class="scale-foot">الإطار المتقطع لمقاس غير منشور، رُسم بنسبته التقريبية فقط.<span class="m-hint"> اسحب الصفوف أفقياً لرؤية المصاحف كلها.</span></div></div>
   </div></section>` : ''}
   ${E.anat ? `<section id="anatomy"><div class="wrap">
     <div class="sec-head"><div><div class="kicker">تشريح الخط</div><h2>${star}${E.anat.title}</h2><p>${E.anat.intro}</p></div></div>
-    <div class="anat${E.anat.w/E.anat.h > 1.8 ? ' wide' : ''}"><figure class="anat-fig" id="anatFig"><img src="${E.anat.f}" width="${E.anat.w}" height="${E.anat.h}" alt="${E.anat.alt}"></figure><ol class="anat-list" id="anatList"></ol></div>
+    <div class="anat${E.anat.w/E.anat.h > 1.8 ? ' wide' : ''}"><div class="anat-scroll"><figure class="anat-fig" id="anatFig"><img src="${E.anat.f}" width="${E.anat.w}" height="${E.anat.h}" alt="${E.anat.alt}"></figure><p class="m-hint">اسحب الصورة أفقياً لرؤية الأسطر كاملة.</p></div><ol class="anat-list" id="anatList"></ol></div>
   </div></section>` : ''}
   <section id="sources"><div class="wrap">
     <div class="sec-head"><div><div class="kicker">المصادر</div><h2>${star}المراجع وحقوق الصور</h2><p>كل معلومة في البطاقات مأخوذة من أحد هذه المصادر.${E.readNote?' '+E.readNote:''}</p></div></div>
@@ -292,7 +292,7 @@ ${commonOverlays()}${ldEra(E)}`;
         const k = i.plates.findIndex(x=>x.f===i.colophon.plate), p = i.plates[k];
         a.insertAdjacentHTML('beforeend', `<div class="colophon"><figure data-open="${i.id}:${k}"><img loading="lazy" src="${p.url||`plates/${p.f}.jpg`}" alt="${p.t}"></figure><div class="tr"><h4>${i.colophon.title}</h4><p class="ar">${i.colophon.ar}</p><p class="gl">${i.colophon.gl}</p></div></div>`);
       }
-      if (i.journey) a.insertAdjacentHTML('beforeend', `<div class="journey"><h4>${i.journeyTitle||'رحلة المصحف'}</h4><div class="jsteps" style="grid-template-columns:repeat(${i.journey.length},1fr)">${i.journey.map(j=>`<div class="jstep"><i></i><b>${j[0]}</b><span>${j[1]}</span></div>`).join('')}</div></div>`);
+      if (i.journey) a.insertAdjacentHTML('beforeend', `<div class="journey"><h4>${i.journeyTitle||'رحلة المصحف'}</h4><div class="jsteps" style="--n:${i.journey.length}">${i.journey.map(j=>`<div class="jstep"><i></i><b>${j[0]}</b><span>${j[1]}</span></div>`).join('')}</div></div>`);
       if (i.plates && i.plates.length) {
         const strip = i.plates.map((p,k)=>{ const hh = p.w/p.h > 2.4 ? 150 : 240; return `<figure class="plate" data-open="${i.id}:${k}" tabindex="0" role="button" aria-label="تكبير: ${p.t}"><img loading="lazy" src="${p.turl||`plates/${p.f}-t.jpg`}" width="${Math.round(hh*p.w/p.h)}" height="${hh}" style="--h:${hh}px" alt="${p.t}"><figcaption><b>${p.t}</b> · ${LAT(p.loc)}</figcaption></figure>`; }).join('');
         a.insertAdjacentHTML('beforeend', `<div class="gallery"><div class="gal-title"><span>عينات من الكتابة عن قرب (${i.plates.length})</span><span>اضغط للتكبير ←</span></div><div class="strip">${strip}</div></div>`);
@@ -319,8 +319,14 @@ ${commonOverlays()}${ldEra(E)}`;
     });
     const on = k => document.querySelectorAll('#anatFig .hs, #anatList li').forEach(n=>n.classList.toggle('on', n.dataset.k==k));
     fig.addEventListener('click', e=>{ const b = e.target.closest('.hs'); if (b) on(b.dataset.k); });
-    list.addEventListener('click', e=>{ const li = e.target.closest('li'); if (li) on(li.dataset.k); });
-    list.addEventListener('keydown', e=>{ const li = e.target.closest('li'); if (li && (e.key==='Enter'||e.key===' ')) { e.preventDefault(); on(li.dataset.k); } });
+    /* on phones the wide image scrolls sideways: bring the chosen marker (and the image) into view */
+    const show = k => {
+      const b = fig.querySelector(`.hs[data-k="${k}"]`), sc = fig.parentElement; if (!b) return;
+      if (sc && sc.scrollWidth > sc.clientWidth + 1) { const r = b.getBoundingClientRect(), s = sc.getBoundingClientRect(); sc.scrollBy({left:(r.left + r.width/2) - (s.left + s.width/2), behavior:'smooth'}); }
+      const f = fig.getBoundingClientRect(); if (f.bottom < 70 || f.top > innerHeight - 70) fig.scrollIntoView({block:'center', behavior:'smooth'});
+    };
+    list.addEventListener('click', e=>{ const li = e.target.closest('li'); if (li) { on(li.dataset.k); show(li.dataset.k); } });
+    list.addEventListener('keydown', e=>{ const li = e.target.closest('li'); if (li && (e.key==='Enter'||e.key===' ')) { e.preventDefault(); on(li.dataset.k); show(li.dataset.k); } });
     on(0);
   }
   $('#refs').innerHTML = E.refs.map(r=>`<li>${r}</li>`).join('');
@@ -436,7 +442,7 @@ ${railHTML('hub')}
   </div></section>
   <section id="grand"><div class="wrap">
     <div class="sec-head"><div><div class="kicker">خط الزمن الجامع</div><h2>${star}كل المصاحف على خط واحد</h2><p>الأشرطة مدد الدول، والعلامات المصاحف المدرجة في الصفحات الجاهزة. العلامة الممتلئة مصحف باقٍ، والمفرغة مفقود. اضغط على علامة لفتح بطاقتها.</p></div></div>
-    <div class="tl-scroll"><div class="tl" id="gtl" style="min-width:1100px"></div></div>
+    <div class="tl-scroll"><div class="tl" id="gtl" style="min-width:1100px"></div></div><div class="tl-hint">اضغط على أي علامة لفتح بطاقتها. على الهاتف اسحب الخط أفقياً.</div>
   </div></section>
   <section id="method"><div class="wrap">
     <div class="sec-head"><div><div class="kicker">الشرط</div><h2>${star}ماذا يدخل في الدليل؟</h2></div></div>
@@ -477,6 +483,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const key = window.ERA_KEY;
   if (key==='hub') renderHub(); else renderEra(ERAS_DATA[key]);
   setupTheme();
+  const cur = document.querySelector('.rail [aria-current]'); if (cur && cur.scrollIntoView) cur.scrollIntoView({block:'nearest', inline:'center'});
   if (location.hash) { const t = document.getElementById(location.hash.slice(1)); if (t) setTimeout(()=>t.scrollIntoView(), 60); }
 });
 })();

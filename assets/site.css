@@ -363,3 +363,21 @@ footer .wa:hover{background:rgba(233,200,121,.12)}
 .hs:hover,.hs.on,.anat-list li.on .k{background:var(--bar)}
 /* highlighted words inside card prose (e.g. a colophon quoted in the text) */
 .prose mark{background:transparent;color:var(--red);font-weight:700}
+/* ---- phones ---- */
+.jsteps{grid-template-columns:repeat(var(--n,5),1fr)}
+.m-hint{display:none;font-family:var(--ui);font-size:13px;color:var(--ink3);margin:8px 0 0}
+@media (max-width:760px){ .jsteps{grid-template-columns:1fr} }
+@media (max-width:860px){
+  .anat-scroll{min-width:0}
+  .anat.wide .anat-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .anat.wide .anat-fig{width:820px;max-width:none}
+  .anat.wide .m-hint,.scale .m-hint{display:block}
+  .scale .m-hint{display:inline}
+}
+@media (max-width:560px){
+  .brand{font-size:17px;gap:6px;min-width:0;overflow:hidden;text-overflow:ellipsis}
+  .brand svg{width:18px;height:18px}
+  .top .wrap{gap:8px}
+  .hero h1{font-size:clamp(30px,9vw,40px)}
+}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
