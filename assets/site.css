@@ -381,3 +381,20 @@ footer .wa:hover{background:rgba(233,200,121,.12)}
   .hero h1{font-size:clamp(30px,9vw,40px)}
 }
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+
+/* ---- lightbox and presentation on phones: never wider than the screen ---- */
+.lb{grid-template-columns:minmax(0,1fr)}
+.lb-bar,.lb-cap,.lb-stage{min-width:0}
+.lb-cap{overflow-wrap:anywhere}
+.pres-top{min-width:0}
+@media (max-width:560px){
+  .lb-bar{gap:6px;padding:8px 10px}
+  #lbIn,#lbOut{display:none}
+  .lb .btn{min-height:40px}
+  #lbClose{min-width:44px;font-size:18px;border-color:rgba(233,200,121,.55)}
+  .lb-cap{font-size:14.5px;line-height:1.7;max-height:32vh;overflow-y:auto;padding:8px 14px 12px}
+  .pres-top{gap:6px;padding:8px 10px}
+  #presClose{min-width:44px;font-size:18px}
+}.lb .lb-nav{background:rgba(14,11,8,.78);border-color:rgba(233,200,121,.55);color:#f1e2bc;font-size:22px;min-width:44px;min-height:44px}
+@media (max-width:560px){ .lb{background:#0e0b08} .lb-prev{right:6px} .lb-next{left:6px} }
+.lb .lb-nav{direction:ltr;unicode-bidi:isolate}

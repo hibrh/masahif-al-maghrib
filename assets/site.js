@@ -64,7 +64,7 @@ function commonOverlays(){
     <button class="btn icon-btn" type="button" id="lbIn" aria-label="تكبير">＋</button>
     <button class="btn icon-btn" type="button" id="lbOut" aria-label="تصغير">－</button>
     <button class="btn" type="button" id="lbFit">ملء</button>
-    <a class="btn" id="lbSrc" target="_blank" rel="noopener">في المصدر ↗</a>
+    <a class="btn" id="lbSrc" target="_blank" rel="noopener"><span class="lbl-long">في المصدر </span>↗</a>
     <button class="btn icon-btn" type="button" id="lbClose" aria-label="إغلاق">✕</button>
   </div>
   <div class="lb-stage" id="lbStage">
@@ -349,16 +349,17 @@ function setFilter(f){
 function setupLightbox(platesOf, itemOf){
   const LB = {list:[], i:0, s:1, x:0, y:0, fit:1};
   const lb = $('#lb'), lbImg = $('#lbImg'), stage = $('#lbStage');
-  const open = (id, k) => { const it = itemOf(id); if (!it) return; LB.list = platesOf(id).map(p=>({it, p})); if (!LB.list.length) return; LB.i = k; LB.ret = document.activeElement; lb.classList.add('open'); document.body.style.overflow = 'hidden'; show(); $('#lbClose').focus(); };
+  const open = (id, k) => { const it = itemOf(id); if (!it) return; LB.list = platesOf(id).map(p=>({it, p})); if (!LB.list.length) return; LB.i = k; LB.ret = document.activeElement; lb.classList.add('open'); document.body.style.overflow = 'hidden'; if (!(history.state && history.state.ov==='lb')) history.pushState({ov:'lb'}, ''); show(); $('#lbClose').focus(); };
   const show = () => { const {it, p} = LB.list[LB.i]; $('#lbTtl').textContent = `${it.short||it.title} · ${LB.i+1}/${LB.list.length}`; $('#lbCap').innerHTML = `<b>${p.t}</b>: ${LAT(p.c)}<small>${LAT(p.loc)}</small>`; $('#lbSrc').href = p.src; lbImg.onload = fit; lbImg.src = p.url || `${it.base||''}plates/${p.f}.jpg`; lbImg.alt = p.t; if (lbImg.complete && lbImg.naturalWidth) fit(); const v = LB.list.length>1 ? 'visible':'hidden'; $('#lbPrev').style.visibility = v; $('#lbNext').style.visibility = v; };
   const apply = () => { lbImg.style.transform = `translate(${LB.x}px,${LB.y}px) scale(${LB.s})`; };
   const fit = () => { const r = stage.getBoundingClientRect(), w = lbImg.naturalWidth, h = lbImg.naturalHeight; if (!w) return; LB.fit = Math.min((r.width-24)/w, (r.height-24)/h, 1.6); LB.s = LB.fit; LB.x = -w*LB.s/2; LB.y = -h*LB.s/2; apply(); };
   const zoomAt = (f, cx, cy) => { const r = stage.getBoundingClientRect(); const px = cx - r.left - r.width/2, py = cy - r.top - r.height/2; const ns = Math.max(LB.fit*0.6, Math.min(LB.s*f, 6)); const k = ns/LB.s; LB.x = px - (px - LB.x)*k; LB.y = py - (py - LB.y)*k; LB.s = ns; apply(); };
-  const close = () => { lb.classList.remove('open'); document.body.style.overflow = ''; lbImg.removeAttribute('src'); if (LB.ret) LB.ret.focus(); };
+  const close = fromPop => { if (!lb.classList.contains('open')) return; lb.classList.remove('open'); document.body.style.overflow = ''; lbImg.removeAttribute('src'); if (LB.ret) LB.ret.focus({preventScroll:true}); if (fromPop !== true && history.state && history.state.ov==='lb') history.back(); };
+  addEventListener('popstate', ()=>{ if (lb.classList.contains('open')) close(true); });
   const step = d => { LB.i = (LB.i + d + LB.list.length) % LB.list.length; show(); };
   document.addEventListener('click', e=>{ const t = e.target.closest('[data-open]'); if (t && !e.target.closest('.lb')) { const [id,k] = t.dataset.open.split(':'); open(id, +k); } });
   document.addEventListener('keydown', e=>{ if (e.key==='Enter' && e.target.matches && e.target.matches('.plate[data-open]')) { const [id,k] = e.target.dataset.open.split(':'); open(id,+k); } });
-  $('#lbClose').onclick = close; $('#lbPrev').onclick = ()=>step(-1); $('#lbNext').onclick = ()=>step(1); $('#lbFit').onclick = fit;
+  $('#lbClose').onclick = ()=>close(); $('#lbPrev').onclick = ()=>step(-1); $('#lbNext').onclick = ()=>step(1); $('#lbFit').onclick = fit;
   $('#lbIn').onclick = ()=>{ const r = stage.getBoundingClientRect(); zoomAt(1.4, r.left+r.width/2, r.top+r.height/2); };
   $('#lbOut').onclick = ()=>{ const r = stage.getBoundingClientRect(); zoomAt(1/1.4, r.left+r.width/2, r.top+r.height/2); };
   stage.addEventListener('wheel', e=>{ e.preventDefault(); zoomAt(e.deltaY<0?1.15:1/1.15, e.clientX, e.clientY); }, {passive:false});
@@ -399,12 +400,14 @@ function setupPresentation(E){
     const p = s.p;
     slide.innerHTML = `<div class="vis"><img src="${p.url||`plates/${p.f}.jpg`}" alt="${p.t}"></div><div class="txt">${head}<p><b style="color:#f1e2bc">${p.t}.</b> ${LAT(p.c)}</p><p style="font-size:14px;color:#a99a80;font-family:var(--ui)">${LAT(p.loc)} · <a style="color:#e9c879" href="${p.src}" target="_blank" rel="noopener">الصفحة في المصدر ↗</a></p>${s.first && i.why ? `<p style="font-size:16px;color:#cbb88f">${i.why}</p>`:''}</div>`;
   };
-  const openP = () => { SI = 0; pres.classList.add('open'); document.body.style.overflow = 'hidden'; render(); $('#presNext').focus(); };
-  const closeP = () => { pres.classList.remove('open'); document.body.style.overflow = ''; if (document.fullscreenElement) document.exitFullscreen(); };
+  const openP = () => { SI = 0; pres.classList.add('open'); document.body.style.overflow = 'hidden'; if (!(history.state && history.state.ov==='pres')) history.pushState({ov:'pres'}, ''); render(); $('#presNext').focus(); };
+  const closeP = fromPop => { if (!pres.classList.contains('open')) return; pres.classList.remove('open'); document.body.style.overflow = ''; if (document.fullscreenElement) document.exitFullscreen(); if (fromPop !== true && history.state && history.state.ov==='pres') history.back(); };
+  addEventListener('popstate', ()=>{ if (pres.classList.contains('open')) closeP(true); });
   const stepP = d => { SI = Math.max(0, Math.min(SL.length-1, SI+d)); render(); };
   const pb = $('#presBtn'); if (pb) pb.onclick = openP;
   document.querySelectorAll('[data-pres]').forEach(b=>b.onclick = openP);
-  $('#presClose').onclick = closeP; $('#presNext').onclick = ()=>stepP(1); $('#presPrev').onclick = ()=>stepP(-1);
+  $('#presClose').onclick = ()=>closeP(); $('#presNext').onclick = ()=>stepP(1); $('#presPrev').onclick = ()=>stepP(-1);
+  if (!document.fullscreenEnabled) $('#presFs').style.display = 'none';
   $('#presFs').onclick = ()=>{ if (!document.fullscreenElement) pres.requestFullscreen && pres.requestFullscreen(); else document.exitFullscreen(); };
   let px0 = null;
   slide.addEventListener('pointerdown', e=>{ px0 = e.clientX; });
