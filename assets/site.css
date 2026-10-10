@@ -346,3 +346,10 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px}
 .era-card p{font-size:16px;color:var(--ink2);margin:10px 0 0}
 .era-card.soon{opacity:.6}
 .era-card .go{position:absolute;left:16px;bottom:14px;font-family:var(--ui);font-size:13px;color:var(--acc)}
+
+/* site credit in the footer */
+footer .byline{flex-basis:100%;display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;border-top:1px solid rgba(233,200,121,.22);padding-top:16px;margin-top:4px;font-size:14.5px;color:#e6dcc4}
+footer .byline b,footer .byline span>a{font-weight:600}
+footer .wa{display:inline-flex;align-items:center;gap:6px;padding:3px 12px 3px 10px;border:1px solid rgba(233,200,121,.45);border-radius:999px;text-decoration:none;font-size:13.5px}
+footer .wa svg{width:16px;height:16px}
+footer .wa:hover{background:rgba(233,200,121,.12)}

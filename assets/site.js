@@ -6,13 +6,13 @@ window.BSB = (id, p) => `https://www.digitale-sammlungen.de/en/view/${id}?page=$
 window.GAL = (ark, f) => `https://gallica.bnf.fr/ark:/12148/${ark}/f${f}.item`;
 
 window.ERAS = [
-  {key:'adarisa',    name:'الأدارسة',   rng:'172–375هـ / 788–985م',   a:788,  b:985,  c:'#8a4b2a', path:'adarisa/'},
-  {key:'murabitun',  name:'المرابطون',  rng:'448–541هـ / 1056–1147م', a:1056, b:1147, c:'#34508f', path:'murabitun/'},
-  {key:'muwahhidun', name:'الموحدون',   rng:'524–668هـ / 1130–1269م', a:1130, b:1269, c:'#9a3b26', path:'muwahhidun/'},
-  {key:'marini',     name:'بنو مرين',   rng:'646–869هـ / 1248–1465م', a:1248, b:1465, c:'#1c5444', path:'marini/'},
-  {key:'wattasi',    name:'الوطاسيون',  rng:'876–961هـ / 1472–1554م', a:1472, b:1554, c:'#2a6f72', path:'wattasi/'},
-  {key:'saadi',      name:'السعديون',   rng:'916–1069هـ / 1510–1659م', a:1510, b:1659, c:'#9b2335', path:'saadi/'},
-  {key:'alawi',      name:'العلويون',   rng:'1076–1330هـ / 1666–1912م', a:1666, b:1912, c:'#6d3a7d', path:'alawi/'},
+  {key:'adarisa',    name:'الأدارسة',   gen:'الأدارسة',   rng:'172–375هـ / 788–985م',   a:788,  b:985,  c:'#8a4b2a', path:'adarisa/'},
+  {key:'murabitun',  name:'المرابطون',  gen:'المرابطين',  rng:'448–541هـ / 1056–1147م', a:1056, b:1147, c:'#34508f', path:'murabitun/'},
+  {key:'muwahhidun', name:'الموحدون',   gen:'الموحدين',   rng:'524–668هـ / 1130–1269م', a:1130, b:1269, c:'#9a3b26', path:'muwahhidun/'},
+  {key:'marini',     name:'بنو مرين',   gen:'بني مرين',   rng:'646–869هـ / 1248–1465م', a:1248, b:1465, c:'#1c5444', path:'marini/'},
+  {key:'wattasi',    name:'الوطاسيون',  gen:'الوطاسيين',  rng:'876–961هـ / 1472–1554م', a:1472, b:1554, c:'#2a6f72', path:'wattasi/'},
+  {key:'saadi',      name:'السعديون',   gen:'السعديين',   rng:'916–1069هـ / 1510–1659م', a:1510, b:1659, c:'#9b2335', path:'saadi/'},
+  {key:'alawi',      name:'العلويون',   gen:'العلويين',   rng:'1076–1330هـ / 1666–1912م', a:1666, b:1912, c:'#6d3a7d', path:'alawi/'},
 ];
 window.ERAS_READY = window.ERAS_READY || [];
 
@@ -29,6 +29,10 @@ const GROUPS = {surviving:'باقية تستوفي الشرط', lost:'ذكرته
 const badges = st => { const keys = st.s==='no' ? ['s'] : ['s','c','d']; return `<div class="badges">${keys.map(k=>{ const v = ST[k][st[k]]; return `<span class="badge ${v[0]}">${v[1]}</span>`; }).join('')}</div>`; };
 const star = '<svg class="star"><use href="#star"/></svg>';
 const ROOT = window.ROOT || '';
+/* site credit, shown at the foot of every page; wa = WhatsApp number in international format, digits only */
+const AUTHOR = {name:'إبراهيم حسني إدريسي', role:'خطاط ومدرّس خطوط عربية من فاس', wa:'212661769161'};
+const waLink = AUTHOR.wa ? `https://wa.me/${AUTHOR.wa}` : '';
+const byline = () => `<div class="byline"><span>إعداد ${waLink ? `<a href="${waLink}" target="_blank" rel="noopener">${AUTHOR.name}</a>` : `<b>${AUTHOR.name}</b>`}، ${AUTHOR.role}</span>${waLink ? `<a class="wa" href="${waLink}" target="_blank" rel="noopener" aria-label="مراسلة على واتساب"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2a9.8 9.8 0 0 0-8.4 14.8L2.3 21.7l4.8-1.3A9.8 9.8 0 1 0 12 2.2Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.6 7.4c.3-.3.8-.3 1 .1l.8 1.8c.1.3 0 .6-.2.8l-.6.6a6.6 6.6 0 0 0 3.6 3.6l.6-.6c.2-.2.5-.3.8-.2l1.8.8c.4.2.4.7.1 1-.9 1-2.2 1.3-3.4.8a10.4 10.4 0 0 1-5.3-5.3c-.5-1.2-.2-2.5.8-3.4Z" fill="currentColor"/></svg>واتساب</a>` : ''}</div>`;
 
 function railHTML(current){
   const chips = ERAS.map(e => {
@@ -163,7 +167,7 @@ ${railHTML(E.key)}
     <p class="credits" id="credits"></p>
   </div></section>
 </main>
-<footer><div class="wrap"><div>${E.name} · ${E.footer}</div><div><a href="${ROOT || './'}">مصاحف المغرب: كل العصور</a></div></div></footer>
+<footer><div class="wrap"><div>${E.name} · ${E.footer}</div><div><a href="${ROOT || './'}">مصاحف المغرب: كل العصور</a></div>${byline()}</div></footer>
 ${commonOverlays()}`;
   $('#app').innerHTML = html;
 
@@ -373,7 +377,7 @@ function renderHub(){
     const D = ERAS_DATA[e.key], ok = ERAS_READY.includes(e.key) && D;
     const band = ok && D.hero ? `<img src="${/^https?:/.test(D.hero.f) ? D.hero.f : e.path + D.hero.f}" alt="">` : '';
     const counts = ok ? `<div class="counts"><span class="badge b-ok">${cnt(e,'surviving')} باقية</span><span class="badge b-no">${cnt(e,'lost')} مفقودة</span><span class="badge b-part">${cnt(e,'edge')} على الحافة</span></div>` : '<div class="counts"><span class="badge b-mut">قيد الإعداد</span></div>';
-    return `<a class="era-card${ok?'':' soon'}" href="${e.path}" style="--c:${e.c}"><div class="band">${band}</div><div class="body"><h3>${D?D.name:'مصاحف '+e.name}</h3><div class="rng">${e.rng}</div>${counts}<p>${D?D.card:''}</p></div><span class="go">${ok?'افتح الصفحة ←':''}</span></a>`;
+    return `<a class="era-card${ok?'':' soon'}" href="${e.path}" style="--c:${e.c}"><div class="band">${band}</div><div class="body"><h3>${D?D.name:'مصاحف '+e.gen}</h3><div class="rng">${e.rng}</div>${counts}<p>${D?D.card:''}</p></div><span class="go">${ok?'افتح الصفحة ←':''}</span></a>`;
   }).join('');
   const html = `${header('مصاحف المغرب', false, '<a href="#eras">العصور</a><a href="#grand">خط الزمن</a><a href="#method">الشرط</a>')}
 ${railHTML('hub')}
@@ -404,7 +408,7 @@ ${railHTML('hub')}
       <div class="note"><h3>العينات</h3><p style="font-size:17px">العينات مقاطع مقرَّبة من الكتابة نفسها، مأخوذة من المصاحف المرقمنة في مكتباتها، أو من صور منشورة بترخيص مفتوح. أما المصاحف التي صورها محفوظة الحقوق فنحيل إلى مواضع نشرها.</p></div></div>
   </div></section>
 </main>
-<footer><div class="wrap"><div>مصاحف المغرب · ${window.HUB_FOOTER||''}</div><div><a href="https://hibrh.github.io/khizanat-almuwahhidin/">خزانة الموحدين</a></div></div></footer>`;
+<footer><div class="wrap"><div>مصاحف المغرب · ${window.HUB_FOOTER||''}</div><div><a href="https://hibrh.github.io/khizanat-almuwahhidin/">خزانة الموحدين</a></div>${byline()}</div></footer>`;
   $('#app').innerHTML = html;
 
   /* grand timeline */
