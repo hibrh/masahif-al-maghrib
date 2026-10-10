@@ -246,11 +246,11 @@ ${commonOverlays()}`;
         <div class="entry-body"><dl class="facts">${facts}</dl><div class="prose">${prose}${links}</div></div>`;
       if (i.colophon) {
         const k = i.plates.findIndex(x=>x.f===i.colophon.plate), p = i.plates[k];
-        a.insertAdjacentHTML('beforeend', `<div class="colophon"><figure data-open="${i.id}:${k}"><img loading="lazy" src="plates/${p.f}.jpg" alt="${p.t}"></figure><div class="tr"><h4>${i.colophon.title}</h4><p class="ar">${i.colophon.ar}</p><p class="gl">${i.colophon.gl}</p></div></div>`);
+        a.insertAdjacentHTML('beforeend', `<div class="colophon"><figure data-open="${i.id}:${k}"><img loading="lazy" src="${p.url||`plates/${p.f}.jpg`}" alt="${p.t}"></figure><div class="tr"><h4>${i.colophon.title}</h4><p class="ar">${i.colophon.ar}</p><p class="gl">${i.colophon.gl}</p></div></div>`);
       }
       if (i.journey) a.insertAdjacentHTML('beforeend', `<div class="journey"><h4>${i.journeyTitle||'رحلة المصحف'}</h4><div class="jsteps" style="grid-template-columns:repeat(${i.journey.length},1fr)">${i.journey.map(j=>`<div class="jstep"><i></i><b>${j[0]}</b><span>${j[1]}</span></div>`).join('')}</div></div>`);
       if (i.plates && i.plates.length) {
-        const strip = i.plates.map((p,k)=>{ const hh = p.w/p.h > 2.4 ? 150 : 240; return `<figure class="plate" data-open="${i.id}:${k}" tabindex="0" role="button" aria-label="تكبير: ${p.t}"><img loading="lazy" src="plates/${p.f}-t.jpg" width="${Math.round(hh*p.w/p.h)}" height="${hh}" style="--h:${hh}px" alt="${p.t}"><figcaption><b>${p.t}</b> · ${LAT(p.loc)}</figcaption></figure>`; }).join('');
+        const strip = i.plates.map((p,k)=>{ const hh = p.w/p.h > 2.4 ? 150 : 240; return `<figure class="plate" data-open="${i.id}:${k}" tabindex="0" role="button" aria-label="تكبير: ${p.t}"><img loading="lazy" src="${p.turl||`plates/${p.f}-t.jpg`}" width="${Math.round(hh*p.w/p.h)}" height="${hh}" style="--h:${hh}px" alt="${p.t}"><figcaption><b>${p.t}</b> · ${LAT(p.loc)}</figcaption></figure>`; }).join('');
         a.insertAdjacentHTML('beforeend', `<div class="gallery"><div class="gal-title"><span>عينات من الكتابة عن قرب (${i.plates.length})</span><span>اضغط للتكبير ←</span></div><div class="strip">${strip}</div></div>`);
       } else if (i.ruling) {
         a.insertAdjacentHTML('beforeend', `<div class="ruling">${rulingSVG(i.ruling,4.6)}<p><b>لا عينات هنا.</b> ${i.noPlates || 'المصحف غير مرقمن، ولم ننشر صوره المحفوظة الحقوق.'} ما تراه رسم لهيئة الصفحة: ${i.ruling.n ? i.ruling.n + ' أسطر' : 'عدد الأسطر غير منشور'}${i.ruling.unknown ? '، والمقاس غير منشور' : ''}.</p></div>`);
@@ -300,7 +300,7 @@ function setupLightbox(platesOf, itemOf){
   const LB = {list:[], i:0, s:1, x:0, y:0, fit:1};
   const lb = $('#lb'), lbImg = $('#lbImg'), stage = $('#lbStage');
   const open = (id, k) => { const it = itemOf(id); if (!it) return; LB.list = platesOf(id).map(p=>({it, p})); if (!LB.list.length) return; LB.i = k; LB.ret = document.activeElement; lb.classList.add('open'); document.body.style.overflow = 'hidden'; show(); $('#lbClose').focus(); };
-  const show = () => { const {it, p} = LB.list[LB.i]; $('#lbTtl').textContent = `${it.short||it.title} · ${LB.i+1}/${LB.list.length}`; $('#lbCap').innerHTML = `<b>${p.t}</b>: ${LAT(p.c)}<small>${LAT(p.loc)}</small>`; $('#lbSrc').href = p.src; lbImg.onload = fit; lbImg.src = `${it.base||''}plates/${p.f}.jpg`; lbImg.alt = p.t; if (lbImg.complete && lbImg.naturalWidth) fit(); const v = LB.list.length>1 ? 'visible':'hidden'; $('#lbPrev').style.visibility = v; $('#lbNext').style.visibility = v; };
+  const show = () => { const {it, p} = LB.list[LB.i]; $('#lbTtl').textContent = `${it.short||it.title} · ${LB.i+1}/${LB.list.length}`; $('#lbCap').innerHTML = `<b>${p.t}</b>: ${LAT(p.c)}<small>${LAT(p.loc)}</small>`; $('#lbSrc').href = p.src; lbImg.onload = fit; lbImg.src = p.url || `${it.base||''}plates/${p.f}.jpg`; lbImg.alt = p.t; if (lbImg.complete && lbImg.naturalWidth) fit(); const v = LB.list.length>1 ? 'visible':'hidden'; $('#lbPrev').style.visibility = v; $('#lbNext').style.visibility = v; };
   const apply = () => { lbImg.style.transform = `translate(${LB.x}px,${LB.y}px) scale(${LB.s})`; };
   const fit = () => { const r = stage.getBoundingClientRect(), w = lbImg.naturalWidth, h = lbImg.naturalHeight; if (!w) return; LB.fit = Math.min((r.width-24)/w, (r.height-24)/h, 1.6); LB.s = LB.fit; LB.x = -w*LB.s/2; LB.y = -h*LB.s/2; apply(); };
   const zoomAt = (f, cx, cy) => { const r = stage.getBoundingClientRect(); const px = cx - r.left - r.width/2, py = cy - r.top - r.height/2; const ns = Math.max(LB.fit*0.6, Math.min(LB.s*f, 6)); const k = ns/LB.s; LB.x = px - (px - LB.x)*k; LB.y = py - (py - LB.y)*k; LB.s = ns; apply(); };
@@ -347,7 +347,7 @@ function setupPresentation(E){
     if (s.lost) { slide.innerHTML = `<div class="vis"><svg viewBox="0 0 200 200" width="180" height="180" aria-hidden="true"><g fill="none" stroke="#6b5c48" stroke-width="2" stroke-dasharray="6 5"><rect x="50" y="50" width="100" height="100"/><rect x="50" y="50" width="100" height="100" transform="rotate(45 100 100)"/></g><text x="100" y="108" text-anchor="middle" font-size="22" fill="#9a8a74" font-family="Reem Kufi">مفقود</text></svg></div><div class="txt">${head}<p>${i.text}</p><p style="font-size:15px;color:#a99a80">المصدر: ${i.src}</p></div>`; return; }
     if (s.info) { slide.innerHTML = `<div class="vis">${i.ruling ? rulingSVG(i.ruling, 11, {paper:'#efe4cc', ink:'#2a1f15', frame:'#c99c45'}) : ''}</div><div class="txt">${head}${i.prose.map(p=>`<p>${p}</p>`).join('')}${i.why?`<p style="color:#e9c879">${i.why}</p>`:''}</div>`; return; }
     const p = s.p;
-    slide.innerHTML = `<div class="vis"><img src="plates/${p.f}.jpg" alt="${p.t}"></div><div class="txt">${head}<p><b style="color:#f1e2bc">${p.t}.</b> ${LAT(p.c)}</p><p style="font-size:14px;color:#a99a80;font-family:var(--ui)">${LAT(p.loc)} · <a style="color:#e9c879" href="${p.src}" target="_blank" rel="noopener">الصفحة في المصدر ↗</a></p>${s.first && i.why ? `<p style="font-size:16px;color:#cbb88f">${i.why}</p>`:''}</div>`;
+    slide.innerHTML = `<div class="vis"><img src="${p.url||`plates/${p.f}.jpg`}" alt="${p.t}"></div><div class="txt">${head}<p><b style="color:#f1e2bc">${p.t}.</b> ${LAT(p.c)}</p><p style="font-size:14px;color:#a99a80;font-family:var(--ui)">${LAT(p.loc)} · <a style="color:#e9c879" href="${p.src}" target="_blank" rel="noopener">الصفحة في المصدر ↗</a></p>${s.first && i.why ? `<p style="font-size:16px;color:#cbb88f">${i.why}</p>`:''}</div>`;
   };
   const openP = () => { SI = 0; pres.classList.add('open'); document.body.style.overflow = 'hidden'; render(); $('#presNext').focus(); };
   const closeP = () => { pres.classList.remove('open'); document.body.style.overflow = ''; if (document.fullscreenElement) document.exitFullscreen(); };
@@ -371,7 +371,7 @@ function renderHub(){
   const cnt = (e,g) => ERAS_DATA[e.key] ? ERAS_DATA[e.key].items.filter(i=>i.group===g).length : 0;
   const cards = ERAS.map(e=>{
     const D = ERAS_DATA[e.key], ok = ERAS_READY.includes(e.key) && D;
-    const band = ok && D.hero ? `<img src="${e.path}${D.hero.f}" alt="">` : '';
+    const band = ok && D.hero ? `<img src="${/^https?:/.test(D.hero.f) ? D.hero.f : e.path + D.hero.f}" alt="">` : '';
     const counts = ok ? `<div class="counts"><span class="badge b-ok">${cnt(e,'surviving')} باقية</span><span class="badge b-no">${cnt(e,'lost')} مفقودة</span><span class="badge b-part">${cnt(e,'edge')} على الحافة</span></div>` : '<div class="counts"><span class="badge b-mut">قيد الإعداد</span></div>';
     return `<a class="era-card${ok?'':' soon'}" href="${e.path}" style="--c:${e.c}"><div class="band">${band}</div><div class="body"><h3>${D?D.name:'مصاحف '+e.name}</h3><div class="rng">${e.rng}</div>${counts}<p>${D?D.card:''}</p></div><span class="go">${ok?'افتح الصفحة ←':''}</span></a>`;
   }).join('');

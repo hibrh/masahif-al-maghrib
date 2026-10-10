@@ -8,6 +8,7 @@
 |---|---|
 | الموحدون | https://hibrh.github.io/masahif-al-maghrib/muwahhidun/ |
 | بنو مرين | https://hibrh.github.io/masahif-al-maghrib/marini/ |
+| السعديون | https://hibrh.github.io/masahif-al-maghrib/saadi/ |
 
 وتُضاف بقية العصور تباعاً.
 
