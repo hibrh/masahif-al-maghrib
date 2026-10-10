@@ -6,6 +6,7 @@
 
 | العصر | الصفحة |
 |---|---|
+| المرابطون | https://hibrh.github.io/masahif-al-maghrib/murabitun/ |
 | الموحدون | https://hibrh.github.io/masahif-al-maghrib/muwahhidun/ |
 | بنو مرين | https://hibrh.github.io/masahif-al-maghrib/marini/ |
 | السعديون | https://hibrh.github.io/masahif-al-maghrib/saadi/ |
@@ -26,3 +27,7 @@
 ## حقوق الصور
 
 الصور من مكتبات ومتاحف تتيحها ملكاً عاماً أو بترخيص مفتوح، ويُذكر مصدر كل صورة وترخيصها في صفحة عصرها.
+
+---
+
+إعداد إبراهيم حسني إدريسي، خطاط ومدرّس خطوط عربية من فاس · [واتساب](https://wa.me/212661769161)

@@ -19,7 +19,7 @@ window.ERAS_READY = window.ERAS_READY || [];
 (function(){
 const $ = (s, r=document) => r.querySelector(s);
 const el = (tag, attrs={}, html='') => { const e = document.createElement(tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (html) e.innerHTML = html; return e; };
-const LAT = s => String(s).replace(/(Cod\.arab\. \d+|Arabe \d+|K \d{3,4}|QUR \d+|ms\. ?[A-Z]?\.? ?\d+[\w./-]*|R\. ?\d+|Or\. ?\d+|\d{4}\.\d+|Gallica|IIIF|BSB|BnF)/g, '<bdi dir="ltr">$1</bdi>');
+const LAT = s => String(s).replace(/(Cod\.arab\. \d+|Arabe \d+|K \d{3,4}|QUR \d+|ms\. ?[A-Z]?\.? ?\d+[\w./-]*|R\. ?\d+|Or\. ?\d+|O\. ?Bj\. ?\d+|RES\/\d+|A \d{4}|\d{4}\.\d+|Gallica|IIIF|BSB|BnF|MDZ)/g, '<bdi dir="ltr">$1</bdi>');
 const ST = {
   s:{ok:['b-ok','باقٍ'], no:['b-no','مفقود']},
   c:{ok:['b-ok','تام'], part:['b-part','ناقص'], unk:['b-mut','التمام غير معلوم']},
@@ -28,6 +28,9 @@ const ST = {
 const GROUPS = {surviving:'باقية تستوفي الشرط', lost:'ذكرتها المصادر وضاعت', edge:'على حافة الشرط'};
 const badges = st => { const keys = st.s==='no' ? ['s'] : ['s','c','d']; return `<div class="badges">${keys.map(k=>{ const v = ST[k][st[k]]; return `<span class="badge ${v[0]}">${v[1]}</span>`; }).join('')}</div>`; };
 const star = '<svg class="star"><use href="#star"/></svg>';
+/* Arabic number agreement: f = [one, two, 3–10 (and 0), 11–99] */
+const agree = (n, f) => n===1 ? f[0] : n===2 ? f[1] : (n%100>=11 && n%100<=99) ? f[3] : f[2];
+const lines = n => n===1 ? 'سطر واحد' : n===2 ? 'سطران' : `${n} ${agree(n, ['','','أسطر','سطراً'])}`;
 const ROOT = window.ROOT || '';
 /* site credit, shown at the foot of every page; wa = WhatsApp number in international format, digits only */
 const AUTHOR = {name:'إبراهيم حسني إدريسي', role:'خطاط ومدرّس خطوط عربية من فاس', wa:'212661769161'};
@@ -191,7 +194,7 @@ ${railHTML(E.key)}
   </div></section>` : ''}
   ${E.anat ? `<section id="anatomy"><div class="wrap">
     <div class="sec-head"><div><div class="kicker">تشريح الخط</div><h2>${star}${E.anat.title}</h2><p>${E.anat.intro}</p></div></div>
-    <div class="anat"><figure class="anat-fig" id="anatFig"><img src="${E.anat.f}" width="${E.anat.w}" height="${E.anat.h}" alt="${E.anat.alt}"></figure><ol class="anat-list" id="anatList"></ol></div>
+    <div class="anat${E.anat.w/E.anat.h > 1.8 ? ' wide' : ''}"><figure class="anat-fig" id="anatFig"><img src="${E.anat.f}" width="${E.anat.w}" height="${E.anat.h}" alt="${E.anat.alt}"></figure><ol class="anat-list" id="anatList"></ol></div>
   </div></section>` : ''}
   <section id="sources"><div class="wrap">
     <div class="sec-head"><div><div class="kicker">المصادر</div><h2>${star}المراجع وحقوق الصور</h2><p>كل معلومة في البطاقات مأخوذة من أحد هذه المصادر.${E.readNote?' '+E.readNote:''}</p></div></div>
@@ -206,7 +209,11 @@ ${commonOverlays()}${ldEra(E)}`;
 
   /* tally + matrix */
   const surv = count('surviving'), lost = count('lost'), edge = count('edge'), dig = items.filter(i=>i.status.d==='ok').length;
-  const tiles = [[surv,'مصاحف باقية تستوفي الشرط'],[lost,'مصاحف ذكرتها المصادر ولا يُعرف لها أثر'],[edge,'مصاحف على حافة الشرط، أدرجناها للمقارنة'],[dig,'مصاحف يُتصفَّح ما بقي منها كاملاً في مصدره']];
+  const tiles = [
+    [surv, agree(surv, ['مصحف باقٍ يستوفي الشرط','مصحفان باقيان يستوفيان الشرط','مصاحف باقية تستوفي الشرط','مصحفاً باقياً يستوفي الشرط'])],
+    [lost, agree(lost, ['مصحف ذكرته المصادر ولا يُعرف له أثر','مصحفان ذكرتهما المصادر ولا يُعرف لهما أثر','مصاحف ذكرتها المصادر ولا يُعرف لها أثر','مصحفاً ذكرته المصادر ولا يُعرف له أثر'])],
+    [edge, agree(edge, ['مصحف على حافة الشرط، أدرجناه للمقارنة','مصحفان على حافة الشرط، أدرجناهما للمقارنة','مصاحف على حافة الشرط، أدرجناها للمقارنة','مصحفاً على حافة الشرط، أدرجناها للمقارنة'])],
+    [dig, agree(dig, ['مصحف يُتصفَّح ما بقي منه كاملاً في مصدره','مصحفان يُتصفَّح ما بقي منهما كاملاً في مصدره','مصاحف يُتصفَّح ما بقي منها كاملاً في مصدره','مصحفاً يُتصفَّح ما بقي منه كاملاً في مصدره'])]];
   $('#tallyTiles').innerHTML = tiles.map(t=>`<div class="tile"><div class="n">${t[0]}</div><div class="t">${t[1]}</div></div>`).join('');
   const dot = (cls,txt) => `<span class="dot ${cls}"><i></i>${txt}</span>`;
   let rows = '';
@@ -237,7 +244,7 @@ ${commonOverlays()}${ldEra(E)}`;
     for (let y = Math.ceil(A/step)*step; y <= B; y += step) s += `<line x1="${X(y)}" x2="${X(y)}" y1="34" y2="${H-26}" stroke="var(--line)"/><text x="${X(y)}" y="${H-8}" font-size="12" text-anchor="middle" fill="var(--ink3)">${y}</text>`;
     T.rulers.forEach(k=>{
       const a = X(k.a), b = X(k.b), yy = 14;
-      s += `<rect x="${b}" y="${yy}" width="${a-b}" height="22" rx="4" fill="${k.faint?'var(--bg2)':'var(--deep)'}" opacity="${k.faint?1:.92}"/>`;
+      s += `<rect x="${b}" y="${yy}" width="${a-b}" height="22" rx="4" fill="${k.faint?'var(--bg2)':'var(--bar)'}" stroke="var(--card)" stroke-width="1.5"/>`;
       s += k.below ? `<text x="${(a+b)/2}" y="${yy+36}" font-size="11.5" text-anchor="middle" fill="var(--ink2)">${k.n}</text>` : `<text x="${(a+b)/2}" y="${yy+15}" font-size="12" text-anchor="middle" fill="${k.faint?'var(--ink3)':'#f1e2bc'}">${k.n}</text>`;
     });
     const lanes = {surviving:96, edge:170, lost:244}, levels = [-14, 26, -30, 42], placed = {};
@@ -290,7 +297,7 @@ ${commonOverlays()}${ldEra(E)}`;
         const strip = i.plates.map((p,k)=>{ const hh = p.w/p.h > 2.4 ? 150 : 240; return `<figure class="plate" data-open="${i.id}:${k}" tabindex="0" role="button" aria-label="تكبير: ${p.t}"><img loading="lazy" src="${p.turl||`plates/${p.f}-t.jpg`}" width="${Math.round(hh*p.w/p.h)}" height="${hh}" style="--h:${hh}px" alt="${p.t}"><figcaption><b>${p.t}</b> · ${LAT(p.loc)}</figcaption></figure>`; }).join('');
         a.insertAdjacentHTML('beforeend', `<div class="gallery"><div class="gal-title"><span>عينات من الكتابة عن قرب (${i.plates.length})</span><span>اضغط للتكبير ←</span></div><div class="strip">${strip}</div></div>`);
       } else if (i.ruling) {
-        a.insertAdjacentHTML('beforeend', `<div class="ruling">${rulingSVG(i.ruling,4.6)}<p><b>لا عينات هنا.</b> ${i.noPlates || 'المصحف غير مرقمن، ولم ننشر صوره المحفوظة الحقوق.'} ما تراه رسم لهيئة الصفحة: ${i.ruling.n ? i.ruling.n + ' أسطر' : 'عدد الأسطر غير منشور'}${i.ruling.unknown ? '، والمقاس غير منشور' : ''}.</p></div>`);
+        a.insertAdjacentHTML('beforeend', `<div class="ruling">${rulingSVG(i.ruling,4.6)}<p><b>لا عينات هنا.</b> ${i.noPlates || 'المصحف غير مرقمن، ولم ننشر صوره المحفوظة الحقوق.'} ما تراه رسم لهيئة الصفحة: ${i.ruling.n ? lines(i.ruling.n) : 'عدد الأسطر غير منشور'}${i.ruling.unknown ? '، والمقاس غير منشور' : ''}.</p></div>`);
       }
       box.appendChild(a);
     }
@@ -301,7 +308,7 @@ ${commonOverlays()}${ldEra(E)}`;
 
   if (E.hasScale!==false) {
     const list = items.filter(i=>i.ruling).sort((a,b)=>(b.ruling.w*b.ruling.h)-(a.ruling.w*a.ruling.h));
-    $('#scaleRow').innerHTML = list.map(i=>`<div class="scale-item">${rulingSVG(i.ruling,5)}<b>${i.short||i.title}</b><span>${i.ruling.unknown?'مقاس غير منشور':i.ruling.w+' × '+i.ruling.h+' سم'} · ${i.ruling.n?i.ruling.n+' أسطر':'الأسطر ؟'}</span></div>`).join('');
+    $('#scaleRow').innerHTML = list.map(i=>`<div class="scale-item">${rulingSVG(i.ruling,5)}<b>${i.short||i.title}</b><span>${i.ruling.unknown?'مقاس غير منشور':i.ruling.w+' × '+i.ruling.h+' سم'} · ${i.ruling.n?lines(i.ruling.n):'الأسطر ؟'}</span></div>`).join('');
   }
 
   if (E.anat) {

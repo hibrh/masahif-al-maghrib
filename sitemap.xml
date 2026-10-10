@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url><loc>https://hibrh.github.io/masahif-al-maghrib/</loc><lastmod>2026-10-10</lastmod>
+    <image:image><image:loc>https://hibrh.github.io/masahif-al-maghrib/murabitun/plates/hero.jpg</image:loc></image:image>
     <image:image><image:loc>https://hibrh.github.io/masahif-al-maghrib/muwahhidun/plates/hero.jpg</image:loc></image:image>
     <image:image><image:loc>https://hibrh.github.io/masahif-al-maghrib/marini/plates/mc-hero.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0004r.jpg/pct:30,41,62,14/1600,/0/default.jpg</image:loc></image:image>
+  </url>
+  <url><loc>https://hibrh.github.io/masahif-al-maghrib/murabitun/</loc><lastmod>2026-10-10</lastmod>
+    <image:image><image:loc>https://hibrh.github.io/masahif-al-maghrib/murabitun/plates/hero.jpg</image:loc></image:image>
+    <image:image><image:loc>https://hibrh.github.io/masahif-al-maghrib/murabitun/plates/cd-colo.jpg</image:loc></image:image>
+    <image:image><image:loc>https://hibrh.github.io/masahif-al-maghrib/murabitun/plates/cd-5b.jpg</image:loc></image:image>
+    <image:image><image:loc>https://hibrh.github.io/masahif-al-maghrib/murabitun/plates/cd-100b.jpg</image:loc></image:image>
+    <image:image><image:loc>https://hibrh.github.io/masahif-al-maghrib/murabitun/plates/cd-note.jpg</image:loc></image:image>
+    <image:image><image:loc>https://hibrh.github.io/masahif-al-maghrib/murabitun/plates/anat.jpg</image:loc></image:image>
   </url>
   <url><loc>https://hibrh.github.io/masahif-al-maghrib/muwahhidun/</loc><lastmod>2026-10-10</lastmod>
     <image:image><image:loc>https://hibrh.github.io/masahif-al-maghrib/muwahhidun/plates/hero.jpg</image:loc></image:image>

@@ -320,6 +320,10 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px}
 :root[data-theme="dark"][data-era="alawi"]{--deep:#1e0f24;--acc:#c79ad6}
 :root[data-era="hub"]{--deep:#1d1712;--acc:#8a6421}
 :root[data-theme="dark"][data-era="hub"]{--acc:#d2a650}
+/* timeline ruler bars: the era's deep colour in light mode, a lifted accent in dark mode */
+:root{--bar:var(--deep)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bar:color-mix(in srgb, var(--acc) 42%, #14110d)}}
+:root[data-theme="dark"]{--bar:color-mix(in srgb, var(--acc) 42%, #14110d)}
 
 .rail{background:var(--bg2);border-bottom:1px solid var(--line)}
 .rail .wrap{display:flex;gap:6px;overflow-x:auto;padding-top:8px;padding-bottom:8px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
@@ -339,7 +343,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px}
 .era-card .band{height:92px;background:var(--c);position:relative;overflow:hidden}
 .era-card .band img{width:100%;height:100%;object-fit:cover;opacity:.9;mix-blend-mode:luminosity}
 .era-card .band::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,var(--c),transparent 80%);opacity:.75}
-.era-card .body{padding:14px 18px 18px}
+.era-card .body{padding:14px 18px 40px}
 .era-card h3{font-size:24px;margin:0 0 2px}
 .era-card .rng{font-family:var(--ui);font-size:13px;color:var(--ink3)}
 .era-card .counts{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
@@ -353,3 +357,9 @@ footer .byline b,footer .byline span>a{font-weight:600}
 footer .wa{display:inline-flex;align-items:center;gap:6px;padding:3px 12px 3px 10px;border:1px solid rgba(233,200,121,.45);border-radius:999px;text-decoration:none;font-size:13.5px}
 footer .wa svg{width:16px;height:16px}
 footer .wa:hover{background:rgba(233,200,121,.12)}
+/* anatomy: wide images span the full width with the list below; active marker stays visible in dark mode */
+.anat.wide{grid-template-columns:1fr}
+.anat.wide .anat-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:2px 18px}
+.hs:hover,.hs.on,.anat-list li.on .k{background:var(--bar)}
+/* highlighted words inside card prose (e.g. a colophon quoted in the text) */
+.prose mark{background:transparent;color:var(--red);font-weight:700}
