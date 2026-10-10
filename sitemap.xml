@@ -56,5 +56,9 @@
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0004r.jpg/pct:30,53,62,16/900,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0264r.jpg/pct:30,42,62,22/900,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0264r.jpg/pct:30,62,62,15/900,/0/default.jpg</image:loc></image:image>
+    <image:image><image:loc>https://hibrh.github.io/masahif-al-maghrib/saadi/plates/ml-colo.jpg</image:loc></image:image>
+    <image:image><image:loc>https://hibrh.github.io/masahif-al-maghrib/saadi/plates/ml-text.jpg</image:loc></image:image>
+  </url>
+  <url><loc>https://hibrh.github.io/masahif-al-maghrib/alawi/</loc><lastmod>2026-10-10</lastmod>
   </url>
 </urlset>

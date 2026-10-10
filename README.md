@@ -11,6 +11,7 @@
 | بنو مرين | https://hibrh.github.io/masahif-al-maghrib/marini/ |
 | الوطاسيون | https://hibrh.github.io/masahif-al-maghrib/wattasi/ |
 | السعديون | https://hibrh.github.io/masahif-al-maghrib/saadi/ |
+| العلويون | https://hibrh.github.io/masahif-al-maghrib/alawi/ |
 
 وتُضاف بقية العصور تباعاً.
 
