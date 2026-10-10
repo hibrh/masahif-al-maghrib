@@ -1,1 +1,1 @@
-window.ERAS_READY = ['murabitun','muwahhidun','marini','wattasi','saadi','alawi'];
+window.ERAS_READY = ['adarisa','murabitun','muwahhidun','marini','wattasi','saadi','alawi'];

@@ -6,6 +6,7 @@
 
 | العصر | الصفحة |
 |---|---|
+| الأدارسة | https://hibrh.github.io/masahif-al-maghrib/adarisa/ |
 | المرابطون | https://hibrh.github.io/masahif-al-maghrib/murabitun/ |
 | الموحدون | https://hibrh.github.io/masahif-al-maghrib/muwahhidun/ |
 | بنو مرين | https://hibrh.github.io/masahif-al-maghrib/marini/ |
@@ -13,7 +14,7 @@
 | السعديون | https://hibrh.github.io/masahif-al-maghrib/saadi/ |
 | العلويون | https://hibrh.github.io/masahif-al-maghrib/alawi/ |
 
-وتُضاف بقية العصور تباعاً.
+وتُحدَّث الصفحات كلما ظهر مصحف مؤرخ منشور.
 
 ## شرط الدليل
 
