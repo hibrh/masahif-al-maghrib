@@ -163,7 +163,7 @@ ${railHTML(E.key)}
 <main>
   <section id="tally"><div class="wrap">
     <div class="sec-head"><div><div class="kicker">الحصيلة</div><h2>${star}ما الذي نعرفه؟</h2>
-      <p>في هذا الدليل ${items.length} من المصاحف في ثلاث مجموعات: ما بقي ويستوفي الشرط، وما ذكرته المصادر ثم ضاع، وما يقف على حافة الشرط.</p></div></div>
+      <p>في هذا الدليل ${agree(items.length, ['مصحف واحد', 'مصحفان', items.length+' مصاحف', items.length+' مصحفاً'])}، والمجموعات ثلاث: ما بقي ويستوفي الشرط، وما ذكرته المصادر ثم ضاع، وما يقف على حافة الشرط.</p></div></div>
     <div class="tally" id="tallyTiles"></div>
     <div class="criteria">
       <div class="note"><h3>شرط الدليل</h3><p>يدخل المصحف في القائمة الأولى إذا اجتمعت فيه ثلاثة أمور:</p><ul>

@@ -9,6 +9,7 @@
 | المرابطون | https://hibrh.github.io/masahif-al-maghrib/murabitun/ |
 | الموحدون | https://hibrh.github.io/masahif-al-maghrib/muwahhidun/ |
 | بنو مرين | https://hibrh.github.io/masahif-al-maghrib/marini/ |
+| الوطاسيون | https://hibrh.github.io/masahif-al-maghrib/wattasi/ |
 | السعديون | https://hibrh.github.io/masahif-al-maghrib/saadi/ |
 
 وتُضاف بقية العصور تباعاً.
