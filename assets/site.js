@@ -121,6 +121,9 @@ function commonOverlays(){
 </div>`;
 }
 
+/* at the top of every era and manuscript page: this page belongs to the whole project */
+const projectLink = () => `<a class="proj" href="${ROOT || './'}"><svg aria-hidden="true"><use href="#star"/></svg><span>${tr('جزء من مشروع <b>مصاحف المغرب</b>: المصاحف المؤرَّخة في سبعة عصور، من الأدارسة إلى العلويين', 'Part of the <b>Masahif al-Maghrib</b> project: dated Qur’ans across seven eras, from the Idrisids to the Alaouites')}</span><i aria-hidden="true">${FWD}</i></a>`;
+
 /* link to the same page in the other language (build_hub.ps1 sets window.ALT_URL) */
 const langLink = () => window.ALT_URL ? (EN ? `<a class="btn lang-btn" href="${window.ALT_URL}" hreflang="ar" lang="ar" data-lang="ar">العربية</a>` : `<a class="btn lang-btn" href="${window.ALT_URL}" hreflang="en" lang="en" data-lang="en">English</a>`) : '';
 
@@ -271,6 +274,7 @@ function renderEra(E){
 ${railHTML(E.key)}
 <div class="hero" id="top"><div class="wrap">
   <div>
+    ${projectLink()}
     <div class="eyebrow">${tr('دليل مصوَّر', 'An illustrated guide')} · ${E.range}</div>
     <h1>${E.name}</h1>
     <p class="sub">${E.sub}</p>
@@ -524,6 +528,7 @@ function renderMs(E, id){
 ${railHTML(E.key)}
 <div class="hero ms-hero" id="top"><div class="wrap">
   <div>
+    ${projectLink()}
     <nav class="crumbs" aria-label="${tr('مسار الصفحة', 'Breadcrumb')}"><a href="${ROOT}">${SN}</a><span aria-hidden="true">${EN ? '›' : '‹'}</span><a href="../">${E.name}</a></nav>
     <div class="eyebrow">${GROUPS[i.group]}</div>
     <h1>${i.title}</h1>

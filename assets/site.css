@@ -418,6 +418,13 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 /* "more" hint under each name in the summary table: the name opens the Qur'an's card */
 .matrix td.name .mx-more{display:block;margin-top:3px;font-family:var(--ui);font-size:12.5px;font-weight:500;color:var(--gold);white-space:nowrap}
 .matrix td.name a:hover .mx-more,.matrix td.name a:focus-visible .mx-more{text-decoration:underline;text-underline-offset:3px}
+/* link to the whole project at the top of every era and manuscript page */
+.proj{display:inline-flex;align-items:center;gap:10px;margin:0 0 18px;padding:8px 14px;border:1px solid rgba(233,200,121,.55);border-radius:12px;background:rgba(233,200,121,.08);color:#f1e7d1;font-family:var(--ui);font-size:14px;line-height:1.55;text-decoration:none;max-width:100%}
+.proj:hover{background:rgba(233,200,121,.16);border-color:#e9c879;color:#fff}
+.proj svg{width:18px;height:18px;flex:none;color:#e9c879}
+.proj b{color:#e9c879;font-weight:600}
+.proj i{font-style:normal;color:#e9c879;flex:none}
+
 /* manuscript pages (<era>/<id>/) and the link to them on each card */
 .ms-link{display:inline-block;margin-top:6px;font-family:var(--ui);font-size:13.5px;color:var(--lapis);text-decoration:none}
 .ms-link:hover{text-decoration:underline}
