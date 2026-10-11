@@ -647,6 +647,7 @@ function setupPresentation(E){
 
 /* ================= HUB ================= */
 function renderHub(){
+  if (document.getElementById('eras')) return;
   const ready = ERAS.filter(e=>ERAS_READY.includes(e.key) && ERAS_DATA[e.key]);
   /* the English hub sits in /en/, one level below the era folders that hold the images */
   const AR = window.ASSET_ROOT || '';
@@ -747,9 +748,12 @@ function setupTheme(){
 
 document.addEventListener('DOMContentLoaded', ()=>{
   const key = window.ERA_KEY;
-  if (key==='hub') renderHub(); else if (key==='__export') exportItems(); else if (window.MS_ID) renderMs(eraData(key), window.MS_ID); else renderEra(eraData(key));
+  if (key==='hub') { if (!document.getElementById('eras')) renderHub(); } else if (key==='__export') exportItems(); else if (window.MS_ID) renderMs(eraData(key), window.MS_ID); else renderEra(eraData(key));
   setupTheme(); setupTracking(); setupLang();
-  const cur = document.querySelector('.rail [aria-current]'); if (cur && cur.scrollIntoView) cur.scrollIntoView({block:'nearest', inline:'center'});
-  if (location.hash) { const t = document.getElementById(location.hash.slice(1)); if (t) setTimeout(()=>t.scrollIntoView(), 60); }
+  requestAnimationFrame(()=>{
+    const cur = document.querySelector('.rail [aria-current]'); if (cur && !cur.classList.contains('home') && cur.scrollIntoView) cur.scrollIntoView({block:'nearest', inline:'center'});
+    if (location.hash) { const t = document.getElementById(location.hash.slice(1)); if (t) setTimeout(()=>t.scrollIntoView(), 60); }
+  });
 });
 })();
+
