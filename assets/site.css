@@ -418,3 +418,27 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 /* "more" hint under each name in the summary table: the name opens the Qur'an's card */
 .matrix td.name .mx-more{display:block;margin-top:3px;font-family:var(--ui);font-size:12.5px;font-weight:500;color:var(--gold);white-space:nowrap}
 .matrix td.name a:hover .mx-more,.matrix td.name a:focus-visible .mx-more{text-decoration:underline;text-underline-offset:3px}
+/* manuscript pages (<era>/<id>/) and the link to them on each card */
+.ms-link{display:inline-block;margin-top:6px;font-family:var(--ui);font-size:13.5px;color:var(--lapis);text-decoration:none}
+.ms-link:hover{text-decoration:underline}
+.lost .ms-link{margin-top:10px}
+.crumbs{font-family:var(--ui);font-size:13.5px;color:#cbb88f;display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:16px}
+.crumbs a{color:#e9c879;text-decoration:none}
+.crumbs a:hover{text-decoration:underline}
+.ms-hero h1{font-size:clamp(30px,4.2vw,52px)}
+.ms-hero .sub{max-width:40ch}
+.ms-hero .sub b{font-family:var(--naskh);font-weight:700;color:#e9c879}
+.ms-hero .lede{margin-top:-10px}
+.ms-hero .hero-fig img{max-height:70vh;object-fit:contain}
+.ms-blank{aspect-ratio:16/10;max-height:320px;display:grid;place-items:center}
+.ms-blank svg{max-width:80%;height:auto}
+.ms-status{padding:16px 24px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,color-mix(in srgb,var(--gold) 7%,transparent),transparent)}
+.ms-pn{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.ms-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.ms-item{display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;text-decoration:none;color:var(--ink)}
+.ms-item:hover{border-color:var(--gold)}
+.ms-item .th{width:64px;height:64px;border-radius:8px;overflow:hidden;background:var(--bg2);display:grid;place-items:center}
+.ms-item .th img{width:100%;height:100%;object-fit:cover}
+.ms-item b{font-family:var(--naskh);font-weight:700;font-size:17px;display:block;line-height:1.4}
+.ms-item b + span{font-family:var(--ui);font-size:12.5px;color:var(--ink3)}
+@media (max-width:860px){ .ms-status{padding:14px 16px} }

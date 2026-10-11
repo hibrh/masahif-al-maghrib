@@ -35,6 +35,8 @@ const star = '<svg class="star"><use href="#star"/></svg>';
 const agree = (n, f) => n===1 ? f[0] : n===2 ? f[1] : (n%100>=11 && n%100<=99) ? f[3] : f[2];
 const lines = n => n===1 ? 'سطر واحد' : n===2 ? 'سطران' : `${n} ${agree(n, ['','','أسطر','سطراً'])}`;
 const ROOT = window.ROOT || '';
+/* folder of the era's plates/ relative to the current page ('' on the era page, '../' on a manuscript page) */
+const PB = window.PLATE_BASE || '';
 /* site credit, shown at the foot of every page; wa = WhatsApp number in international format, digits only */
 const AUTHOR = {name:'إبراهيم حسني إدريسي', role:'خطاط ومدرّس خطوط عربية من فاس', wa:'212661769161'};
 const waLink = AUTHOR.wa ? `https://wa.me/${AUTHOR.wa}` : '';
@@ -118,7 +120,8 @@ function ldEra(E){
   const era = ERAS.find(e=>e.key===E.key), url = SITE + era.path;
   const plateUrl = p => p.url || abs(era.path, `plates/${p.f}.jpg`);
   const item = i => {
-    const o = {'@type':'Manuscript','@id':url+'#'+i.id, url:url+'#'+i.id, name:plain(i.title), genre:'مصحف', inLanguage:'ar',
+    const u = window.MS_PAGES ? url + i.id + '/' : url + '#' + i.id;
+    const o = {'@type':'Manuscript','@id':window.MS_PAGES ? u + '#ms' : u, url:u, name:plain(i.title), genre:'مصحف', inLanguage:'ar',
       description:plain([i.dateH, i.short].filter(Boolean).join('، '))};
     if (i.y0) o.dateCreated = i.y1 ? `${i.y0}/${i.y1}` : String(i.y0);
     if (i.plates && i.plates.length) o.image = i.plates.slice(0,4).map(plateUrl);
@@ -140,24 +143,60 @@ function ldHub(ready){
   return ldTag({'@context':'https://schema.org','@graph':[WEBSITE, PERSON, page]});
 }
 
-/* ================= ERA PAGE ================= */
-function renderEra(E){
-  /* chronological order inside each group (surviving, edge, lost); numbers follow the displayed order */
+/* ================= SHARED: item order, reign line, card markup ================= */
+/* chronological order inside each group (surviving, edge, lost); numbers follow the displayed order */
+function orderItems(E){
+  if (E._ordered) return E.items;
   const mid = i => i.y1 ? (i.y0 + i.y1) / 2 : i.y0, GORD = {surviving:0, edge:1, lost:2};
   E.items.sort((a,b) => (GORD[a.group] - GORD[b.group]) || (mid(a) - mid(b)));
   let nn = 0; E.items.forEach(i => { if (i.group !== 'lost') i.num = ++nn; });
-  const items = E.items;
-  /* the ruler in whose reign a Qur'an falls, from the timeline bars; i.ruler overrides ('' hides) */
+  E._ordered = true;
+  return E.items;
+}
+/* the ruler in whose reign a Qur'an falls, from the timeline bars; i.ruler overrides ('' hides) */
+function reignFn(E){
   const RUL = (E.tl && E.tl.rulers) || [];
   const gen = k => (k.full || k.n).replace(/^أبو /, 'أبي ');
   const rulerAt = y => RUL.findIndex((k, x) => y >= k.a && (y < k.b || (x === RUL.length - 1 && y <= k.b)));
   const rulerTo = y => RUL.findIndex(k => y > k.a && y <= k.b);
-  const reignOf = i => {
+  return i => {
     if (i.ruler !== undefined) return i.ruler;
     const x0 = rulerAt(i.y0), x1 = i.y1 ? rulerTo(i.y1) : x0, r0 = RUL[x0], r1 = RUL[x1];
     if (!r0 || !r1 || x1 - x0 > 1 || r0.faint || r1.faint || !r0.n || !r1.n) return '';
     return r0 === r1 ? `في عهد ${gen(r0)}` : `في عهدي ${gen(r0)} و${gen(r1)}`;
   };
+}
+/* the plate shown as the item's sample: a written page; i.thumb names it, or '' when none of them is a text page */
+const samplePlate = i => { const pl = i.plates || [], k = i.thumb === '' ? -1 : i.thumb ? pl.findIndex(p => p.f === i.thumb) : (pl.length ? 0 : -1); return k >= 0 ? {p:pl[k], k} : null; };
+/* card of a lost Qur'an (inner HTML of article.lost) */
+function lostHTML(i, reign, msLink){
+  return `<div class="yr">${i.dateH}</div><h3>${i.title}</h3><div style="font-family:var(--ui);font-size:13px;color:var(--ink3);margin-bottom:8px">${i.dateG}${reign ? ' · ' + reign : ''}</div>${badges(i.status)}<p>${i.text}</p><div class="src">المصدر: ${i.src}</div>${msLink ? `<a class="ms-link" href="${i.id}/">صفحة المصحف ←</a>` : ''}`;
+}
+/* everything in a surviving / edge card below its head: facts, prose, links, colophon, journey, samples or ruling */
+function entryBodyHTML(i){
+  const facts = i.facts.map(f=>`<dt>${f[0]}</dt><dd>${LAT(f[1])}</dd>`).join('');
+  const prose = i.prose.map(p=>`<p>${p}</p>`).join('') + (i.why ? `<p class="why">${i.why}</p>` : '');
+  const links = i.links && i.links.length ? `<div class="links">${i.links.map(l=>`<a href="${l[1]}" target="_blank" rel="noopener">${l[0]}</a>`).join('')}</div>` : '';
+  let h = `<div class="entry-body"><dl class="facts">${facts}</dl><div class="prose">${prose}${links}</div></div>`;
+  if (i.colophon) {
+    const k = i.plates.findIndex(x=>x.f===i.colophon.plate), p = i.plates[k];
+    h += `<div class="colophon"><figure data-open="${i.id}:${k}"><img loading="lazy" src="${p.url||`${PB}plates/${p.f}.jpg`}" alt="${p.t}"></figure><div class="tr"><h4>${i.colophon.title}</h4><p class="ar">${i.colophon.ar}</p><p class="gl">${i.colophon.gl}</p></div></div>`;
+  }
+  if (i.journey) h += `<div class="journey"><h4>${i.journeyTitle||'رحلة المصحف'}</h4><div class="jsteps" style="--n:${i.journey.length}">${i.journey.map(j=>`<div class="jstep"><i></i><b>${j[0]}</b><span>${j[1]}</span></div>`).join('')}</div></div>`;
+  if (i.plates && i.plates.length) {
+    const strip = i.plates.map((p,k)=>{ const hh = p.w/p.h > 2.4 ? 150 : 240; return `<figure class="plate" data-open="${i.id}:${k}" tabindex="0" role="button" aria-label="تكبير: ${p.t}"><img loading="lazy" src="${p.turl||`${PB}plates/${p.f}-t.jpg`}" width="${Math.round(hh*p.w/p.h)}" height="${hh}" style="--h:${hh}px" alt="${p.t}"><figcaption><b>${p.t}</b> · ${LAT(p.loc)}${aiNote(p)}</figcaption></figure>`; }).join('');
+    h += `<div class="gallery"><div class="gal-title"><span>عينات من الكتابة عن قرب (${i.plates.length})</span><span>اضغط للتكبير ←</span></div><div class="strip">${strip}</div></div>`;
+  } else if (i.ruling) {
+    h += `<div class="ruling">${rulingSVG(i.ruling,4.6)}<p><b>لا عينات هنا.</b> ${i.noPlates || 'المصحف غير مرقمن، ولم نجد له صورة منشورة.'} ما تراه رسم لهيئة الصفحة: ${i.ruling.n ? lines(i.ruling.n) : 'عدد الأسطر غير منشور'}${i.ruling.unknown ? '، والمقاس غير منشور' : ''}.</p></div>`;
+  }
+  return h;
+}
+
+/* ================= ERA PAGE ================= */
+function renderEra(E){
+  const items = orderItems(E);
+  const reignOf = reignFn(E);
+  const msPages = !!window.MS_PAGES;
   const count = g => items.filter(i=>i.group===g).length;
   const heroFig = E.hero ? `<figure class="hero-fig"><div class="frame"><img src="${E.hero.f}" width="${E.hero.w}" height="${E.hero.h}" alt="${E.hero.alt}" ${E.hero.open?`data-open="${E.hero.open}"`:''}></div><figcaption>${LAT(E.hero.caption)}</figcaption></figure>`
     : `<figure class="hero-fig"><div class="frame" style="aspect-ratio:16/9;display:grid;place-items:center"><svg viewBox="0 0 200 120" width="70%" aria-hidden="true"><g fill="none" stroke="#c99c45" stroke-width="1.2" opacity=".8"><rect x="70" y="30" width="60" height="60"/><rect x="70" y="30" width="60" height="60" transform="rotate(45 100 60)"/><circle cx="100" cy="60" r="12"/></g></svg></div><figcaption>${E.heroNote||''}</figcaption></figure>`;
@@ -242,9 +281,8 @@ ${commonOverlays()}${ldEra(E)}`;
       const s = ST.s[i.status.s], c = ST.c[i.status.c], d = ST.d[i.status.d];
       const nil = i.status.s==='no' ? ' class="nil"' : '';
       const browse = i.links && i.links.length && i.status.d!=='no';
-      /* sample = a written page; i.thumb names the plate, or '' when none of them is a text page */
-      const pl = i.plates || [], pk = i.thumb === '' ? -1 : i.thumb ? pl.findIndex(p => p.f === i.thumb) : (pl.length ? 0 : -1), pp = pk >= 0 ? pl[pk] : null;
-      const thumb = pp ? `<button type="button" class="mx-thumb" data-open="${i.id}:${pk}" aria-label="عينة: ${pp.t}" title="${pp.t}"><img loading="lazy" src="${pp.turl || `plates/${pp.f}-t.jpg`}" alt=""></button>` : '<span class="mx-none">—</span>';
+      const sp = samplePlate(i), pp = sp && sp.p, pk = sp ? sp.k : -1;
+      const thumb = pp ? `<button type="button" class="mx-thumb" data-open="${i.id}:${pk}" aria-label="عينة: ${pp.t}" title="${pp.t}"><img loading="lazy" src="${pp.turl || `${PB}plates/${pp.f}-t.jpg`}" alt=""></button>` : '<span class="mx-none">—</span>';
       rows += `<tr><td class="mx-s${pp ? '' : ' nil'}" data-l="نموذج">${thumb}</td><td class="name"><a href="#${i.id}">${i.short||i.title}<span class="mx-more">للمزيد عن المصحف ←</span></a></td>
         <td data-l="التاريخ">${i.dateH}<br><span style="color:var(--ink3)">${i.dateG}</span></td>
         <td data-l="الحال">${dot(s[0],s[1])}</td>
@@ -300,28 +338,13 @@ ${commonOverlays()}${ldEra(E)}`;
     box.appendChild(el('h3', {class:'group-title', 'data-group':g}, `${GROUPS[g]} <small>${list.length}</small>`));
     if (g==='lost') {
       const grid = el('div', {class:'lost-grid', 'data-group':g});
-      for (const i of list) grid.appendChild(el('article', {class:'lost', id:i.id, 'data-group':g, 'data-s':i.status.s, 'data-d':i.status.d},
-        `<div class="yr">${i.dateH}</div><h3>${i.title}</h3><div style="font-family:var(--ui);font-size:13px;color:var(--ink3);margin-bottom:8px">${i.dateG}${reignOf(i) ? ' · ' + reignOf(i) : ''}</div>${badges(i.status)}<p>${i.text}</p><div class="src">المصدر: ${i.src}</div>`));
+      for (const i of list) grid.appendChild(el('article', {class:'lost', id:i.id, 'data-group':g, 'data-s':i.status.s, 'data-d':i.status.d}, lostHTML(i, reignOf(i), msPages)));
       box.appendChild(grid); continue;
     }
     for (const i of list) {
       const a = el('article', {class:'entry', id:i.id, 'data-group':g, 'data-s':i.status.s, 'data-d':i.status.d});
-      const facts = i.facts.map(f=>`<dt>${f[0]}</dt><dd>${LAT(f[1])}</dd>`).join('');
-      const prose = i.prose.map(p=>`<p>${p}</p>`).join('') + (i.why ? `<p class="why">${i.why}</p>` : '');
-      const links = i.links && i.links.length ? `<div class="links">${i.links.map(l=>`<a href="${l[1]}" target="_blank" rel="noopener">${l[0]}</a>`).join('')}</div>` : '';
-      a.innerHTML = `<div class="entry-head"><div class="num"><span>${i.num}</span></div><div><h3>${i.title}</h3><div class="when"><b>${i.dateH}</b> · ${i.dateG}</div>${reignOf(i) ? `<div class="reign">${reignOf(i)}</div>` : ''}</div>${badges(i.status)}</div>
-        <div class="entry-body"><dl class="facts">${facts}</dl><div class="prose">${prose}${links}</div></div>`;
-      if (i.colophon) {
-        const k = i.plates.findIndex(x=>x.f===i.colophon.plate), p = i.plates[k];
-        a.insertAdjacentHTML('beforeend', `<div class="colophon"><figure data-open="${i.id}:${k}"><img loading="lazy" src="${p.url||`plates/${p.f}.jpg`}" alt="${p.t}"></figure><div class="tr"><h4>${i.colophon.title}</h4><p class="ar">${i.colophon.ar}</p><p class="gl">${i.colophon.gl}</p></div></div>`);
-      }
-      if (i.journey) a.insertAdjacentHTML('beforeend', `<div class="journey"><h4>${i.journeyTitle||'رحلة المصحف'}</h4><div class="jsteps" style="--n:${i.journey.length}">${i.journey.map(j=>`<div class="jstep"><i></i><b>${j[0]}</b><span>${j[1]}</span></div>`).join('')}</div></div>`);
-      if (i.plates && i.plates.length) {
-        const strip = i.plates.map((p,k)=>{ const hh = p.w/p.h > 2.4 ? 150 : 240; return `<figure class="plate" data-open="${i.id}:${k}" tabindex="0" role="button" aria-label="تكبير: ${p.t}"><img loading="lazy" src="${p.turl||`plates/${p.f}-t.jpg`}" width="${Math.round(hh*p.w/p.h)}" height="${hh}" style="--h:${hh}px" alt="${p.t}"><figcaption><b>${p.t}</b> · ${LAT(p.loc)}${aiNote(p)}</figcaption></figure>`; }).join('');
-        a.insertAdjacentHTML('beforeend', `<div class="gallery"><div class="gal-title"><span>عينات من الكتابة عن قرب (${i.plates.length})</span><span>اضغط للتكبير ←</span></div><div class="strip">${strip}</div></div>`);
-      } else if (i.ruling) {
-        a.insertAdjacentHTML('beforeend', `<div class="ruling">${rulingSVG(i.ruling,4.6)}<p><b>لا عينات هنا.</b> ${i.noPlates || 'المصحف غير مرقمن، ولم نجد له صورة منشورة.'} ما تراه رسم لهيئة الصفحة: ${i.ruling.n ? lines(i.ruling.n) : 'عدد الأسطر غير منشور'}${i.ruling.unknown ? '، والمقاس غير منشور' : ''}.</p></div>`);
-      }
+      a.innerHTML = `<div class="entry-head"><div class="num"><span>${i.num}</span></div><div><h3>${i.title}</h3><div class="when"><b>${i.dateH}</b> · ${i.dateG}</div>${reignOf(i) ? `<div class="reign">${reignOf(i)}</div>` : ''}${msPages ? `<a class="ms-link" href="${i.id}/">صفحة المصحف ←</a>` : ''}</div>${badges(i.status)}</div>
+        ${entryBodyHTML(i)}`;
       box.appendChild(a);
     }
   }
@@ -368,12 +391,86 @@ function setFilter(f){
   document.querySelectorAll('#entries .group-title').forEach(t=>{ t.hidden = ![...document.querySelectorAll(`#entries article[data-group="${t.dataset.group}"]`)].some(a=>!a.hidden); });
 }
 
+/* ================= MANUSCRIPT PAGE (one per item: <era>/<id>/) ================= */
+/* title, description and preview image of a manuscript page; build_hub.ps1 reads these through the export page */
+function msMeta(E, i){
+  const era = ERAS.find(e=>e.key===E.key), url = SITE + era.path + i.id + '/';
+  const yr = (plain(i.dateH).match(/(\d{3,4}) ?هـ/) || [])[1];
+  const title = `${plain(i.title)}${yr && !plain(i.title).includes(yr) ? ` (${yr}هـ)` : ''} | ${E.name}`;
+  const body = plain(i.group === 'lost' ? i.text : (i.prose && i.prose[0]) || '');
+  let desc = `${plain(i.title)}، ${plain(i.dateH)}${i.dateG ? ` (${plain(i.dateG)})` : ''}. ${body}`;
+  if (desc.length > 230) { desc = desc.slice(0, 230); desc = desc.slice(0, desc.lastIndexOf(' ')) + '…'; }
+  const sp = samplePlate(i), p = sp && sp.p, full = q => q.url || SITE + era.path + 'plates/' + q.f + '.jpg';
+  return {era:E.key, id:i.id, url, title, desc, img: p ? full(p) : '', w: p ? p.w : 0, h: p ? p.h : 0, alt: p ? plain(`${i.title}: ${p.t}`) : '',
+    images:(i.plates || []).map(full)};
+}
+function ldMs(E, i, m){
+  const era = ERAS.find(e=>e.key===E.key), eraUrl = SITE + era.path;
+  const ms = {'@type':'Manuscript','@id':m.url+'#ms', url:m.url, name:plain(i.title), genre:'مصحف', inLanguage:'ar', description:m.desc, isPartOf:{'@id':eraUrl+'#page'}};
+  if (i.short && i.short !== i.title) ms.alternateName = plain(i.short);
+  if (i.y0) ms.dateCreated = i.y1 ? `${i.y0}/${i.y1}` : String(i.y0);
+  if (m.images.length) ms.image = m.images.slice(0,4);
+  if (i.links && i.links.length) ms.sameAs = i.links.map(l=>l[1]).filter(u=>/^https?:/.test(u));
+  const page = {'@type':'ItemPage','@id':m.url+'#page', url:m.url, name:plain(i.title), inLanguage:'ar', description:m.desc,
+    isPartOf:{'@id':SITE+'#site'}, author:{'@id':SITE+'#author'}, mainEntity:{'@id':m.url+'#ms'},
+    breadcrumb:{'@type':'BreadcrumbList', itemListElement:[{'@type':'ListItem',position:1,name:'مصاحف المغرب',item:SITE},{'@type':'ListItem',position:2,name:E.name,item:eraUrl},{'@type':'ListItem',position:3,name:plain(i.title),item:m.url}]}};
+  if (m.img) page.primaryImageOfPage = {'@type':'ImageObject', url:m.img};
+  return ldTag({'@context':'https://schema.org','@graph':[WEBSITE, PERSON, page, ms]});
+}
+function renderMs(E, id){
+  const items = orderItems(E), reignOf = reignFn(E), i = items.find(x=>x.id===id);
+  if (!i) return;
+  const era = ERAS.find(e=>e.key===E.key), m = msMeta(E, i), reign = reignOf(i), sp = samplePlate(i);
+  const blank = svg => `<figure class="hero-fig"><div class="frame ms-blank">${svg}</div><figcaption>${i.group==='lost' ? 'مصحف ذكرته المصادر ولا يُعرف له أثر اليوم.' : 'رسم لهيئة الصفحة، إذ لا نعرف صورة منشورة لهذا المصحف.'}</figcaption></figure>`;
+  const fig = sp ? `<figure class="hero-fig"><div class="frame"><img src="${sp.p.url || `${PB}plates/${sp.p.f}.jpg`}" width="${sp.p.w}" height="${sp.p.h}" alt="${sp.p.t}" data-open="${i.id}:${sp.k}"></div><figcaption><b>${sp.p.t}</b> · ${LAT(sp.p.loc)}${aiNote(sp.p)}</figcaption></figure>`
+    : i.group==='lost' ? blank('<svg viewBox="0 0 200 200" width="46%" aria-hidden="true"><g fill="none" stroke="#c99c45" stroke-width="2" stroke-dasharray="6 5" opacity=".8"><rect x="50" y="50" width="100" height="100"/><rect x="50" y="50" width="100" height="100" transform="rotate(45 100 100)"/></g><text x="100" y="108" text-anchor="middle" font-size="22" fill="#cbb88f" font-family="Noto Kufi Arabic">مفقود</text></svg>')
+    : i.ruling ? blank(rulingSVG(i.ruling, Math.min(9, 320 / Math.max(i.ruling.w, i.ruling.h)), {paper:'#efe4cc', ink:'#2a1f15', frame:'#c99c45'})) : '';
+  const browse = i.links && i.links.length && i.status.d !== 'no' ? `<a class="btn solid" href="${i.links[0][1]}" target="_blank" rel="noopener">${i.links[0][0]} ↗</a>` : '';
+  const card = i.group==='lost'
+    ? `<article class="entry" id="${i.id}"><div class="ms-status">${badges(i.status)}</div><div class="entry-body" style="grid-template-columns:1fr"><div class="prose"><p>${i.text}</p><p class="why">المصدر: ${i.src}</p></div></div></article>`
+    : `<article class="entry" id="${i.id}"><div class="ms-status">${badges(i.status)}</div>${entryBodyHTML(i)}</article>`;
+  const k = items.indexOf(i), prev = items[k-1], next = items[k+1];
+  const others = items.filter(x=>x!==i).map(x=>{ const s = samplePlate(x); return `<a class="ms-item" href="../${x.id}/"><span class="th">${s ? `<img loading="lazy" src="${s.p.turl || `${PB}plates/${s.p.f}-t.jpg`}" alt="">` : `<svg viewBox="0 0 24 24" width="26" height="26" style="color:var(--gold)"><use href="#star"/></svg>`}</span><span><b>${x.short||x.title}</b><span>${x.dateH}${x.group==='lost' ? ' · مفقود' : ''}</span></span></a>`; }).join('');
+  const html = `${header(E.name, false, `<a href="#card">البطاقة</a><a href="#more">مصاحف ${era.gen}</a>`)}
+${railHTML(E.key)}
+<div class="hero ms-hero" id="top"><div class="wrap">
+  <div>
+    <nav class="crumbs" aria-label="مسار الصفحة"><a href="${ROOT}">مصاحف المغرب</a><span aria-hidden="true">‹</span><a href="../">${E.name}</a></nav>
+    <div class="eyebrow">${GROUPS[i.group]}</div>
+    <h1>${i.title}</h1>
+    <p class="sub"><b>${i.dateH}</b> · ${i.dateG}</p>
+    ${reign ? `<p class="lede">${reign}</p>` : ''}
+    <div class="hero-actions">${browse}<a class="btn" href="../#${i.id}">البطاقة في صفحة ${E.name}</a></div>
+  </div>
+  ${fig}
+</div></div>
+<main>
+  <section id="card"><div class="wrap">${card}</div></section>
+  <section id="more"><div class="wrap">
+    <div class="sec-head"><div><div class="kicker">${E.name}</div><h2>${star}مصاحف أخرى من هذا العصر</h2></div></div>
+    <div class="ms-pn">${prev ? `<a class="btn" href="../${prev.id}/">→ ${prev.short||prev.title}</a>` : '<span></span>'}${next ? `<a class="btn" href="../${next.id}/">${next.short||next.title} ←</a>` : ''}</div>
+    <div class="ms-list">${others}</div>
+  </div></section>
+</main>
+<footer><div class="wrap"><div>${E.name} · ${E.footer}</div><div><a href="../">${E.name}</a> · <a href="${ROOT}">مصاحف المغرب: كل العصور</a></div>${byline()}</div></footer>
+${commonOverlays()}${ldMs(E, i, m)}`;
+  $('#app').innerHTML = html;
+  setupLightbox(x => x===i.id ? (i.plates||[]) : [], x => x===i.id ? i : null);
+}
+/* the export page (build_hub.ps1) reads every manuscript page's metadata from here */
+function exportItems(){
+  const out = [];
+  ERAS.filter(e=>ERAS_READY.includes(e.key) && ERAS_DATA[e.key]).forEach(e=>{ const E = ERAS_DATA[e.key]; orderItems(E).forEach(i=>out.push(msMeta(E, i))); });
+  const pre = el('pre', {id:'export'}); pre.textContent = JSON.stringify(out);
+  $('#app').replaceChildren(pre);
+}
+
 /* ---------- lightbox ---------- */
 function setupLightbox(platesOf, itemOf){
   const LB = {list:[], i:0, s:1, x:0, y:0, fit:1};
   const lb = $('#lb'), lbImg = $('#lbImg'), stage = $('#lbStage');
   const open = (id, k) => { const it = itemOf(id); if (!it) return; LB.list = platesOf(id).map(p=>({it, p})); if (!LB.list.length) return; LB.i = k; LB.ret = document.activeElement; track('open_sample', {manuscript: id, plate: (LB.list[k] && LB.list[k].p.f) || ''}); lb.classList.add('open'); document.body.style.overflow = 'hidden'; if (!(history.state && history.state.ov==='lb')) history.pushState({ov:'lb'}, ''); show(); $('#lbClose').focus(); };
-  const show = () => { const {it, p} = LB.list[LB.i]; $('#lbTtl').textContent = `${it.short||it.title} · ${LB.i+1}/${LB.list.length}`; $('#lbCap').innerHTML = `<b>${p.t}</b>: ${LAT(p.c)}<small>${LAT(p.loc)}${aiNote(p)}</small>`; $('#lbSrc').href = p.src || '#'; $('#lbSrc').style.display = p.src ? '' : 'none'; lbImg.onload = fit; lbImg.src = p.url || `${it.base||''}plates/${p.f}.jpg`; lbImg.alt = p.t; if (lbImg.complete && lbImg.naturalWidth) fit(); const v = LB.list.length>1 ? 'visible':'hidden'; $('#lbPrev').style.visibility = v; $('#lbNext').style.visibility = v; };
+  const show = () => { const {it, p} = LB.list[LB.i]; $('#lbTtl').textContent = `${it.short||it.title} · ${LB.i+1}/${LB.list.length}`; $('#lbCap').innerHTML = `<b>${p.t}</b>: ${LAT(p.c)}<small>${LAT(p.loc)}${aiNote(p)}</small>`; $('#lbSrc').href = p.src || '#'; $('#lbSrc').style.display = p.src ? '' : 'none'; lbImg.onload = fit; lbImg.src = p.url || `${it.base||PB}plates/${p.f}.jpg`; lbImg.alt = p.t; if (lbImg.complete && lbImg.naturalWidth) fit(); const v = LB.list.length>1 ? 'visible':'hidden'; $('#lbPrev').style.visibility = v; $('#lbNext').style.visibility = v; };
   const apply = () => { lbImg.style.transform = `translate(${LB.x}px,${LB.y}px) scale(${LB.s})`; };
   const fit = () => { const r = stage.getBoundingClientRect(), w = lbImg.naturalWidth, h = lbImg.naturalHeight; if (!w) return; LB.fit = Math.min((r.width-24)/w, (r.height-24)/h, 1.6); LB.s = LB.fit; LB.x = -w*LB.s/2; LB.y = -h*LB.s/2; apply(); };
   const zoomAt = (f, cx, cy) => { const r = stage.getBoundingClientRect(); const px = cx - r.left - r.width/2, py = cy - r.top - r.height/2; const ns = Math.max(LB.fit*0.6, Math.min(LB.s*f, 6)); const k = ns/LB.s; LB.x = px - (px - LB.x)*k; LB.y = py - (py - LB.y)*k; LB.s = ns; apply(); };
@@ -491,7 +588,7 @@ ${railHTML('hub')}
   ERAS.forEach((e,k)=>{ const a = X(e.a), b = X(e.b), yy = 24 + (k%2)*28; s += `<rect x="${b}" y="${yy}" width="${a-b}" height="22" rx="4" fill="${e.c}" opacity="${ERAS_READY.includes(e.key)?.95:.35}"/><text x="${(a+b)/2}" y="${yy+15}" font-size="12" text-anchor="middle" fill="#fff">${e.name}</text>`; });
   const lanes = {surviving:120, edge:165, lost:205};
   all.forEach(({e,i})=>{ const cx = i.y1 ? X((i.y0+i.y1)/2) : X(i.y0), ly = lanes[i.group];
-    s += `<a href="${e.path}#${i.id}"><title>${i.title} — ${i.dateH}</title><circle cx="${cx}" cy="${ly}" r="6.5" fill="${i.status.s==='no'?'var(--card)':e.c}" stroke="${e.c}" stroke-width="2"/></a>`; });
+    s += `<a href="${e.path}${window.MS_PAGES ? i.id + '/' : '#' + i.id}"><title>${i.title} — ${i.dateH}</title><circle cx="${cx}" cy="${ly}" r="6.5" fill="${i.status.s==='no'?'var(--card)':e.c}" stroke="${e.c}" stroke-width="2"/></a>`; });
   s += `<text x="${W-2}" y="${lanes.surviving+4}" font-size="12" text-anchor="start" fill="var(--ink2)">باقية</text><text x="${W-2}" y="${lanes.edge+4}" font-size="12" text-anchor="start" fill="var(--ink2)">على الحافة</text><text x="${W-2}" y="${lanes.lost+4}" font-size="12" text-anchor="start" fill="var(--ink2)">مفقودة</text>`;
   $('#gtl').innerHTML = s + '</svg>';
 }
@@ -502,7 +599,7 @@ function setupTracking(){
   document.addEventListener('click', e=>{
     const a = e.target.closest('a[href^="http"]'); if (!a || a.host === location.host) return;
     const art = a.closest('article[id]'), row = a.closest('tr'), nm = row && row.querySelector('td.name a');
-    const ms = art ? art.id : nm ? nm.hash.slice(1) : '';
+    const ms = art ? art.id : nm ? nm.hash.slice(1) : (window.MS_ID || '');
     if (/wa\.me/.test(a.host)) track('contact_whatsapp', {manuscript: ms});
     else track('open_source', {manuscript: ms, link_domain: a.hostname, link_url: a.href});
   });
@@ -519,7 +616,7 @@ function setupTheme(){
 
 document.addEventListener('DOMContentLoaded', ()=>{
   const key = window.ERA_KEY;
-  if (key==='hub') renderHub(); else renderEra(ERAS_DATA[key]);
+  if (key==='hub') renderHub(); else if (key==='__export') exportItems(); else if (window.MS_ID) renderMs(ERAS_DATA[key], window.MS_ID); else renderEra(ERAS_DATA[key]);
   setupTheme(); setupTracking();
   const cur = document.querySelector('.rail [aria-current]'); if (cur && cur.scrollIntoView) cur.scrollIntoView({block:'nearest', inline:'center'});
   if (location.hash) { const t = document.getElementById(location.hash.slice(1)); if (t) setTimeout(()=>t.scrollIntoView(), 60); }

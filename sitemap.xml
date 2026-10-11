@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url><loc>https://masahif-al-maghrib.com/</loc><lastmod>2026-10-11</lastmod>
+    <image:image><image:loc>https://masahif-al-maghrib.com/adarisa/plates/hero.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/murabitun/plates/hero.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/hero.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/marini/plates/mc-hero.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/wattasi/plates/hero.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0004r.jpg/pct:30,41,62,14/1600,/0/default.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/alawi/plates/hero.jpg</image:loc></image:image>
   </url>
   <url><loc>https://masahif-al-maghrib.com/adarisa/</loc><lastmod>2026-10-11</lastmod>
+    <image:image><image:loc>https://masahif-al-maghrib.com/adarisa/plates/hero.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/adarisa/plates/q902-text.jpg</image:loc></image:image>
   </url>
   <url><loc>https://masahif-al-maghrib.com/murabitun/</loc><lastmod>2026-10-11</lastmod>
@@ -17,6 +21,8 @@
     <image:image><image:loc>https://masahif-al-maghrib.com/murabitun/plates/cor-text.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/murabitun/plates/alm-colo.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/murabitun/plates/upp-text.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/murabitun/plates/upp-spread.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/murabitun/plates/upp-colo.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/murabitun/plates/cd-colo.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/murabitun/plates/cd-100b.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/murabitun/plates/cd-note.jpg</image:loc></image:image>
@@ -25,21 +31,32 @@
   <url><loc>https://masahif-al-maghrib.com/muwahhidun/</loc><lastmod>2026-10-11</lastmod>
     <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/hero.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/g578-text.jpg</image:loc></image:image>
-    <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/v318-shahada.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/ce-text.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/v318-incipit.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/sh-text.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/mt-juz1.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/gh557-page.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/mr-text.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/an573.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/ml-yunus.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/sv-011.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/ai-r23.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/tn-sad.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/pk-met4.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/g578-colo.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/g578-spread.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/ce-page.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/v318-colo.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/v318-shahada.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/sh-page.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/mt-rabat.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/mt-bl7.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/gh557-lines.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/gh564.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/gh564-colo.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/gh-table.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/mr-colo.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/an598.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/sv-colo.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/sv-040.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/sv-120.jpg</image:loc></image:image>
@@ -77,6 +94,7 @@
     <image:image><image:loc>https://masahif-al-maghrib.com/marini/plates/mc-anat.jpg</image:loc></image:image>
   </url>
   <url><loc>https://masahif-al-maghrib.com/wattasi/</loc><lastmod>2026-10-11</lastmod>
+    <image:image><image:loc>https://masahif-al-maghrib.com/wattasi/plates/hero.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/wattasi/plates/gr-text.jpg</image:loc></image:image>
   </url>
   <url><loc>https://masahif-al-maghrib.com/saadi/</loc><lastmod>2026-10-11</lastmod>
@@ -99,6 +117,7 @@
     <image:image><image:loc>https://masahif-al-maghrib.com/saadi/plates/ml-colo.jpg</image:loc></image:image>
   </url>
   <url><loc>https://masahif-al-maghrib.com/alawi/</loc><lastmod>2026-10-11</lastmod>
+    <image:image><image:loc>https://masahif-al-maghrib.com/alawi/plates/hero.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/alawi/plates/dk-end.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/alawi/plates/qd-tawba.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/alawi/plates/qd-jumua.jpg</image:loc></image:image>
