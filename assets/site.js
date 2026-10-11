@@ -60,8 +60,8 @@ const ROOT = window.ROOT || '';
 const PB = window.PLATE_BASE || '';
 /* site credit, shown at the foot of every page; wa = WhatsApp number in international format, digits only */
 const WA_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2a9.8 9.8 0 0 0-8.4 14.8L2.3 21.7l4.8-1.3A9.8 9.8 0 1 0 12 2.2Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.6 7.4c.3-.3.8-.3 1 .1l.8 1.8c.1.3 0 .6-.2.8l-.6.6a6.6 6.6 0 0 0 3.6 3.6l.6-.6c.2-.2.5-.3.8-.2l1.8.8c.4.2.4.7.1 1-.9 1-2.2 1.3-3.4.8a10.4 10.4 0 0 1-5.3-5.3c-.5-1.2-.2-2.5.8-3.4Z" fill="currentColor"/></svg>';
-const AUTHOR = EN ? {name:'Ibrahim Hassani Idrissi', role:'calligrapher and teacher of Arabic scripts in Fez', wa:'212661769161'}
-  : {name:'إبراهيم حسني إدريسي', role:'خطاط ومدرّس خطوط عربية من فاس', wa:'212661769161'};
+const AUTHOR = EN ? {name:'Ibrahim Hassani Idrissi', role:'calligrapher and teacher of Arabic scripts in Fez', wa:'212681769161'}
+  : {name:'إبراهيم حسني إدريسي', role:'خطاط ومدرّس خطوط عربية من فاس', wa:'212681769161'};
 const SN = tr('مصاحف المغرب', 'Masahif al-Maghrib');
 /* era name in the page language */
 const eraName = e => EN ? window.ERAS_EN_NAMES[e.key].name : e.name;
