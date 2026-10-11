@@ -15,6 +15,9 @@ window.ERAS = [
   {key:'alawi',      name:'العلويون',   gen:'العلويين',   rng:'1076–1330هـ / 1666–1912م', a:1666, b:1912, c:'#6d3a7d', path:'alawi/'},
 ];
 window.ERAS_READY = window.ERAS_READY || [];
+/* plates enlarged with Real-ESRGAN (blended with a plain enlargement); labelled as such under the image */
+window.AI_ENH = new Set(['q902-text','alm-colo','alm-text','cor-text','upp-text','ai-r23','ai-r24','g578-colo','g578-text','gh-table','ml-yunus','mt-bl7','mt-juz1','mt-rabat','tn-sad','tn-waqf','aq-juz2','aq-saffat','as-colo','as-text','ic-end','k1081-kufic','pc-colo','gr-text','ak-text','ak-waqf','aq-colo','gl-text','my-text','my-title','q5-text','sf-text','tu-text','dk-end']);
+const aiNote = p => window.AI_ENH.has(p.f) ? ' · <i class="ai">محسّنة بالذكاء الاصطناعي</i>' : '';
 
 (function(){
 const $ = (s, r=document) => r.querySelector(s);
@@ -294,7 +297,7 @@ ${commonOverlays()}${ldEra(E)}`;
       }
       if (i.journey) a.insertAdjacentHTML('beforeend', `<div class="journey"><h4>${i.journeyTitle||'رحلة المصحف'}</h4><div class="jsteps" style="--n:${i.journey.length}">${i.journey.map(j=>`<div class="jstep"><i></i><b>${j[0]}</b><span>${j[1]}</span></div>`).join('')}</div></div>`);
       if (i.plates && i.plates.length) {
-        const strip = i.plates.map((p,k)=>{ const hh = p.w/p.h > 2.4 ? 150 : 240; return `<figure class="plate" data-open="${i.id}:${k}" tabindex="0" role="button" aria-label="تكبير: ${p.t}"><img loading="lazy" src="${p.turl||`plates/${p.f}-t.jpg`}" width="${Math.round(hh*p.w/p.h)}" height="${hh}" style="--h:${hh}px" alt="${p.t}"><figcaption><b>${p.t}</b> · ${LAT(p.loc)}</figcaption></figure>`; }).join('');
+        const strip = i.plates.map((p,k)=>{ const hh = p.w/p.h > 2.4 ? 150 : 240; return `<figure class="plate" data-open="${i.id}:${k}" tabindex="0" role="button" aria-label="تكبير: ${p.t}"><img loading="lazy" src="${p.turl||`plates/${p.f}-t.jpg`}" width="${Math.round(hh*p.w/p.h)}" height="${hh}" style="--h:${hh}px" alt="${p.t}"><figcaption><b>${p.t}</b> · ${LAT(p.loc)}${aiNote(p)}</figcaption></figure>`; }).join('');
         a.insertAdjacentHTML('beforeend', `<div class="gallery"><div class="gal-title"><span>عينات من الكتابة عن قرب (${i.plates.length})</span><span>اضغط للتكبير ←</span></div><div class="strip">${strip}</div></div>`);
       } else if (i.ruling) {
         a.insertAdjacentHTML('beforeend', `<div class="ruling">${rulingSVG(i.ruling,4.6)}<p><b>لا عينات هنا.</b> ${i.noPlates || 'المصحف غير مرقمن، ولم نجد له صورة منشورة.'} ما تراه رسم لهيئة الصفحة: ${i.ruling.n ? lines(i.ruling.n) : 'عدد الأسطر غير منشور'}${i.ruling.unknown ? '، والمقاس غير منشور' : ''}.</p></div>`);
@@ -330,7 +333,7 @@ ${commonOverlays()}${ldEra(E)}`;
     on(0);
   }
   $('#refs').innerHTML = E.refs.map(r=>`<li>${r}</li>`).join('');
-  $('#credits').innerHTML = (E.credits === 'لا صور في هذه الصفحة.' ? '' : E.credits) + (items.some(i => (i.plates||[]).some(p => /عن (خبطة|بونجانينو)/.test(p.loc || ''))) ? ' وبعض الصور منقولة من دراسات منشورة، أغلبها بجودة منخفضة، للتعريف بمصاحف لم تُرقمن؛ ومصدر كل صورة مذكور تحتها، والحقوق لأصحابها والمكتبات التي تحفظ المخطوطات.' : '');
+  $('#credits').innerHTML = (E.credits === 'لا صور في هذه الصفحة.' ? '' : E.credits) + (items.some(i => (i.plates||[]).some(p => /عن (خبطة|بونجانينو)/.test(p.loc || ''))) ? ' وبعض الصور منقولة من دراسات منشورة، أغلبها بجودة منخفضة، للتعريف بمصاحف لم تُرقمن؛ ومصدر كل صورة مذكور تحتها، والحقوق لأصحابها والمكتبات التي تحفظ المخطوطات.' : '') + (items.some(i => (i.plates||[]).some(p => window.AI_ENH.has(p.f))) ? ' وحُسّنت جودة الصور الضعيفة بالذكاء الاصطناعي (Real-ESRGAN، ممزوجاً بتكبير عادي حتى لا تتغير صور الحروف)، وكل صورة محسّنة معلَّمة تحتها.' : '');
 
   setupLightbox(id => (items.find(x=>x.id===id)||{}).plates || [], id => items.find(x=>x.id===id));
   setupPresentation(E);
@@ -350,7 +353,7 @@ function setupLightbox(platesOf, itemOf){
   const LB = {list:[], i:0, s:1, x:0, y:0, fit:1};
   const lb = $('#lb'), lbImg = $('#lbImg'), stage = $('#lbStage');
   const open = (id, k) => { const it = itemOf(id); if (!it) return; LB.list = platesOf(id).map(p=>({it, p})); if (!LB.list.length) return; LB.i = k; LB.ret = document.activeElement; lb.classList.add('open'); document.body.style.overflow = 'hidden'; if (!(history.state && history.state.ov==='lb')) history.pushState({ov:'lb'}, ''); show(); $('#lbClose').focus(); };
-  const show = () => { const {it, p} = LB.list[LB.i]; $('#lbTtl').textContent = `${it.short||it.title} · ${LB.i+1}/${LB.list.length}`; $('#lbCap').innerHTML = `<b>${p.t}</b>: ${LAT(p.c)}<small>${LAT(p.loc)}</small>`; $('#lbSrc').href = p.src || '#'; $('#lbSrc').style.display = p.src ? '' : 'none'; lbImg.onload = fit; lbImg.src = p.url || `${it.base||''}plates/${p.f}.jpg`; lbImg.alt = p.t; if (lbImg.complete && lbImg.naturalWidth) fit(); const v = LB.list.length>1 ? 'visible':'hidden'; $('#lbPrev').style.visibility = v; $('#lbNext').style.visibility = v; };
+  const show = () => { const {it, p} = LB.list[LB.i]; $('#lbTtl').textContent = `${it.short||it.title} · ${LB.i+1}/${LB.list.length}`; $('#lbCap').innerHTML = `<b>${p.t}</b>: ${LAT(p.c)}<small>${LAT(p.loc)}${aiNote(p)}</small>`; $('#lbSrc').href = p.src || '#'; $('#lbSrc').style.display = p.src ? '' : 'none'; lbImg.onload = fit; lbImg.src = p.url || `${it.base||''}plates/${p.f}.jpg`; lbImg.alt = p.t; if (lbImg.complete && lbImg.naturalWidth) fit(); const v = LB.list.length>1 ? 'visible':'hidden'; $('#lbPrev').style.visibility = v; $('#lbNext').style.visibility = v; };
   const apply = () => { lbImg.style.transform = `translate(${LB.x}px,${LB.y}px) scale(${LB.s})`; };
   const fit = () => { const r = stage.getBoundingClientRect(), w = lbImg.naturalWidth, h = lbImg.naturalHeight; if (!w) return; LB.fit = Math.min((r.width-24)/w, (r.height-24)/h, 1.6); LB.s = LB.fit; LB.x = -w*LB.s/2; LB.y = -h*LB.s/2; apply(); };
   const zoomAt = (f, cx, cy) => { const r = stage.getBoundingClientRect(); const px = cx - r.left - r.width/2, py = cy - r.top - r.height/2; const ns = Math.max(LB.fit*0.6, Math.min(LB.s*f, 6)); const k = ns/LB.s; LB.x = px - (px - LB.x)*k; LB.y = py - (py - LB.y)*k; LB.s = ns; apply(); };

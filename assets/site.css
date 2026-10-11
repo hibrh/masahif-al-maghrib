@@ -398,3 +398,5 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 }.lb .lb-nav{background:rgba(14,11,8,.78);border-color:rgba(233,200,121,.55);color:#f1e2bc;font-size:22px;min-width:44px;min-height:44px}
 @media (max-width:560px){ .lb{background:#0e0b08} .lb-prev{right:6px} .lb-next{left:6px} }
 .lb .lb-nav{direction:ltr;unicode-bidi:isolate}
+
+.plate figcaption i.ai,.lb-cap i.ai{font-style:normal;color:var(--gold);font-size:.92em}
