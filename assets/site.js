@@ -297,7 +297,7 @@ ${commonOverlays()}${ldEra(E)}`;
         const strip = i.plates.map((p,k)=>{ const hh = p.w/p.h > 2.4 ? 150 : 240; return `<figure class="plate" data-open="${i.id}:${k}" tabindex="0" role="button" aria-label="تكبير: ${p.t}"><img loading="lazy" src="${p.turl||`plates/${p.f}-t.jpg`}" width="${Math.round(hh*p.w/p.h)}" height="${hh}" style="--h:${hh}px" alt="${p.t}"><figcaption><b>${p.t}</b> · ${LAT(p.loc)}</figcaption></figure>`; }).join('');
         a.insertAdjacentHTML('beforeend', `<div class="gallery"><div class="gal-title"><span>عينات من الكتابة عن قرب (${i.plates.length})</span><span>اضغط للتكبير ←</span></div><div class="strip">${strip}</div></div>`);
       } else if (i.ruling) {
-        a.insertAdjacentHTML('beforeend', `<div class="ruling">${rulingSVG(i.ruling,4.6)}<p><b>لا عينات هنا.</b> ${i.noPlates || 'المصحف غير مرقمن، ولم ننشر صوره المحفوظة الحقوق.'} ما تراه رسم لهيئة الصفحة: ${i.ruling.n ? lines(i.ruling.n) : 'عدد الأسطر غير منشور'}${i.ruling.unknown ? '، والمقاس غير منشور' : ''}.</p></div>`);
+        a.insertAdjacentHTML('beforeend', `<div class="ruling">${rulingSVG(i.ruling,4.6)}<p><b>لا عينات هنا.</b> ${i.noPlates || 'المصحف غير مرقمن، ولم نجد له صورة منشورة.'} ما تراه رسم لهيئة الصفحة: ${i.ruling.n ? lines(i.ruling.n) : 'عدد الأسطر غير منشور'}${i.ruling.unknown ? '، والمقاس غير منشور' : ''}.</p></div>`);
       }
       box.appendChild(a);
     }
@@ -330,7 +330,7 @@ ${commonOverlays()}${ldEra(E)}`;
     on(0);
   }
   $('#refs').innerHTML = E.refs.map(r=>`<li>${r}</li>`).join('');
-  $('#credits').innerHTML = E.credits;
+  $('#credits').innerHTML = (E.credits === 'لا صور في هذه الصفحة.' ? '' : E.credits) + (items.some(i => (i.plates||[]).some(p => /عن (خبطة|بونجانينو)/.test(p.loc || ''))) ? ' وبعض الصور منقولة من دراسات منشورة، أغلبها بجودة منخفضة، للتعريف بمصاحف لم تُرقمن؛ ومصدر كل صورة مذكور تحتها، والحقوق لأصحابها والمكتبات التي تحفظ المخطوطات.' : '');
 
   setupLightbox(id => (items.find(x=>x.id===id)||{}).plates || [], id => items.find(x=>x.id===id));
   setupPresentation(E);
@@ -350,7 +350,7 @@ function setupLightbox(platesOf, itemOf){
   const LB = {list:[], i:0, s:1, x:0, y:0, fit:1};
   const lb = $('#lb'), lbImg = $('#lbImg'), stage = $('#lbStage');
   const open = (id, k) => { const it = itemOf(id); if (!it) return; LB.list = platesOf(id).map(p=>({it, p})); if (!LB.list.length) return; LB.i = k; LB.ret = document.activeElement; lb.classList.add('open'); document.body.style.overflow = 'hidden'; if (!(history.state && history.state.ov==='lb')) history.pushState({ov:'lb'}, ''); show(); $('#lbClose').focus(); };
-  const show = () => { const {it, p} = LB.list[LB.i]; $('#lbTtl').textContent = `${it.short||it.title} · ${LB.i+1}/${LB.list.length}`; $('#lbCap').innerHTML = `<b>${p.t}</b>: ${LAT(p.c)}<small>${LAT(p.loc)}</small>`; $('#lbSrc').href = p.src; lbImg.onload = fit; lbImg.src = p.url || `${it.base||''}plates/${p.f}.jpg`; lbImg.alt = p.t; if (lbImg.complete && lbImg.naturalWidth) fit(); const v = LB.list.length>1 ? 'visible':'hidden'; $('#lbPrev').style.visibility = v; $('#lbNext').style.visibility = v; };
+  const show = () => { const {it, p} = LB.list[LB.i]; $('#lbTtl').textContent = `${it.short||it.title} · ${LB.i+1}/${LB.list.length}`; $('#lbCap').innerHTML = `<b>${p.t}</b>: ${LAT(p.c)}<small>${LAT(p.loc)}</small>`; $('#lbSrc').href = p.src || '#'; $('#lbSrc').style.display = p.src ? '' : 'none'; lbImg.onload = fit; lbImg.src = p.url || `${it.base||''}plates/${p.f}.jpg`; lbImg.alt = p.t; if (lbImg.complete && lbImg.naturalWidth) fit(); const v = LB.list.length>1 ? 'visible':'hidden'; $('#lbPrev').style.visibility = v; $('#lbNext').style.visibility = v; };
   const apply = () => { lbImg.style.transform = `translate(${LB.x}px,${LB.y}px) scale(${LB.s})`; };
   const fit = () => { const r = stage.getBoundingClientRect(), w = lbImg.naturalWidth, h = lbImg.naturalHeight; if (!w) return; LB.fit = Math.min((r.width-24)/w, (r.height-24)/h, 1.6); LB.s = LB.fit; LB.x = -w*LB.s/2; LB.y = -h*LB.s/2; apply(); };
   const zoomAt = (f, cx, cy) => { const r = stage.getBoundingClientRect(); const px = cx - r.left - r.width/2, py = cy - r.top - r.height/2; const ns = Math.max(LB.fit*0.6, Math.min(LB.s*f, 6)); const k = ns/LB.s; LB.x = px - (px - LB.x)*k; LB.y = py - (py - LB.y)*k; LB.s = ns; apply(); };
@@ -398,7 +398,7 @@ function setupPresentation(E){
     if (s.lost) { slide.innerHTML = `<div class="vis"><svg viewBox="0 0 200 200" width="180" height="180" aria-hidden="true"><g fill="none" stroke="#6b5c48" stroke-width="2" stroke-dasharray="6 5"><rect x="50" y="50" width="100" height="100"/><rect x="50" y="50" width="100" height="100" transform="rotate(45 100 100)"/></g><text x="100" y="108" text-anchor="middle" font-size="22" fill="#9a8a74" font-family="Noto Kufi Arabic">مفقود</text></svg></div><div class="txt">${head}<p>${i.text}</p><p style="font-size:15px;color:#a99a80">المصدر: ${i.src}</p></div>`; return; }
     if (s.info) { slide.innerHTML = `<div class="vis">${i.ruling ? rulingSVG(i.ruling, 11, {paper:'#efe4cc', ink:'#2a1f15', frame:'#c99c45'}) : ''}</div><div class="txt">${head}${i.prose.map(p=>`<p>${p}</p>`).join('')}${i.why?`<p style="color:#e9c879">${i.why}</p>`:''}</div>`; return; }
     const p = s.p;
-    slide.innerHTML = `<div class="vis"><img src="${p.url||`plates/${p.f}.jpg`}" alt="${p.t}"></div><div class="txt">${head}<p><b style="color:#f1e2bc">${p.t}.</b> ${LAT(p.c)}</p><p style="font-size:14px;color:#a99a80;font-family:var(--ui)">${LAT(p.loc)} · <a style="color:#e9c879" href="${p.src}" target="_blank" rel="noopener">الصفحة في المصدر ↗</a></p>${s.first && i.why ? `<p style="font-size:16px;color:#cbb88f">${i.why}</p>`:''}</div>`;
+    slide.innerHTML = `<div class="vis"><img src="${p.url||`plates/${p.f}.jpg`}" alt="${p.t}"></div><div class="txt">${head}<p><b style="color:#f1e2bc">${p.t}.</b> ${LAT(p.c)}</p><p style="font-size:14px;color:#a99a80;font-family:var(--ui)">${LAT(p.loc)}${p.src ? ` · <a style="color:#e9c879" href="${p.src}" target="_blank" rel="noopener">الصفحة في المصدر ↗</a>` : ''}</p>${s.first && i.why ? `<p style="font-size:16px;color:#cbb88f">${i.why}</p>`:''}</div>`;
   };
   const openP = () => { SI = 0; pres.classList.add('open'); document.body.style.overflow = 'hidden'; if (!(history.state && history.state.ov==='pres')) history.pushState({ov:'pres'}, ''); render(); $('#presNext').focus(); };
   const closeP = fromPop => { if (!pres.classList.contains('open')) return; pres.classList.remove('open'); document.body.style.overflow = ''; if (document.fullscreenElement) document.exitFullscreen(); if (fromPop !== true && history.state && history.state.ov==='pres') history.back(); };
