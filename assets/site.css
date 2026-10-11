@@ -415,3 +415,6 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   .matrix td.mx-s{order:9;width:100%;padding:6px 12px 2px;align-items:center}
   .mx-thumb{width:96px;height:64px}
 }
+/* "more" hint under each name in the summary table: the name opens the Qur'an's card */
+.matrix td.name .mx-more{display:block;margin-top:3px;font-family:var(--ui);font-size:12.5px;font-weight:500;color:var(--gold);white-space:nowrap}
+.matrix td.name a:hover .mx-more,.matrix td.name a:focus-visible .mx-more{text-decoration:underline;text-underline-offset:3px}

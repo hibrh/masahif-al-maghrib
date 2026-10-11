@@ -245,7 +245,7 @@ ${commonOverlays()}${ldEra(E)}`;
       /* sample = a written page; i.thumb names the plate, or '' when none of them is a text page */
       const pl = i.plates || [], pk = i.thumb === '' ? -1 : i.thumb ? pl.findIndex(p => p.f === i.thumb) : (pl.length ? 0 : -1), pp = pk >= 0 ? pl[pk] : null;
       const thumb = pp ? `<button type="button" class="mx-thumb" data-open="${i.id}:${pk}" aria-label="عينة: ${pp.t}" title="${pp.t}"><img loading="lazy" src="${pp.turl || `plates/${pp.f}-t.jpg`}" alt=""></button>` : '<span class="mx-none">—</span>';
-      rows += `<tr><td class="mx-s${pp ? '' : ' nil'}" data-l="نموذج">${thumb}</td><td class="name"><a href="#${i.id}">${i.short||i.title}</a></td>
+      rows += `<tr><td class="mx-s${pp ? '' : ' nil'}" data-l="نموذج">${thumb}</td><td class="name"><a href="#${i.id}">${i.short||i.title}<span class="mx-more">للمزيد عن المصحف ←</span></a></td>
         <td data-l="التاريخ">${i.dateH}<br><span style="color:var(--ink3)">${i.dateG}</span></td>
         <td data-l="الحال">${dot(s[0],s[1])}</td>
         <td data-l="التمام"${nil}>${i.status.s==='no' ? '—' : dot(c[0],c[1])}</td>
@@ -255,6 +255,8 @@ ${commonOverlays()}${ldEra(E)}`;
     }
   }
   $('#matrixWrap').innerHTML = `<table class="matrix"><thead><tr><th class="mx-s">نموذج</th><th>المصحف</th><th>التاريخ</th><th>الحال</th><th>التمام</th><th>الرقمنة</th><th>أين اليوم</th><th>تصفح</th></tr></thead><tbody>${rows}</tbody></table>`;
+  /* a card hidden by the active filter is shown before the link scrolls to it */
+  $('#matrixWrap').addEventListener('click', e=>{ const a = e.target.closest('td.name a'); const t = a && document.getElementById(a.hash.slice(1)); if (t && t.closest('[hidden]')) setFilter('all'); });
 
   /* timeline */
   (function(){
