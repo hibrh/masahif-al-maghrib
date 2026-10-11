@@ -712,6 +712,16 @@ function setupTracking(){
   });
 }
 
+/* ---------- language: the header button remembers the reader's choice, and the home page then opens in that language.
+   Other pages always open in the language of their link, so shared links and search results are never redirected. ---------- */
+function setupLang(){
+  if (!window.ALT_URL) return;
+  document.addEventListener('click', e=>{ const a = e.target.closest('[data-lang]'); if (a) { try { localStorage.setItem('mm-lang', a.dataset.lang); } catch(_) {} } });
+  if (window.ERA_KEY !== 'hub') return;
+  let pref = null; try { pref = localStorage.getItem('mm-lang'); } catch(e) {}
+  if (pref && pref !== LANG) location.replace(window.ALT_URL);
+}
+
 /* ---------- theme ---------- */
 function setupTheme(){
   const root = document.documentElement; let saved = null;
@@ -724,7 +734,7 @@ function setupTheme(){
 document.addEventListener('DOMContentLoaded', ()=>{
   const key = window.ERA_KEY;
   if (key==='hub') renderHub(); else if (key==='__export') exportItems(); else if (window.MS_ID) renderMs(eraData(key), window.MS_ID); else renderEra(eraData(key));
-  setupTheme(); setupTracking();
+  setupTheme(); setupTracking(); setupLang();
   const cur = document.querySelector('.rail [aria-current]'); if (cur && cur.scrollIntoView) cur.scrollIntoView({block:'nearest', inline:'center'});
   if (location.hash) { const t = document.getElementById(location.hash.slice(1)); if (t) setTimeout(()=>t.scrollIntoView(), 60); }
 });
