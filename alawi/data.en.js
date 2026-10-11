@@ -1,0 +1,136 @@
+/* English version of alawi/data.js, keyed by item id and plate file name. Untranslated fields fall back to the Arabic. */
+(function(){
+const EN = window.ERAS_EN = window.ERAS_EN || {};
+EN.alawi = {
+era:{
+  name:'Alaouite Qur’ans', range:'1076–1330 AH / 1666–1912 CE',
+  sub:'Dated Qur’ans with a known copyist or patron from the Alaouite period up to 1330 AH / 1912 CE: the ones that have come down to us, and the ones recorded in the sources.',
+  lede:'The Alaouite period is the closest to us, and its manuscript Qur’ans are plentiful in Moroccan libraries, but few have been studied and described in print. Here we present what we found in published sources: the Qur’an of Prince ʿAli in Cairo, the Qur’ans of a rural woman copyist in the Royal Library, the rabʿa of al-Qandusi in Meknes, and the first Qur’an lithographed in Fez. The guide stops at 1330 AH / 1912 CE, the year of the French Protectorate.',
+  realm:'in Morocco under the Alaouites',
+  criteriaNote:'The Alaouite period began when Mawlay al-Rashid entered Fez in 1076 AH / 1666 CE. Some colophons do not give the place of copying, so we count a Qur’an as Moroccan when its copyist or the person it was written for lived in Morocco and nothing points elsewhere.',
+  heroNote:'We found no dated Alaouite Qur’an digitised and published under an open licence from which to show a sample.',
+  tl:{title:'Qur’ans in the reigns of the sultans'},
+  hero:{alt:'“Innamā l-sabīlu ʿalā lladhīna yastaʾdhinūnaka” in the hand of al-Qandusi',
+    caption:'«إنما السبيل على الذين يستئذنونك», “The blame is only on those who ask your leave”: al-Tawba 93, the opening of volume 5 of a rabʿa in the hand of Muhammad b. Abi al-Qasim al-Qandusi, c. 1266 AH / 1850 CE. After Afa and al-Maghrawi, <i>al-Khatt al-maghribi: tarikh wa-waqiʿ wa-afaq</i>, via Wikimedia Commons.'},
+  credits:'Images: the two pages of Prince ʿAli’s Qur’an after the thesis of Mohamed Abdelhafid Khabta (fig. 13c); the two pages of al-Qandusi’s Qur’an after Omar Afa and Mohamed al-Maghrawi, <i>al-Khatt al-maghribi: tarikh wa-waqiʿ wa-afaq</i> (Maghribi script: history, present and prospects), via Wikimedia Commons (public domain); and the third detail after Mohamed Sijelmassi, <i>Enluminures des manuscrits royaux au Maroc</i> (Paris, ACR Édition, 1987), pp. 204–205.',
+  limits:'We relied mainly on Mohammed al-Manuni’s article “Markaz al-mushaf al-sharif bi-l-Maghrib” (1968). The Royal Library, the National Library, the Qarawiyyin Library and the libraries of the zawiyas hold many dated Alaouite Qur’ans, most of them with no published catalogue and no digitised copy. Western libraries hold Qur’ans in Maghribi script dated to this period that name neither copyist nor place, such as a volume in the Bavarian State Library dated 1273 AH (Cod.arab. 2850) and a small Qur’an at Princeton University dated Rabiʿ I 1212 AH (Garrett 50G); we did not include them.',
+  footer:'Prepared on 10 October 2026; last updated on 11 October 2026. Hijri dates follow the sources; their Gregorian equivalents are approximate.',
+  presEnd:{title:'From the prince’s library to the woman copyist’s hand', text:'In the Alaouite period Qur’ans were written by princes and by famous calligraphers such as al-Qandusi, and by women too: Fatima al-Zabadi in Fez, ʿAʾisha al-Takiyya in the countryside and Amina bint ʿAbd al-Latif in Tetouan. Most of these Qur’ans still await study and digitisation.'},
+  card:'The Qur’an of Prince ʿAli (1142 AH) in Cairo, the Qur’ans of the woman copyist ʿAʾisha al-Takiyya, the rabʿa of al-Qandusi (1266 AH) in Meknes, and the first Qur’an lithographed in Fez.'
+},
+rulers:[
+  {n:'al-Rashid', full:'Mawlay al-Rashid'}, {n:'Ismaʿil', full:'Mawlay Ismaʿil'}, {n:'The sons of Ismaʿil'}, {n:'Muhammad III'},
+  {n:'Sulayman', full:'Mawlay Sulayman'}, {n:'ʿAbd al-Rahman', full:'Mawlay ʿAbd al-Rahman'}, {n:'Muhammad IV'}, {n:'al-Hasan I'}, {n:'ʿAbd al-ʿAziz and ʿAbd al-Hafiz'},
+],
+refs:[
+  'Mohamed Abdelhafid Khabta, <i>al-Khatt al-maghribi wa-asnafuhu fi l-masahif al-makhtuta</i> (Maghribi script and its varieties in manuscript Qur’ans, doctoral thesis, 2010–2011): the Dar al-Kutub Qur’an 25 (figs 13c and 202a).',
+  'Mohammed al-Manuni, “Markaz al-mushaf al-sharif bi-l-Maghrib” (The place of the Qur’an in Morocco), <i>Daʿwat al-Haqq</i> 105 (1968): the Qur’an of Prince ʿAli, the rabʿa of al-Qandusi, the Qur’ans of ʿAʾisha al-Takiyya, the Qur’ans of Fatima al-Zabadi and al-Tamsamani, Mawlay ʿAbd Allah’s gift to Medina, and the Fez lithographed Qur’an.',
+  'Catalogue of the Egyptian National Library (Dar al-Kutub), vol. 1, p. 2: the Qur’an of Prince ʿAli (cited by al-Manuni).',
+  'Muhammad b. Jaʿfar al-Kattani, <i>Salwat al-anfas</i>: the biography of al-Qandusi (cited by al-Manuni).',
+  'Abu al-Qasim al-Zayyani, <i>al-Bustan al-zarif</i>: the events of 1155 AH (cited by al-Manuni).',
+  'Mohammed al-Manuni, “al-Tibaʿa al-hajariyya al-fasiyya” (Fez lithography), <i>Tetouan</i> 10, p. 147.',
+  'David James, “Amina bint al-Hajj ʿAbd al-Latif”, in <i>Dictionary of African Biography</i>, Oxford University Press, 2011.',
+],
+items:{
+  ali1142:{
+    title:'The Qur’an of the Alaouite Prince ʿAli', short:'Prince ʿAli’s Qur’an (Cairo)', tl:'Prince ʿAli 1142', fr:'Le Coran du prince alaouite ʿAli (Le Caire)',
+    dateH:'1142 AH', dateG:'1729–1730 CE',
+    facts:[
+      ['Owner','Written for the Alaouite Prince ʿAli, grandson of Sultan Mawlay Ismaʿil, according to al-Manuni; Khabta says it was written for the library of Sultan ʿAbd Allah b. Ismaʿil'],
+      ['Copyist','Not named in the sources available to us'],
+      ['Today','Cairo, Egyptian National Library (Dar al-Kutub), Masahif 25'],
+      ['Format','Maghribi script with Andalusi features, adorned and decorated in gold and colours; the last sura headings in gilded panels, and coloured rosettes in the margin'],
+      ['Later endowment','At the end, in naskh, a note that it was endowed by «محمد بيك بجامعه», “Muhammad Bey to his mosque”, perhaps the emir Muhammad Bey Abu al-Dhahab, founder of the mosque that bears his name in Cairo (1188 AH)'],
+    ],
+    prose:['It counts among the treasures of the Egyptian National Library and is described in its catalogue (vol. 1, p. 2). It is the oldest dated Alaouite Qur’an with a known owner that we found in published sources. Mohamed Abdelhafid Khabta published an image of its last two pages and three of its illuminated openings. In 1142 AH ʿAbd Allah b. Ismaʿil was sultan, so the Qur’an may have been for his library, as Khabta says, or for a prince of his family, as al-Manuni says; we have not seen the text of its colophon to decide between them.'],
+    why:'Not digitised for the public, as far as we know.',
+    links:['Al-Manuni’s article (1968, Arabic)'],
+    where:'Cairo',
+  },
+  aisha:{
+    title:'The Qur’ans of the woman copyist ʿAʾisha bint Mubarak al-Takiyya', short:'ʿAʾisha al-Takiyya’s Qur’ans (Rabat)', tl:'al-Takiyya', fr:'Les Corans de la copiste ʿAʾisha bint Mubarak al-Takiyya (Rabat)',
+    ruler:'In the reigns of Mawlay Sulayman and Mawlay ʿAbd al-Rahman',
+    dateH:'1237 AH and 1245 AH', dateG:'1822 CE and 1830 CE',
+    facts:[
+      ['Copyist','ʿAʾisha bint al-Hajj Mubarak al-Shalh al-Takki, who in one of the Qur’ans calls herself ʿAʾisha bint Mubarak b. Ahmad, son of al-Hasan al-Shaykh, al-Takki al-Ghashi al-Hasnawi'],
+      ['First Qur’an','Rabat, Royal Library, no. 4087: the morning of Friday 22 Jumada [I or II] 1237 AH / 1822 CE'],
+      ['Second Qur’an','Rabat, Royal Library, no. 5061: Sunday 22 Dhu l-Qaʿda 1245 AH / c. 16 May 1830 CE'],
+      ['Third Qur’an','Rabat, Royal Library, no. 4225: in the margin at its end, in a different ink, “year 1237”'],
+      ['Script','A clear, medium-sized badawī (rural) hand, fully vocalised in colour, as al-Manuni describes it'],
+    ],
+    prose:['A rare witness to a Moroccan woman who copied Qur’ans and wrote her name and the date of copying in their colophons. Mohammed al-Manuni made her known, and mentions with her the sharīfa Fatima bint ʿAli al-Zabadi of Fez, who copied more than thirty-five Qur’ans.'],
+    why:'Al-Manuni does not give the place of copying; the copyist came from the Moroccan countryside.',
+    links:['Al-Manuni’s article (1968, Arabic)'],
+    where:'Rabat',
+  },
+  qandusi:{
+    title:'The rabʿa of Muhammad b. Abi al-Qasim al-Qandusi', short:'Al-Qandusi’s rabʿa (Meknes)', tl:'al-Qandusi 1266', fr:'La rabʿa de Muhammad b. Abi al-Qasim al-Qandusi (Meknès)',
+    dateH:'Friday, end of Shawwal 1266 AH', dateG:'c. 6 September 1850 CE',
+    facts:[
+      ['Copyist','Muhammad b. Abi al-Qasim al-Qandusi of Fez (d. 1278 AH / 1861 CE)'],
+      ['Made for','al-Hajj Idris b. al-Wazir Muhammad b. Idris al-ʿAmrawi of Fez'],
+      ['Today','Meknes, al-Khizana al-Zaydaniyya, no. 3595 in the new catalogue'],
+      ['Format','A large rabʿa in 12 volumes of five ḥizbs each, in a magnificent hand'],
+    ],
+    prose:[
+      'Al-Qandusi was one of the most famous calligraphers of nineteenth-century Fez, with a style of Maghribi script that bears his name. The author of <i>Salwat al-anfas</i> writes in his biography: “He had a fine, excellent hand, in which he wrote a number of copies of the <i>Dalaʾil</i>, and I was told that he wrote a Qur’an in twelve volumes whose like is rarely found in the world.”',
+      'He wrote it for al-Hajj Idris al-ʿAmrawi, who led Morocco’s embassy to France in 1860 CE and wrote its account; it later passed to the Zaydaniyya library in Meknes.',
+      'Omar Afa and Mohamed al-Maghrawi published in their book <i>al-Khatt al-maghribi: tarikh wa-waqiʿ wa-afaq</i> two pages of a Qur’an in al-Qandusi’s hand: the start of ḥizb 21 (al-Tawba 93) and the start of ḥizb 56 (the opening of Surat al-Jumuʿa), each topped by a gilded band with the basmala and the blessing on the Prophet, as volumes open. These two ḥizbs open volumes 5 and 12 of a rabʿa with five ḥizbs to the volume, which matches al-ʿAmrawi’s rabʿa, so they most likely come from it.',
+      'Mohamed Sijelmassi published in his book on the manuscripts of the Royal Library (1987) a detail of a “noble Qur’an” in al-Qandusi’s hand kept there as no. 12613 (al-Bayyina 6–7). We found nothing to show that the Royal Library manuscript is this same rabʿa, passed there from the Zaydaniyya.',
+    ],
+    why:'Not digitised for the public, as far as we know.',
+    links:['Al-Manuni’s article (1968, Arabic)'],
+    where:'Meknes',
+  },
+  amina:{
+    title:'The Qur’an of Amina bint al-Hajj ʿAbd al-Latif', short:'Amina’s Qur’an (Tetouan)', tl:'Amina 1812', fr:'Le Coran d’Amina bint al-Hajj ʿAbd al-Latif (Tétouan)',
+    dateH:'c. 1227 AH', dateG:'1812 CE',
+    facts:[
+      ['Copyist','Amina bint al-Hajj ʿAbd al-Latif, a jurist and copyist of Tetouan, who learned jurisprudence and the craft of copying from her father'],
+      ['Place','Tetouan'],
+      ['Today','We have not found where it is'],
+    ],
+    prose:['David James wrote her entry in the <i>Dictionary of African Biography</i> (2011), noting that among her copies there survive a fragment of <i>al-Targhib wa-l-tarhib</i> dated 1802 CE and a Qur’an dated 1812 CE.'],
+    why:'We have not seen the Qur’an itself, the text of its colophon, or where it is today.',
+    links:['Her Wikipedia entry, with the reference to the Dictionary of African Biography'],
+    where:'Unknown',
+  },
+  litho1296:{
+    title:'The first Qur’an lithographed in Fez', short:'The Fez lithographed Qur’an', tl:'Lithographed Qur’an 1296', fr:'Le premier Coran lithographié à Fès',
+    dateH:'1296 AH', dateG:'1878–1879 CE',
+    facts:[
+      ['Printer','The press of al-Hajj al-Tayyib b. Muhammad al-Azraq of Fez'],
+      ['Place','Fez'],
+    ],
+    prose:['The first Qur’an printed in Morocco, some fifteen years after lithography reached Fez. Lithography reproduces the copyist’s own hand, so a Qur’an printed this way is an image of a manuscript, which is why Moroccans preferred it to movable type.'],
+    why:'Printed, not manuscript, and we have not found the name of the copyist whose hand it reproduces.',
+    links:['Al-Manuni’s article (1968, Arabic)'],
+    where:'Copies in various collections',
+  },
+  medina1155:{
+    title:'The twenty-three Qur’ans Mawlay ʿAbd Allah sent to the Prophet’s Mosque', tl:'Gift of 1155', fr:'Les vingt-trois Corans offerts par Mawlay ʿAbd Allah à la Mosquée du Prophète',
+    dateH:'1155 AH', dateG:'1742–1743 CE',
+    text:'Al-Zayyani records among the events of 1155 AH that Sultan Mawlay ʿAbd Allah b. Ismaʿil sent with the pilgrim caravan twenty-three Qur’ans, “large and small, all adorned with gold and set with pearls and rubies”, among them “the great ʿUqbani Qur’an” attributed to ʿUqba b. Nafiʿ, which the kings had handed down. We have found none of them whose whereabouts is known today.',
+    src:'Al-Zayyani, <i>al-Bustan al-zarif</i>, cited by al-Manuni (1968)',
+  },
+  zabadi:{
+    title:'The Qur’ans of the sharīfa Fatima bint ʿAli al-Zabadi', tl:'Fatima al-Zabadi', fr:'Les Corans de la chérifa Fatima bint ʿAli al-Zabadi',
+    dateH:'Before 1142 AH', dateG:'before 1730 CE',
+    text:'A woman of Fez, sister of the shaykh ʿAbd al-Majid al-Zabadi, who died in 1142 AH / 1730 CE and copied more than thirty-five Qur’ans in her own hand. We have found none of them whose whereabouts is known.',
+    src:'Al-Manuni (1968), from the sources of her biography',
+  },
+  tamsamani:{
+    title:'The Qur’ans of Muhammad b. al-Hajj Muhammad al-Rifi al-Tamsamani', tl:'al-Tamsamani', fr:'Les Corans de Muhammad b. al-Hajj Muhammad al-Rifi al-Tamsamani',
+    dateH:'Before 1313 AH', dateG:'before 1896 CE',
+    text:'A calligrapher from the Rif who settled in Essaouira and died in Tangier in 1313 AH / 1895–1896 CE. He wrote Qur’ans in a minute script on thin paper, in a format small enough to fit inside the hand. We have found none of them whose whereabouts is known.',
+    src:'Al-Manuni (1968)',
+  },
+},
+plates:{
+  'dk-end':{t:'The last two pages', c:'The last suras in gilded panels between lines of mabsūṭ, with coloured round ornaments in the margin, and the endowment note in naskh: «محمد بيك بجامعه», “Muhammad Bey, to his mosque”. Low-quality image.', loc:'Egyptian National Library, Masahif 25, after Khabta, fig. 13c'},
+  'qd-tawba':{t:'A full page: al-Tawba 93, the start of ḥizb 21', c:'«إنما السبيل على الذين يستئذنونك وهم أغنياء رضوا بأن يكونوا مع الخوالف وطبع الله...» (al-Tawba 93), in six lines of the monumental letters for which al-Qandusi is known. Above is a gilded band with «بسم الله الرحمن الرحيم وصلى الله على سيدنا محمد وآله», and a decorated frame surrounds the page. The verse opens ḥizb 21, and so volume 5 of a rabʿa of twelve volumes with five ḥizbs each. The image is taken from a printed book, so its colours are not accurate.', loc:'After Afa and al-Maghrawi, <i>al-Khatt al-maghribi: tarikh wa-waqiʿ wa-afaq</i>, via Wikimedia Commons'},
+  'qd-jumua':{t:'A full page: the opening of Surat al-Jumuʿa, the start of ḥizb 56', c:'A gilded band with the basmala and the blessing on the Prophet, then the sura heading in gold, then «بسم الله الرحمن الرحيم. يسبح لله ما في السماوات وما في الأرض الملك القدوس العزيز...» (al-Jumuʿa 1). The opening of Surat al-Jumuʿa is the start of ḥizb 56, and so of the twelfth and last volume of a rabʿa with five ḥizbs to the volume.', loc:'After Afa and al-Maghrawi, <i>al-Khatt al-maghribi: tarikh wa-waqiʿ wa-afaq</i>, via Wikimedia Commons'},
+  'qd-bayyina':{t:'Surat al-Bayyina 6–7, close up', c:'«أولئك هم شر البرية. إن الذين آمنوا...» (al-Bayyina 6–7), from a Qur’an in al-Qandusi’s hand in the Royal Library in Rabat. Monumental letters in his well-known manner, vocalised in several colours: vowels in red, sukūn and shadda in blue, hamza as a yellow dot and waṣla as a green dot. The image is printed across two facing pages of the book, so the gutter shows in the middle.', loc:'Royal Library 12613, after Sijelmassi 1987, pp. 204–205'},
+},
+};
+})();

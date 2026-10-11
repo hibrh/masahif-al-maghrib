@@ -1,0 +1,48 @@
+/* English version of adarisa/data.js, keyed by item id and plate file name. Untranslated fields fall back to the Arabic. */
+(function(){
+const EN = window.ERAS_EN = window.ERAS_EN || {};
+EN.adarisa = {
+era:{
+  name:'Idrisid Qur’ans', range:'172–375 AH / 788–985 CE',
+  sub:'Dated Qur’ans with a known copyist or patron from the Idrisid period: the ones that have come down to us, and the ones that can be browsed online today.',
+  lede:'No dated Qur’an from the Idrisid period is known today, nor one that names its copyist or owner. In these centuries Qur’ans were written in the early Abbasid scripts on horizontal parchment, and their colophons rarely gave a date or a name. When Idris II founded Fez he prayed: “I only wished in building it that You be worshipped in it and Your Book be recited in it.” This page presents what may go back to this period, and the limits of that attribution.',
+  realm:'in the Idrisid lands of the far Maghrib',
+  criteriaNote:'The Idrisids ruled northern Morocco from 172 AH / 788 CE, and Idris II founded Fez. In the fourth century AH their realm shrank between the Fatimids and the Umayyads of al-Andalus, until it ended in 375 AH / 985 CE.',
+  heroNote:'We know of no Qur’an of the Idrisid period that has been digitised and published under an open licence.',
+  tl:{title:'Qur’ans in the reigns of the emirs'},
+  hero:{alt:'Lines from the Qur’an fragment Qarawiyyin 902',
+    caption:'Lines in early Abbasid script from a Qur’an fragment on parchment in the Qarawiyyin Library (Mushaf 902), thought to date from the fourth century AH. After Bongianino 2017; AI-enhanced image.'},
+  credits:'Images: a page of the Qarawiyyin 902 fragment, after Umberto Bongianino’s article in <i>Al-Qanṭara</i> (2017), fig. 1.',
+  limits:'We found no dated Qur’an, or Qur’an with a known copyist, from the Idrisid period in the published studies. The oldest known dated Maghribi Qur’ans are two leaves in the Museum of Turkish and Islamic Arts in Istanbul, dated Rajab 398 AH and Safar 432 AH; both are later than the fall of the Idrisids and their place of copying is unknown. The “Qur’an of ʿUqba b. Nafiʿ” mentioned in Moroccan sources is attributed to the time of the conquest, not to the Idrisids; Mawlay ʿAbd Allah the Alaouite sent it as a gift to Medina in 1155 AH. The Qarawiyyin Library holds fragments and near-complete Qur’ans in early Abbasid scripts that have not yet been studied, and some of them may go back to this period.',
+  footer:'Prepared on 10 October 2026; last updated on 11 October 2026. Hijri dates follow the sources; their Gregorian equivalents are approximate.',
+  presEnd:{title:'Before the age of colophons', text:'The Qur’ans of this period seldom gave the date of copying or the copyist’s name, so a Qur’an can only be attributed to the Idrisids by its script and decoration, and such an attribution is approximate.'},
+  card:'No dated Qur’an is known from this period. The Qarawiyyin Library holds fragments of Qur’ans in early Abbasid script from around the fourth century AH.'
+},
+rulers:[ {n:'Idris I'}, {n:'Idris II'}, {n:'Sons and grandsons of Idris II'}, {n:'Between Fatimids and Umayyads'} ],
+refs:[
+  'Umberto Bongianino, “Quelques remarques sur l’origine des écritures coraniques arrondies en al-Andalus (V<sup>e</sup>/XI<sup>e</sup>–VI<sup>e</sup>/XII<sup>e</sup> siècles)”, <i>Al-Qanṭara</i> 38/2 (2017), 153–187: the Qarawiyyin 902 Qur’an and the Qarawiyyin Qur’ans in early Abbasid script.',
+  'Catalogue of the exhibition <i>Masahif al-Maghrib</i>, Rabat, 2011 (cited by Bongianino).',
+  'Umberto Bongianino, “A Rediscovered Almoravid Qurʾān in the Bavarian State Library, Munich (Cod. arab. 4)”, <i>Journal of Islamic Manuscripts</i> 11/3 (2020), appendix: the oldest dated Maghribi Qur’ans (398 and 432 AH).',
+  'Mohammed al-Manuni, “Markaz al-mushaf al-sharif bi-l-Maghrib” (The place of the Qur’an in Morocco), <i>Daʿwat al-Haqq</i> 105 (1968): the prayer of Idris II, and the Qur’an of ʿUqba.',
+],
+items:{
+  qarawiyyin902:{
+    title:'A Qur’an fragment in early Abbasid script in the Qarawiyyin Library', short:'The Qarawiyyin Qur’an 902', tl:'Qarawiyyin 902', fr:'Un fragment de Coran en écriture abbasside ancienne (Qarawiyyin 902)',
+    dateH:'Fourth century AH (estimated)', dateG:'tenth century CE',
+    facts:[
+      ['Today','Fez, Qarawiyyin Library, Mushaf no. 902'],
+      ['Format','12 parchment folios; 25 × 28 cm, horizontal format; 11 lines'],
+      ['Script','“Group D” in François Déroche’s classification of the early Abbasid scripts'],
+      ['Origin','al-Andalus or the Maghrib, according to the catalogue of the exhibition <i>Masahif al-Maghrib</i> (2011)'],
+    ],
+    prose:['One of the horizontal-format Qur’an fragments in early Abbasid script. The Qarawiyyin Library holds the most important group of them in Morocco, including near-complete copies that have not yet been studied. Umberto Bongianino published an image of one of its leaves (fol. 6r).'],
+    why:'Undated; its copyist and place of copying are not known for certain, and its dating to the fourth century AH is an estimate, so it may be later than the Idrisids.',
+    links:['Bongianino 2017, fig. 1'],
+    where:'Fez',
+  },
+},
+plates:{
+  'q902-text':{t:'A page of the fragment', c:'Early Abbasid script on horizontal parchment, in 11 lines. Black-and-white image.', loc:'Qarawiyyin Library, Mushaf 902, fol. 6r, after Bongianino 2017, fig. 1'},
+},
+};
+})();

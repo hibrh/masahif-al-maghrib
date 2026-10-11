@@ -1,0 +1,58 @@
+/* English version of wattasi/data.js, keyed by item id and plate file name. Untranslated fields fall back to the Arabic. */
+(function(){
+const EN = window.ERAS_EN = window.ERAS_EN || {};
+EN.wattasi = {
+era:{
+  name:'Wattasid Qur’ans', range:'876–961 AH / 1472–1554 CE',
+  sub:'Dated Qur’ans with a known copyist or patron from the Wattasid period in Fez: the ones that have come down to us, and the ones that can be browsed online today.',
+  lede:'The Wattasid period is one of the poorest in studied Qur’ans: in the published studies available to us we found no Qur’an of this period that names its copyist, its date and its place together. Yet it was in this period that Muhammad b. Abi Jumʿa al-Habti (d. 930 AH in Fez) set out the pausal marks that Maghribi Qur’ans have followed to this day. The most notable survival is the Green Qur’an in the National Library in Rabat, which is undated. This page presents what we found and shows where others may be hoped for.',
+  realm:'in the Wattasid lands, that is, Fez and its region',
+  criteriaNote:'The Wattasids ruled Fez as sultans from 876 AH / 1472 CE to 961 AH / 1554 CE; for about half a century before that they had been viziers and regents of the Marinids, and the Qur’ans of those years are on the Marinid page. The Saadians rose in the Sous in 916 AH / 1510 CE and entered Marrakesh in 931 AH / 1525 CE, so the south became theirs, and their Qur’ans are on the Saadian page.',
+  heroNote:'We know of no Wattasid Qur’an digitised and published under an open licence from which to show a sample.',
+  tl:{title:'Qur’ans in the reigns of the sultans'},
+  hero:{alt:'“Khalaqa l-layla wa-l-nahāra wa-l-shamsa wa-l-qamar” from the Green Qur’an',
+    caption:'«خلق الليل والنهار والشمس والقمر كل في فلك يسبحون», “He created the night and the day, the sun and the moon, each floating in an orbit”: al-Anbiyaʾ 33 in the Green Qur’an, metallic writing on paper dyed green. National Library, Rabat, 1304, after Khabta; AI-enhanced image.'},
+  credits:'Images: a page of the Green Qur’an (National Library, Rabat, 1304), after the thesis of Mohamed Abdelhafid Khabta, fig. 52.',
+  limits:'In the published studies available to us we found no Wattasid Qur’an that names its copyist, its date and its place together. The Qarawiyyin Library, the National Library and the Royal Library most likely hold Qur’ans of this period that have been neither studied nor digitised; the catalogue of the Qarawiyyin Library by Mohammed al-ʿAbid al-Fasi (1979–1989) is the first place to look. We welcome any pointer to a published dated Wattasid Qur’an.',
+  footer:'Prepared on 10 October 2026; last updated on 11 October 2026. Hijri dates follow the sources; their Gregorian equivalents are approximate.',
+  presEnd:{title:'A period awaiting study', text:'No studied Wattasid Qur’an that meets the criteria is known today. The Qur’ans of Fez in this period are most likely kept in its libraries, awaiting cataloguing and digitisation.'},
+  card:'A period from which few dated Qur’ans have been studied. It was then that al-Habti set out the pausal system that Maghribi Qur’ans have followed; from it come the Green Qur’an and a Qur’an endowed in Fez in 949 AH.'
+},
+rulers:[ {n:'Muhammad al-Shaykh'}, {n:'Muhammad al-Burtughali'}, {n:'Ahmad al-Wattasi'}, {n:'The last Wattasids'} ],
+refs:[
+  'Umberto Bongianino & Éléonore Cellard, “The Pink Qurʾan: A Reverse Biography”, 2025, note 78: the Qarawiyyin Qur’an 879.',
+  'Mohammed al-Manuni, “Markaz al-mushaf al-sharif bi-l-Maghrib” (The place of the Qur’an in Morocco), <i>Daʿwat al-Haqq</i> 105 (1968): the pausal system of al-Habti.',
+  'Mohamed Abdelhafid Khabta, <i>al-Khatt al-maghribi wa-asnafuhu fi l-masahif al-makhtuta</i> (Maghribi script and its varieties in manuscript Qur’ans, doctoral thesis, 2010–2011): the Green Qur’an.',
+  'Museum With No Frontiers, “Discover Islamic Art” database: the Green Qur’an, National Library, Rabat, 1304.',
+],
+items:{
+  qarawiyyin879:{
+    title:'A Qur’an endowed in Fez in 949 AH', short:'The Qarawiyyin Qur’an 879', tl:'Fez 949', fr:'Un Coran constitué en waqf à Fès en 949 H (Qarawiyyin 879)',
+    dateH:'Endowed in 949 AH', dateG:'1542–1543 CE',
+    facts:[
+      ['Endowment','In Fez in 949 AH, in the reign of Sultan Ahmad al-Wattasi'],
+      ['Today','Fez, Qarawiyyin Library, ms. 879'],
+    ],
+    prose:['Umberto Bongianino and Éléonore Cellard mention it in their study of the Pink Qur’an (2025), comparing its script and illumination with the leaves used to restore the Pink Qur’an in Marrakesh in the Saadian period. For them it is a witness to Qur’an making in Fez in the mid-tenth century AH.'],
+    why:'What is known is the date of its endowment, not of its copying, and the sources available to us name neither its copyist nor the person who endowed it.',
+    links:['Bongianino & Cellard (2025), note 78'],
+    where:'Fez',
+  },
+  green1304:{
+    title:'The Green Qur’an', short:'The Green Qur’an (Rabat)', tl:'Green Qur’an', fr:'Le Coran vert (Rabat)',
+    dateH:'Undated, ninth century AH', dateG:'fifteenth century CE',
+    facts:[
+      ['Today','Rabat, National Library, no. 1304'],
+      ['Format','Paper dyed entirely green, so that none of the natural colour of the paper shows; writing in silver; modern binding'],
+      ['Attribution','To the Wattasid period, in the “Discover Islamic Art” database of Museum With No Frontiers (MWNF) and by Khabta'],
+    ],
+    prose:['One of the few Maghribi Qur’ans written on paper coloured throughout. Mohamed Abdelhafid Khabta sees it as a witness to the level reached in this period in making and dyeing paper and preparing inks, and pairs it with two other Qur’ans on coloured paper: Qarawiyyin 5 and Arabe 389 in Paris.'],
+    why:'Undated, and neither its copyist nor its owner is known. Its attribution to the Wattasid period rests on its style.',
+    where:'Rabat',
+  },
+},
+plates:{
+  'gr-text':{t:'A page of the Green Qur’an', c:'Metallic writing on paper dyed entirely green, with coloured rosettes as verse separators. Low-quality image.', loc:'National Library, Rabat, 1304, after Khabta, fig. 52'},
+},
+};
+})();
