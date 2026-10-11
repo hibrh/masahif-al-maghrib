@@ -120,8 +120,13 @@
     <image:image><image:loc>https://masahif-al-maghrib.com/alawi/plates/hero.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/alawi/plates/dk-end.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/alawi/plates/qd-tawba.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/alawi/plates/ms-text.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/alawi/plates/mh-text.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/alawi/plates/qd-jumua.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/alawi/plates/qd-bayyina.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/alawi/plates/ms-page.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/alawi/plates/mh-page.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/alawi/plates/mh-cert.jpg</image:loc></image:image>
   </url>
   <url><loc>https://masahif-al-maghrib.com/adarisa/qarawiyyin902/</loc><lastmod>2026-10-11</lastmod>
     <image:image><image:loc>https://masahif-al-maghrib.com/adarisa/plates/q902-text.jpg</image:loc></image:image>
@@ -322,6 +327,21 @@
   </url>
   <url><loc>https://masahif-al-maghrib.com/alawi/litho1296/</loc><lastmod>2026-10-11</lastmod>
   </url>
+  <url><loc>https://masahif-al-maghrib.com/alawi/zouitn1347/</loc><lastmod>2026-10-11</lastmod>
+  </url>
+  <url><loc>https://masahif-al-maghrib.com/alawi/bahaoui1387/</loc><lastmod>2026-10-11</lastmod>
+  </url>
+  <url><loc>https://masahif-al-maghrib.com/alawi/musabba1417/</loc><lastmod>2026-10-11</lastmod>
+    <image:image><image:loc>https://masahif-al-maghrib.com/alawi/plates/ms-text.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/alawi/plates/ms-page.jpg</image:loc></image:image>
+  </url>
+  <url><loc>https://masahif-al-maghrib.com/alawi/hamidi/</loc><lastmod>2026-10-11</lastmod>
+  </url>
+  <url><loc>https://masahif-al-maghrib.com/alawi/muhammadi1431/</loc><lastmod>2026-10-11</lastmod>
+    <image:image><image:loc>https://masahif-al-maghrib.com/alawi/plates/mh-text.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/alawi/plates/mh-page.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/alawi/plates/mh-cert.jpg</image:loc></image:image>
+  </url>
   <url><loc>https://masahif-al-maghrib.com/alawi/zabadi/</loc><lastmod>2026-10-11</lastmod>
   </url>
   <url><loc>https://masahif-al-maghrib.com/alawi/medina1155/</loc><lastmod>2026-10-11</lastmod>
@@ -439,8 +459,13 @@
     <image:image><image:loc>https://masahif-al-maghrib.com/en/alawi/../../alawi/plates/hero.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/en/alawi/../../alawi/plates/dk-end.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/en/alawi/../../alawi/plates/qd-tawba.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/en/alawi/../../alawi/plates/ms-text.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/en/alawi/../../alawi/plates/mh-text.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/en/alawi/../../alawi/plates/qd-jumua.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/en/alawi/../../alawi/plates/qd-bayyina.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/en/alawi/../../alawi/plates/ms-page.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/en/alawi/../../alawi/plates/mh-page.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/en/alawi/../../alawi/plates/mh-cert.jpg</image:loc></image:image>
   </url>
   <url><loc>https://masahif-al-maghrib.com/en/</loc><lastmod>2026-10-11</lastmod>
     <image:image><image:loc>https://masahif-al-maghrib.com/en/../adarisa/plates/hero.jpg</image:loc></image:image>
@@ -649,6 +674,21 @@
   <url><loc>https://masahif-al-maghrib.com/en/alawi/amina/</loc><lastmod>2026-10-11</lastmod>
   </url>
   <url><loc>https://masahif-al-maghrib.com/en/alawi/litho1296/</loc><lastmod>2026-10-11</lastmod>
+  </url>
+  <url><loc>https://masahif-al-maghrib.com/en/alawi/zouitn1347/</loc><lastmod>2026-10-11</lastmod>
+  </url>
+  <url><loc>https://masahif-al-maghrib.com/en/alawi/bahaoui1387/</loc><lastmod>2026-10-11</lastmod>
+  </url>
+  <url><loc>https://masahif-al-maghrib.com/en/alawi/musabba1417/</loc><lastmod>2026-10-11</lastmod>
+    <image:image><image:loc>https://masahif-al-maghrib.com/alawi/plates/ms-text.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/alawi/plates/ms-page.jpg</image:loc></image:image>
+  </url>
+  <url><loc>https://masahif-al-maghrib.com/en/alawi/hamidi/</loc><lastmod>2026-10-11</lastmod>
+  </url>
+  <url><loc>https://masahif-al-maghrib.com/en/alawi/muhammadi1431/</loc><lastmod>2026-10-11</lastmod>
+    <image:image><image:loc>https://masahif-al-maghrib.com/alawi/plates/mh-text.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/alawi/plates/mh-page.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/alawi/plates/mh-cert.jpg</image:loc></image:image>
   </url>
   <url><loc>https://masahif-al-maghrib.com/en/alawi/zabadi/</loc><lastmod>2026-10-11</lastmod>
   </url>

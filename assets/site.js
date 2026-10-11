@@ -12,7 +12,7 @@ window.ERAS = [
   {key:'marini',     name:'بنو مرين',   gen:'بني مرين',   rng:'646–869هـ / 1248–1465م', a:1248, b:1465, c:'#1c5444', path:'marini/'},
   {key:'wattasi',    name:'الوطاسيون',  gen:'الوطاسيين',  rng:'876–961هـ / 1472–1554م', a:1472, b:1554, c:'#2a6f72', path:'wattasi/'},
   {key:'saadi',      name:'السعديون',   gen:'السعديين',   rng:'916–1069هـ / 1510–1659م', a:1510, b:1659, c:'#9b2335', path:'saadi/'},
-  {key:'alawi',      name:'العلويون',   gen:'العلويين',   rng:'1076–1330هـ / 1666–1912م', a:1666, b:1912, c:'#6d3a7d', path:'alawi/'},
+  {key:'alawi',      name:'العلويون',   gen:'العلويين',   rng:'1076هـ / 1666م – اليوم', a:1666, b:2026, c:'#6d3a7d', path:'alawi/'},
 ];
 window.ERAS_READY = window.ERAS_READY || [];
 /* plates enlarged with Real-ESRGAN (blended with a plain enlargement); labelled as such under the image */
@@ -26,7 +26,7 @@ window.ERAS_EN_NAMES = {
   marini:{name:'Marinids', gen:'Marinid', rng:'646–869 AH / 1248–1465 CE'},
   wattasi:{name:'Wattasids', gen:'Wattasid', rng:'876–961 AH / 1472–1554 CE'},
   saadi:{name:'Saadians', gen:'Saadian', rng:'916–1069 AH / 1510–1659 CE'},
-  alawi:{name:'Alaouites', gen:'Alaouite', rng:'1076–1330 AH / 1666–1912 CE'},
+  alawi:{name:'Alaouites', gen:'Alaouite', rng:'1076 AH / 1666 CE – today'},
 };
 
 (function(){
@@ -692,10 +692,11 @@ ${railHTML('hub')}
   $('#app').innerHTML = html;
 
   /* grand timeline: time runs right to left in Arabic, left to right in English */
-  const W = 1200, H = 260, x0 = 30, x1 = 1170, A = 780, B = 1920;
+  /* the scale runs to the end of the latest era (the Alaouites reach the present), rounded up to 50 years */
+  const W = 1200, H = 260, x0 = 30, x1 = 1170, A = 780, B = Math.max(1920, Math.ceil(Math.max(...ERAS.map(e => e.b)) / 50) * 50);
   const X = EN ? y => x0 + (y - A) / (B - A) * (x1 - x0) : y => x1 - (y - A) / (B - A) * (x1 - x0);
   let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${tr('خط زمني جامع', 'Combined timeline')}">`;
-  for (let y = 800; y <= 1900; y += 50) s += `<line x1="${X(y)}" x2="${X(y)}" y1="20" y2="${H-24}" stroke="var(--line)"/><text x="${X(y)}" y="${H-6}" font-size="12" text-anchor="middle" fill="var(--ink3)">${y}</text>`;
+  for (let y = 800; y < B; y += 50) s += `<line x1="${X(y)}" x2="${X(y)}" y1="20" y2="${H-24}" stroke="var(--line)"/><text x="${X(y)}" y="${H-6}" font-size="12" text-anchor="middle" fill="var(--ink3)">${y}</text>`;
   ERAS.forEach((e,k)=>{ const a = X(e.a), b = X(e.b), yy = 24 + (k%2)*28; s += `<rect x="${Math.min(a,b)}" y="${yy}" width="${Math.abs(a-b)}" height="22" rx="4" fill="${e.c}" opacity="${ERAS_READY.includes(e.key)?.95:.35}"/><text x="${(a+b)/2}" y="${yy+15}" font-size="12" text-anchor="middle" fill="#fff">${eraName(e)}</text>`; });
   const lanes = {surviving:120, edge:165, lost:205};
   all.forEach(({e,i})=>{ const cx = i.y1 ? X((i.y0+i.y1)/2) : X(i.y0), ly = lanes[i.group];
