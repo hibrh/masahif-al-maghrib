@@ -679,13 +679,13 @@ ${railHTML('hub')}
       <li><b>The owner is known</b>: the copyist, or the person for whom or for whose library the Qur’an was made.</li>
       <li>It was demonstrably copied <b>in the lands of that dynasty</b>.</li></ul>
       <p style="margin-top:10px;font-size:16px;color:var(--ink2)">Each page has two further sections: Qur’ans recorded in the sources and since lost, and well-known Qur’ans on the edge of the criteria, with what each of them lacks.</p></div>
-      <div class="note"><h3>The samples</h3><p style="font-size:17px">The samples are close-ups of the writing itself, taken from Qur’ans digitised by their libraries or from images published under an open licence. For Qur’ans whose images are under copyright, we point to where they were published.</p></div></div>`
+      <div class="note"><h3>The samples</h3><p style="font-size:17px">The samples are close-ups of the writing itself, taken from Qur’ans digitised by their libraries, from images published under an open licence, or, for Qur’ans with no digitised copy, from studies and books that published them, with the source named under each image. Weak images were enhanced with AI and are marked as such.</p></div></div>`
     : `<div class="criteria"><div class="note"><h3>شرط القائمة الأولى في كل عصر</h3><ul>
       <li>أن يكون <b>تاريخ نسخ المصحف مذكوراً صراحة</b> في خاتمته أو وقفيته.</li>
       <li>أن يُعرف <b>صاحبه</b>: الناسخ، أو من كُتب له أو برسم خزانته.</li>
       <li>أن يثبت أنه نُسخ <b>في بلاد تلك الدولة</b>.</li></ul>
       <p style="margin-top:10px;font-size:16px;color:var(--ink2)">وفي كل صفحة قسمان آخران: مصاحف ذكرتها المصادر ثم ضاعت، ومصاحف مشهورة تقف على حافة الشرط، مع بيان ما ينقصها.</p></div>
-      <div class="note"><h3>العينات</h3><p style="font-size:17px">العينات مقاطع مقرَّبة من الكتابة نفسها، مأخوذة من المصاحف المرقمنة في مكتباتها، أو من صور منشورة بترخيص مفتوح. أما المصاحف التي صورها محفوظة الحقوق فنحيل إلى مواضع نشرها.</p></div></div>`}
+      <div class="note"><h3>العينات</h3><p style="font-size:17px">العينات مقاطع مقرَّبة من الكتابة نفسها، مأخوذة من المصاحف المرقمنة في مكتباتها، أو من صور منشورة بترخيص مفتوح، أو من الدراسات والكتب التي نشرت صور المصاحف غير المرقمنة، ومصدر كل صورة مذكور تحتها. وما حُسّنت جودته بالذكاء الاصطناعي معلَّم بذلك.</p></div></div>`}
   </div></section>
 </main>
 <footer><div class="wrap"><div>${SN} · ${window.HUB_FOOTER||''}</div><div><a href="https://hibrh.github.io/khizanat-almuwahhidin/">${tr('خزانة الموحدين', 'Khizanat al-Muwahhidin (in Arabic)')}</a></div>${byline()}</div></footer>${ldHub(ready)}`;
