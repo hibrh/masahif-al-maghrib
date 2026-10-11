@@ -712,24 +712,6 @@ function setupTracking(){
   });
 }
 
-/* ---------- language: a reader who once picked a language gets it again; otherwise a bar suggests the other version
-   when the browser's languages call for it. No automatic redirect without that choice, so search engines see both versions. ---------- */
-function setupLang(){
-  if (!window.ALT_URL) return;
-  let pref = null; try { pref = localStorage.getItem('mm-lang'); } catch(e) {}
-  const remember = l => { try { localStorage.setItem('mm-lang', l); } catch(e) {} };
-  document.addEventListener('click', e=>{ const a = e.target.closest('[data-lang]'); if (a) remember(a.dataset.lang); });
-  if (pref && pref !== LANG) { location.replace(window.ALT_URL + location.hash); return; }
-  if (pref) return;
-  const langs = (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || '']).map(l => String(l).toLowerCase());
-  const arabicFirst = langs.some(l => l.startsWith('ar'));
-  if (EN ? !arabicFirst : arabicFirst) return;
-  const bar = EN ? el('div', {class:'lang-hint', role:'note', lang:'ar', dir:'rtl'}, `هذا الموقع بالعربية في الأصل. <a href="${window.ALT_URL}" data-lang="ar">اقرأ هذه الصفحة بالعربية</a><button type="button" aria-label="إغلاق">✕</button>`)
-    : el('div', {class:'lang-hint', role:'note', lang:'en', dir:'ltr'}, `This site is also available in English. <a href="${window.ALT_URL}" data-lang="en">Read this page in English</a><button type="button" aria-label="Close">✕</button>`);
-  bar.querySelector('button').onclick = () => { remember(LANG); bar.remove(); };
-  document.body.prepend(bar);
-}
-
 /* ---------- theme ---------- */
 function setupTheme(){
   const root = document.documentElement; let saved = null;
@@ -742,7 +724,7 @@ function setupTheme(){
 document.addEventListener('DOMContentLoaded', ()=>{
   const key = window.ERA_KEY;
   if (key==='hub') renderHub(); else if (key==='__export') exportItems(); else if (window.MS_ID) renderMs(eraData(key), window.MS_ID); else renderEra(eraData(key));
-  setupTheme(); setupTracking(); setupLang();
+  setupTheme(); setupTracking();
   const cur = document.querySelector('.rail [aria-current]'); if (cur && cur.scrollIntoView) cur.scrollIntoView({block:'nearest', inline:'center'});
   if (location.hash) { const t = document.getElementById(location.hash.slice(1)); if (t) setTimeout(()=>t.scrollIntoView(), 60); }
 });
