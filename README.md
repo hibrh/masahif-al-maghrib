@@ -2,17 +2,17 @@
 
 دليل مصوَّر للمصاحف المؤرَّخة المعروفة الصاحب في عصور المغرب، من الأدارسة إلى العلويين. لكل عصر صفحة مستقلة.
 
-**الموقع:** https://hibrh.github.io/masahif-al-maghrib/
+**الموقع:** https://masahif-al-maghrib.com/
 
 | العصر | الصفحة |
 |---|---|
-| الأدارسة | https://hibrh.github.io/masahif-al-maghrib/adarisa/ |
-| المرابطون | https://hibrh.github.io/masahif-al-maghrib/murabitun/ |
-| الموحدون | https://hibrh.github.io/masahif-al-maghrib/muwahhidun/ |
-| بنو مرين | https://hibrh.github.io/masahif-al-maghrib/marini/ |
-| الوطاسيون | https://hibrh.github.io/masahif-al-maghrib/wattasi/ |
-| السعديون | https://hibrh.github.io/masahif-al-maghrib/saadi/ |
-| العلويون | https://hibrh.github.io/masahif-al-maghrib/alawi/ |
+| الأدارسة | https://masahif-al-maghrib.com/adarisa/ |
+| المرابطون | https://masahif-al-maghrib.com/murabitun/ |
+| الموحدون | https://masahif-al-maghrib.com/muwahhidun/ |
+| بنو مرين | https://masahif-al-maghrib.com/marini/ |
+| الوطاسيون | https://masahif-al-maghrib.com/wattasi/ |
+| السعديون | https://masahif-al-maghrib.com/saadi/ |
+| العلويون | https://masahif-al-maghrib.com/alawi/ |
 
 وتُحدَّث الصفحات كلما ظهر مصحف مؤرخ منشور.
 

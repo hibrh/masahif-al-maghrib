@@ -108,7 +108,7 @@ function header(title, withPres, navLinks){
 }
 
 /* ---------- structured data (schema.org JSON-LD); rendered into #app so the prerendered HTML carries it ---------- */
-const SITE = 'https://hibrh.github.io/masahif-al-maghrib/';
+const SITE = 'https://masahif-al-maghrib.com/';
 const plain = s => String(s||'').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim();
 const abs = (path, u) => /^https?:/.test(u) ? u : SITE + path + String(u).replace(/^\.\//,'');
 const ldTag = o => `<script type="application/ld+json">${JSON.stringify(o).replace(/</g,'\\u003c')}</script>`;
@@ -372,7 +372,7 @@ function setFilter(f){
 function setupLightbox(platesOf, itemOf){
   const LB = {list:[], i:0, s:1, x:0, y:0, fit:1};
   const lb = $('#lb'), lbImg = $('#lbImg'), stage = $('#lbStage');
-  const open = (id, k) => { const it = itemOf(id); if (!it) return; LB.list = platesOf(id).map(p=>({it, p})); if (!LB.list.length) return; LB.i = k; LB.ret = document.activeElement; lb.classList.add('open'); document.body.style.overflow = 'hidden'; if (!(history.state && history.state.ov==='lb')) history.pushState({ov:'lb'}, ''); show(); $('#lbClose').focus(); };
+  const open = (id, k) => { const it = itemOf(id); if (!it) return; LB.list = platesOf(id).map(p=>({it, p})); if (!LB.list.length) return; LB.i = k; LB.ret = document.activeElement; track('open_sample', {manuscript: id, plate: (LB.list[k] && LB.list[k].p.f) || ''}); lb.classList.add('open'); document.body.style.overflow = 'hidden'; if (!(history.state && history.state.ov==='lb')) history.pushState({ov:'lb'}, ''); show(); $('#lbClose').focus(); };
   const show = () => { const {it, p} = LB.list[LB.i]; $('#lbTtl').textContent = `${it.short||it.title} · ${LB.i+1}/${LB.list.length}`; $('#lbCap').innerHTML = `<b>${p.t}</b>: ${LAT(p.c)}<small>${LAT(p.loc)}${aiNote(p)}</small>`; $('#lbSrc').href = p.src || '#'; $('#lbSrc').style.display = p.src ? '' : 'none'; lbImg.onload = fit; lbImg.src = p.url || `${it.base||''}plates/${p.f}.jpg`; lbImg.alt = p.t; if (lbImg.complete && lbImg.naturalWidth) fit(); const v = LB.list.length>1 ? 'visible':'hidden'; $('#lbPrev').style.visibility = v; $('#lbNext').style.visibility = v; };
   const apply = () => { lbImg.style.transform = `translate(${LB.x}px,${LB.y}px) scale(${LB.s})`; };
   const fit = () => { const r = stage.getBoundingClientRect(), w = lbImg.naturalWidth, h = lbImg.naturalHeight; if (!w) return; LB.fit = Math.min((r.width-24)/w, (r.height-24)/h, 1.6); LB.s = LB.fit; LB.x = -w*LB.s/2; LB.y = -h*LB.s/2; apply(); };
@@ -423,7 +423,7 @@ function setupPresentation(E){
     const p = s.p;
     slide.innerHTML = `<div class="vis"><img src="${p.url||`plates/${p.f}.jpg`}" alt="${p.t}"></div><div class="txt">${head}<p><b style="color:#f1e2bc">${p.t}.</b> ${LAT(p.c)}</p><p style="font-size:14px;color:#a99a80;font-family:var(--ui)">${LAT(p.loc)}${p.src ? ` · <a style="color:#e9c879" href="${p.src}" target="_blank" rel="noopener">الصفحة في المصدر ↗</a>` : ''}</p>${s.first && i.why ? `<p style="font-size:16px;color:#cbb88f">${i.why}</p>`:''}</div>`;
   };
-  const openP = () => { SI = 0; pres.classList.add('open'); document.body.style.overflow = 'hidden'; if (!(history.state && history.state.ov==='pres')) history.pushState({ov:'pres'}, ''); render(); $('#presNext').focus(); };
+  const openP = () => { SI = 0; track('start_presentation'); pres.classList.add('open'); document.body.style.overflow = 'hidden'; if (!(history.state && history.state.ov==='pres')) history.pushState({ov:'pres'}, ''); render(); $('#presNext').focus(); };
   const closeP = fromPop => { if (!pres.classList.contains('open')) return; pres.classList.remove('open'); document.body.style.overflow = ''; if (document.fullscreenElement) document.exitFullscreen(); if (fromPop !== true && history.state && history.state.ov==='pres') history.back(); };
   addEventListener('popstate', ()=>{ if (pres.classList.contains('open')) closeP(true); });
   const stepP = d => { SI = Math.max(0, Math.min(SL.length-1, SI+d)); render(); };
@@ -496,6 +496,18 @@ ${railHTML('hub')}
   $('#gtl').innerHTML = s + '</svg>';
 }
 
+/* ---------- analytics (GA4 events; no-ops until build_hub puts the gtag snippet in the page) ---------- */
+const track = (name, params={}) => { if (typeof window.gtag === 'function') window.gtag('event', name, Object.assign({era: window.ERA_KEY}, params)); };
+function setupTracking(){
+  document.addEventListener('click', e=>{
+    const a = e.target.closest('a[href^="http"]'); if (!a || a.host === location.host) return;
+    const art = a.closest('article[id]'), row = a.closest('tr'), nm = row && row.querySelector('td.name a');
+    const ms = art ? art.id : nm ? nm.hash.slice(1) : '';
+    if (/wa\.me/.test(a.host)) track('contact_whatsapp', {manuscript: ms});
+    else track('open_source', {manuscript: ms, link_domain: a.hostname, link_url: a.href});
+  });
+}
+
 /* ---------- theme ---------- */
 function setupTheme(){
   const root = document.documentElement; let saved = null;
@@ -508,7 +520,7 @@ function setupTheme(){
 document.addEventListener('DOMContentLoaded', ()=>{
   const key = window.ERA_KEY;
   if (key==='hub') renderHub(); else renderEra(ERAS_DATA[key]);
-  setupTheme();
+  setupTheme(); setupTracking();
   const cur = document.querySelector('.rail [aria-current]'); if (cur && cur.scrollIntoView) cur.scrollIntoView({block:'nearest', inline:'center'});
   if (location.hash) { const t = document.getElementById(location.hash.slice(1)); if (t) setTimeout(()=>t.scrollIntoView(), 60); }
 });

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://masahif-al-maghrib.com/sitemap.xml
