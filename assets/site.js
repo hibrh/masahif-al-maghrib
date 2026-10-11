@@ -484,7 +484,14 @@ function setFilter(f){
 function msMeta(E, i){
   const era = ERAS.find(e=>e.key===E.key), url = LSITE + era.path + i.id + '/';
   const yr = (plain(i.dateH).match(EN ? /(\d{3,4}) ?AH/ : /(\d{3,4}) ?هـ/) || [])[1];
-  const title = `${plain(i.title)}${yr && !plain(i.title).includes(yr) ? (EN ? ` (${yr} AH)` : ` (${yr}هـ)`) : ''} | ${E.name}`;
+  /* <title>: search results show about 60 characters, so a long name gives way to the short one, then the era name is dropped */
+  const fullName = plain(i.title), shortName = plain(i.short || '');
+  const name = fullName.length > 50 && shortName && shortName.length < fullName.length ? shortName : fullName;
+  const year = yr && !name.includes(yr) ? (EN ? `${yr} AH` : `${yr}هـ`) : '';
+  const named = year ? (/\)$/.test(name) ? `${name}${tr('، ', ', ')}${year}` : `${name} (${year})`) : name;
+  let title = `${named} | ${E.name}`;
+  if (title.length > 65) title = named;
+  if (title.length > 65) { title = title.slice(0, 62); title = title.slice(0, title.lastIndexOf(' ')) + '…'; }
   const body = plain(i.group === 'lost' ? i.text : (i.prose && i.prose[0]) || '');
   let desc = `${plain(i.title)}${tr('، ', ', ')}${plain(i.dateH)}${i.dateG ? ` (${plain(i.dateG)})` : ''}. ${body}`;
   if (desc.length > 230) { desc = desc.slice(0, 230); desc = desc.slice(0, desc.lastIndexOf(' ')) + '…'; }
