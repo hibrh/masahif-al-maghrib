@@ -454,6 +454,10 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .lang-btn{font-size:13.5px}
 .lang-btn[lang="ar"]{font-family:"IBM Plex Sans Arabic",system-ui,sans-serif}
 .lang-btn[lang="en"]{font-family:"IBM Plex Sans",system-ui,sans-serif}
+/* short label on narrow screens (the long one is hidden by .btn .lbl-long below 720px) */
+.lang-btn .lbl-short{display:none}
+@media (max-width:720px){ .lang-btn .lbl-short{display:inline} .lang-btn{padding-left:12px;padding-right:12px} }
+@media (max-width:560px){ .top .brand{flex:1 1 auto} .top .btn{flex:none} }
 .alt-names{font-family:var(--ui);font-size:14.5px;color:#d9bf86;margin:-2px 0 12px}
 .alt-names span[lang="ar"]{font-family:"Amiri",serif;font-size:18px}
 

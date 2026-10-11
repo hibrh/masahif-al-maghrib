@@ -125,7 +125,8 @@ function commonOverlays(){
 const projectLink = () => `<a class="proj" href="${ROOT || './'}"><svg aria-hidden="true"><use href="#star"/></svg><span>${tr('جزء من مشروع <b>مصاحف المغرب</b>: المصاحف المؤرَّخة في سبعة عصور، من الأدارسة إلى العلويين', 'Part of the <b>Masahif al-Maghrib</b> project: dated Qur’ans across seven eras, from the Idrisids to the Alaouites')}</span><i aria-hidden="true">${FWD}</i></a>`;
 
 /* link to the same page in the other language (build_hub.ps1 sets window.ALT_URL) */
-const langLink = () => window.ALT_URL ? (EN ? `<a class="btn lang-btn" href="${window.ALT_URL}" hreflang="ar" lang="ar" data-lang="ar">العربية</a>` : `<a class="btn lang-btn" href="${window.ALT_URL}" hreflang="en" lang="en" data-lang="en">English</a>`) : '';
+/* on phones the button shows a short label so the page title keeps its room */
+const langLink = () => window.ALT_URL ? (EN ? `<a class="btn lang-btn" href="${window.ALT_URL}" hreflang="ar" lang="ar" data-lang="ar" aria-label="العربية"><span class="lbl-long">العربية</span><span class="lbl-short">عربي</span></a>` : `<a class="btn lang-btn" href="${window.ALT_URL}" hreflang="en" lang="en" data-lang="en" aria-label="English"><span class="lbl-long">English</span><span class="lbl-short">EN</span></a>`) : '';
 
 function header(title, withPres, navLinks){
   return `
