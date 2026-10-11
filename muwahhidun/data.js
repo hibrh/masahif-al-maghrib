@@ -71,7 +71,7 @@ const ITEMS = [
   ruling:{w:26.2, h:31.5, n:0}, where:'إسطنبول'
 },
 {
-  id:'ghattus578', group:'surviving', num:4, y0:1182, y1:1183, tl:'ابن غطوس 578هـ',
+  id:'ghattus578', thumb:'g578-text', group:'surviving', num:4, y0:1182, y1:1183, tl:'ابن غطوس 578هـ',
   title:'مصحف محمد بن عبد الله بن غطوس', short:'مصحف ابن غطوس 578هـ',
   dateH:'578هـ', dateG:'1182–1183م',
   status:{s:'ok', c:'unk', d:'no'},
@@ -233,7 +233,7 @@ const ITEMS = [
   links:[['تصفح المخطوط في المكتبة الرقمية لدرسدن', DRES], ['IIIF', DRESM], ['دراسة بونجانينو 2020، الملحق', JIM]],
   ruling:{w:9.5, h:10, n:0}, where:'درسدن'
 },{
-  id:'ghattus', group:'edge', num:12, y0:1160, y1:1169, tl:'آل غطوس',
+  id:'ghattus', thumb:'', group:'edge', num:12, y0:1160, y1:1169, tl:'آل غطوس',
   title:'مصاحف آل غطوس في بلنسية', short:'مصاحف آل غطوس',
   dateH:'556–564هـ', dateG:'1160–1169م',
   status:{s:'ok', c:'unk', d:'no'},

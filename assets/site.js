@@ -16,7 +16,7 @@ window.ERAS = [
 ];
 window.ERAS_READY = window.ERAS_READY || [];
 /* plates enlarged with Real-ESRGAN (blended with a plain enlargement); labelled as such under the image */
-window.AI_ENH = new Set(['q902-text','alm-colo','alm-text','cor-text','upp-text','ai-r23','ai-r24','g578-colo','g578-text','gh-table','ml-yunus','mt-bl7','mt-juz1','mt-rabat','tn-sad','tn-waqf','aq-juz2','aq-saffat','as-colo','as-text','ic-end','k1081-kufic','pc-colo','gr-text','ak-text','ak-waqf','aq-colo','gl-text','my-text','my-title','q5-text','sf-text','tu-text','dk-end']);
+window.AI_ENH = new Set(['q902-text','alm-colo','alm-text','cor-text','upp-text','ai-r23','ai-r24','g578-colo','g578-text','gh-table','ml-yunus','mt-bl7','mt-juz1','mt-rabat','tn-sad','tn-waqf','aq-juz2','aq-saffat','as-colo','as-text','ic-end','k1081-kufic','pc-colo','gr-text','ak-text','ak-waqf','aq-colo','gl-text','my-text','my-title','q5-text','sf-text','tu-text','dk-end','upp-page']);
 const aiNote = p => window.AI_ENH.has(p.f) ? ' · <i class="ai">محسّنة بالذكاء الاصطناعي</i>' : '';
 
 (function(){
@@ -142,7 +142,22 @@ function ldHub(ready){
 
 /* ================= ERA PAGE ================= */
 function renderEra(E){
+  /* chronological order inside each group (surviving, edge, lost); numbers follow the displayed order */
+  const mid = i => i.y1 ? (i.y0 + i.y1) / 2 : i.y0, GORD = {surviving:0, edge:1, lost:2};
+  E.items.sort((a,b) => (GORD[a.group] - GORD[b.group]) || (mid(a) - mid(b)));
+  let nn = 0; E.items.forEach(i => { if (i.group !== 'lost') i.num = ++nn; });
   const items = E.items;
+  /* the ruler in whose reign a Qur'an falls, from the timeline bars; i.ruler overrides ('' hides) */
+  const RUL = (E.tl && E.tl.rulers) || [];
+  const gen = k => (k.full || k.n).replace(/^أبو /, 'أبي ');
+  const rulerAt = y => RUL.findIndex((k, x) => y >= k.a && (y < k.b || (x === RUL.length - 1 && y <= k.b)));
+  const rulerTo = y => RUL.findIndex(k => y > k.a && y <= k.b);
+  const reignOf = i => {
+    if (i.ruler !== undefined) return i.ruler;
+    const x0 = rulerAt(i.y0), x1 = i.y1 ? rulerTo(i.y1) : x0, r0 = RUL[x0], r1 = RUL[x1];
+    if (!r0 || !r1 || x1 - x0 > 1 || r0.faint || r1.faint || !r0.n || !r1.n) return '';
+    return r0 === r1 ? `في عهد ${gen(r0)}` : `في عهدي ${gen(r0)} و${gen(r1)}`;
+  };
   const count = g => items.filter(i=>i.group===g).length;
   const heroFig = E.hero ? `<figure class="hero-fig"><div class="frame"><img src="${E.hero.f}" width="${E.hero.w}" height="${E.hero.h}" alt="${E.hero.alt}" ${E.hero.open?`data-open="${E.hero.open}"`:''}></div><figcaption>${LAT(E.hero.caption)}</figcaption></figure>`
     : `<figure class="hero-fig"><div class="frame" style="aspect-ratio:16/9;display:grid;place-items:center"><svg viewBox="0 0 200 120" width="70%" aria-hidden="true"><g fill="none" stroke="#c99c45" stroke-width="1.2" opacity=".8"><rect x="70" y="30" width="60" height="60"/><rect x="70" y="30" width="60" height="60" transform="rotate(45 100 60)"/><circle cx="100" cy="60" r="12"/></g></svg></div><figcaption>${E.heroNote||''}</figcaption></figure>`;
@@ -222,12 +237,15 @@ ${commonOverlays()}${ldEra(E)}`;
   let rows = '';
   for (const g of ['surviving','lost','edge']) {
     const list = items.filter(x=>x.group===g); if (!list.length) continue;
-    rows += `<tr class="grp"><td colspan="7">${GROUPS[g]}</td></tr>`;
+    rows += `<tr class="grp"><td colspan="8">${GROUPS[g]}</td></tr>`;
     for (const i of list) {
       const s = ST.s[i.status.s], c = ST.c[i.status.c], d = ST.d[i.status.d];
       const nil = i.status.s==='no' ? ' class="nil"' : '';
       const browse = i.links && i.links.length && i.status.d!=='no';
-      rows += `<tr><td class="name"><a href="#${i.id}">${i.short||i.title}</a></td>
+      /* sample = a written page; i.thumb names the plate, or '' when none of them is a text page */
+      const pl = i.plates || [], pk = i.thumb === '' ? -1 : i.thumb ? pl.findIndex(p => p.f === i.thumb) : (pl.length ? 0 : -1), pp = pk >= 0 ? pl[pk] : null;
+      const thumb = pp ? `<button type="button" class="mx-thumb" data-open="${i.id}:${pk}" aria-label="عينة: ${pp.t}" title="${pp.t}"><img loading="lazy" src="${pp.turl || `plates/${pp.f}-t.jpg`}" alt=""></button>` : '<span class="mx-none">—</span>';
+      rows += `<tr><td class="mx-s${pp ? '' : ' nil'}" data-l="نموذج">${thumb}</td><td class="name"><a href="#${i.id}">${i.short||i.title}</a></td>
         <td data-l="التاريخ">${i.dateH}<br><span style="color:var(--ink3)">${i.dateG}</span></td>
         <td data-l="الحال">${dot(s[0],s[1])}</td>
         <td data-l="التمام"${nil}>${i.status.s==='no' ? '—' : dot(c[0],c[1])}</td>
@@ -236,7 +254,7 @@ ${commonOverlays()}${ldEra(E)}`;
         <td data-l="تصفح"${browse?'':' class="nil"'}>${browse ? `<a href="${i.links[0][1]}" target="_blank" rel="noopener">افتح ↗</a>` : '—'}</td></tr>`;
     }
   }
-  $('#matrixWrap').innerHTML = `<table class="matrix"><thead><tr><th>المصحف</th><th>التاريخ</th><th>الحال</th><th>التمام</th><th>الرقمنة</th><th>أين اليوم</th><th>تصفح</th></tr></thead><tbody>${rows}</tbody></table>`;
+  $('#matrixWrap').innerHTML = `<table class="matrix"><thead><tr><th class="mx-s">نموذج</th><th>المصحف</th><th>التاريخ</th><th>الحال</th><th>التمام</th><th>الرقمنة</th><th>أين اليوم</th><th>تصفح</th></tr></thead><tbody>${rows}</tbody></table>`;
 
   /* timeline */
   (function(){
@@ -281,7 +299,7 @@ ${commonOverlays()}${ldEra(E)}`;
     if (g==='lost') {
       const grid = el('div', {class:'lost-grid', 'data-group':g});
       for (const i of list) grid.appendChild(el('article', {class:'lost', id:i.id, 'data-group':g, 'data-s':i.status.s, 'data-d':i.status.d},
-        `<div class="yr">${i.dateH}</div><h3>${i.title}</h3><div style="font-family:var(--ui);font-size:13px;color:var(--ink3);margin-bottom:8px">${i.dateG}</div>${badges(i.status)}<p>${i.text}</p><div class="src">المصدر: ${i.src}</div>`));
+        `<div class="yr">${i.dateH}</div><h3>${i.title}</h3><div style="font-family:var(--ui);font-size:13px;color:var(--ink3);margin-bottom:8px">${i.dateG}${reignOf(i) ? ' · ' + reignOf(i) : ''}</div>${badges(i.status)}<p>${i.text}</p><div class="src">المصدر: ${i.src}</div>`));
       box.appendChild(grid); continue;
     }
     for (const i of list) {
@@ -289,7 +307,7 @@ ${commonOverlays()}${ldEra(E)}`;
       const facts = i.facts.map(f=>`<dt>${f[0]}</dt><dd>${LAT(f[1])}</dd>`).join('');
       const prose = i.prose.map(p=>`<p>${p}</p>`).join('') + (i.why ? `<p class="why">${i.why}</p>` : '');
       const links = i.links && i.links.length ? `<div class="links">${i.links.map(l=>`<a href="${l[1]}" target="_blank" rel="noopener">${l[0]}</a>`).join('')}</div>` : '';
-      a.innerHTML = `<div class="entry-head"><div class="num"><span>${i.num}</span></div><div><h3>${i.title}</h3><div class="when"><b>${i.dateH}</b> · ${i.dateG}</div></div>${badges(i.status)}</div>
+      a.innerHTML = `<div class="entry-head"><div class="num"><span>${i.num}</span></div><div><h3>${i.title}</h3><div class="when"><b>${i.dateH}</b> · ${i.dateG}</div>${reignOf(i) ? `<div class="reign">${reignOf(i)}</div>` : ''}</div>${badges(i.status)}</div>
         <div class="entry-body"><dl class="facts">${facts}</dl><div class="prose">${prose}${links}</div></div>`;
       if (i.colophon) {
         const k = i.plates.findIndex(x=>x.f===i.colophon.plate), p = i.plates[k];

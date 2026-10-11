@@ -138,7 +138,7 @@ const ITEMS = [
   src:'ابن مرزوق؛ أرزيني (2014)'
 },
 {
-  id:'hebron', group:'lost', y0:1350, tl:'الخليل',
+  id:'hebron', ruler:'', group:'lost', y0:1350, tl:'الخليل',
   title:'ربعة الخليل',
   dateH:'نحو 750هـ', dateG:'1349–1350م',
   status:{s:'no', c:'part', d:'no'},
@@ -147,7 +147,7 @@ const ITEMS = [
 },
 /* edge */
 {
-  id:'abusaid', group:'edge', num:4, y0:1310, y1:1331, tl:'أبو سعيد',
+  id:'abusaid', thumb:'as-text', group:'edge', num:4, y0:1310, y1:1331, tl:'أبو سعيد',
   title:'مصحف خزانة السلطان أبي سعيد عثمان',
   short:'مصحف أبي سعيد عثمان',
   dateH:'بين 710 و731هـ', dateG:'1310–1331م',
@@ -207,7 +207,7 @@ const ITEMS = [
   ruling:{w:16.7, h:17.6, n:25}, where:'باريس'
 },
 {
-  id:'khalili', group:'edge', num:7, y0:1327, tl:'ابن رضوان 727هـ',
+  id:'khalili', thumb:'', group:'edge', num:7, y0:1327, tl:'ابن رضوان 727هـ',
   title:'مصحف يوسف بن رضوان الشاطبي',
   short:'مصحف ابن رضوان الشاطبي',
   dateH:'مستهل شوال 727هـ', dateG:'20 أغسطس 1327م',

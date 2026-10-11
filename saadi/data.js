@@ -67,7 +67,7 @@ const ITEMS = [
   plates:[], links:[['وصفه في فهرس ريو (1894)، رقم 68', RIEU], ['دراسة بونجانينو وسيلار (2025)', PINK]],
   ruling:{w:20, h:26, n:17}, where:'لندن'
 },{
-  id:'maryam', group:'surviving', num:3, y0:1560, tl:'الأميرة مريم 967هـ',
+  id:'maryam', thumb:'my-text', group:'surviving', num:3, y0:1560, tl:'الأميرة مريم 967هـ',
   title:'مصحف خزانة الأميرة مريم بنت محمد الشيخ', short:'مصحف الأميرة مريم (الرباط)',
   dateH:'فاتح شعبان 967هـ', dateG:'نحو 27 أبريل 1560م',
   status:{s:'ok', c:'unk', d:'no'},
@@ -118,7 +118,7 @@ const ITEMS = [
 },
 /* ---------- edge ---------- */
 {
-  id:'akbar', group:'edge', num:6, y0:1603, tl:'المصحف الأكبر',
+  id:'akbar', ruler:'في عهد أحمد المنصور', group:'edge', num:6, y0:1603, tl:'المصحف الأكبر',
   title:'«المصحف الأكبر» الذي حبّسه المنصور على القرويين', short:'المصحف الأكبر (فاس)',
   dateH:'حُبّس في رمضان 1011هـ', dateG:'فبراير 1603م',
   status:{s:'ok', c:'unk', d:'no'},
@@ -132,7 +132,7 @@ const ITEMS = [
   plates:[], links:[], where:'فاس'
 },
 {
-  id:'tunis4137', group:'edge', num:7, y0:1574, tl:'ابن عيسى 982هـ',
+  id:'tunis4137', ruler:'في عهد محمد المتوكل', group:'edge', num:7, y0:1574, tl:'ابن عيسى 982هـ',
   title:'مصحف محمد بن عبد الرحمن بن عيسى على الرق', short:'مصحف ابن عيسى (تونس)',
   dateH:'982هـ', dateG:'1574–1575م',
   status:{s:'ok', c:'unk', d:'no'},
@@ -189,7 +189,7 @@ const ITEMS = [
   plates:[], links:[['أرياس توريس، مصاحف الإسكوريال (2025)', ARIAS]], where:'الإسكوريال'
 },
 {
-  id:'qarawiyyin5', group:'edge', num:11, y0:1590, y1:1611, tl:'القرويين 5',
+  id:'qarawiyyin5', ruler:'', group:'edge', num:11, y0:1590, y1:1611, tl:'القرويين 5',
   title:'مصحف القرويين رقم 5', short:'مصحف القرويين 5',
   dateH:'قبل 1020هـ', dateG:'قبل 1611م',
   status:{s:'ok', c:'unk', d:'no'},
