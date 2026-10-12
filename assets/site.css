@@ -456,6 +456,9 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .matrix td.name a:hover .mx-more,.matrix td.name a:focus-visible .mx-more{text-decoration:underline;text-underline-offset:3px}
 /* home page on phones: the hero fills the first screen, so its title is the first and largest paint */
 @media (max-width:860px){ [data-era="hub"] .hero{min-height:calc(100vh - 110px);display:flex;align-items:center} [data-era="hub"] .hero > .wrap{width:100%;padding-top:40px} }
+/* sections are laid out and painted only as they come near the screen: less work while the page loads, nothing changes
+   on screen (the 64px section padding is wider than any shadow inside, and the fixed overlays live outside main) */
+main > section{content-visibility:auto;contain-intrinsic-size:auto 1200px}
 
 /* the author: card above the home-page footer, and the about page */
 .author-card{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:22px 26px}

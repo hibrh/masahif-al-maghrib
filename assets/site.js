@@ -58,6 +58,9 @@ const en = (n, one, many) => `${n} ${n===1 ? one : (many || one + 's')}`;
 const ROOT = window.ROOT || '';
 /* folder of the era's plates/ relative to the current page ('' on the era page, '../' on a manuscript page) */
 const PB = window.PLATE_BASE || '';
+/* phones get the 800 px copy of a wide plate (tools\make_mid.ps1 makes <name>-m.jpg next to each plate); larger screens keep the full file */
+const midSet = (src, w, sizes) => w > 900 && !/^https?:/.test(src) && /\.jpg$/.test(src) ? ` srcset="${src.replace(/\.jpg$/, '-m.jpg')} 800w, ${src} ${w}w" sizes="${sizes}"` : '';
+const HERO_SIZES = '(max-width: 860px) calc(100vw - 50px), 540px';
 /* site credit, shown at the foot of every page; wa = WhatsApp number in international format, digits only */
 const WA_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2a9.8 9.8 0 0 0-8.4 14.8L2.3 21.7l4.8-1.3A9.8 9.8 0 1 0 12 2.2Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.6 7.4c.3-.3.8-.3 1 .1l.8 1.8c.1.3 0 .6-.2.8l-.6.6a6.6 6.6 0 0 0 3.6 3.6l.6-.6c.2-.2.5-.3.8-.2l1.8.8c.4.2.4.7.1 1-.9 1-2.2 1.3-3.4.8a10.4 10.4 0 0 1-5.3-5.3c-.5-1.2-.2-2.5.8-3.4Z" fill="currentColor"/></svg>';
 /* role: the author's title on the about page and the home-page card; credit: the footer byline, worded by the user */
@@ -272,7 +275,7 @@ function entryBodyHTML(i, hl = 'h4'){
   let h = `<div class="entry-body"><dl class="facts">${facts}</dl><div class="prose">${prose}${links}</div></div>`;
   if (i.colophon) {
     const k = i.plates.findIndex(x=>x.f===i.colophon.plate), p = i.plates[k];
-    h += `<div class="colophon"><figure data-open="${i.id}:${k}"><img loading="lazy" src="${p.url||`${PB}plates/${p.f}.jpg`}" alt="${p.t}"></figure><div class="tr"><${hl}>${i.colophon.title}</${hl}><p class="ar"${EN ? ' lang="ar" dir="rtl"' : ''}>${i.colophon.ar}</p>${EN && i.colophon.tr ? `<p class="en-tr">${i.colophon.tr}</p>` : ''}<p class="gl">${i.colophon.gl}</p></div></div>`;
+    h += `<div class="colophon"><figure data-open="${i.id}:${k}"><img loading="lazy" decoding="async" src="${p.url||`${PB}plates/${p.f}.jpg`}"${p.url ? '' : midSet(`${PB}plates/${p.f}.jpg`, p.w, '(max-width: 860px) calc(100vw - 64px), 560px')} alt="${p.t}"></figure><div class="tr"><${hl}>${i.colophon.title}</${hl}><p class="ar"${EN ? ' lang="ar" dir="rtl"' : ''}>${i.colophon.ar}</p>${EN && i.colophon.tr ? `<p class="en-tr">${i.colophon.tr}</p>` : ''}<p class="gl">${i.colophon.gl}</p></div></div>`;
   }
   if (i.journey) h += `<div class="journey"><${hl}>${i.journeyTitle||tr('رحلة المصحف', 'The journey of the manuscript')}</${hl}><div class="jsteps" style="--n:${i.journey.length}">${i.journey.map(j=>`<div class="jstep"><i></i><b>${j[0]}</b><span>${j[1]}</span></div>`).join('')}</div></div>`;
   if (i.plates && i.plates.length) {
@@ -294,7 +297,8 @@ function renderEra(E){
   /* the published page already carries the rendered content: then only the listeners are attached, without a second
      render, so the largest paint is not repeated after the scripts run */
   const HY = !!document.querySelector('#entries > *');
-  const heroFig = E.hero ? `<figure class="hero-fig"><div class="frame"><img src="${/^https?:/.test(E.hero.f) ? E.hero.f : PB + E.hero.f}" width="${E.hero.w}" height="${E.hero.h}" alt="${E.hero.alt}" ${E.hero.open?`data-open="${E.hero.open}"`:''}></div><figcaption>${LAT(E.hero.caption)}</figcaption></figure>`
+  const heroSrc = E.hero && (/^https?:/.test(E.hero.f) ? E.hero.f : PB + E.hero.f);
+  const heroFig = E.hero ? `<figure class="hero-fig"><div class="frame"><img src="${heroSrc}"${midSet(heroSrc, E.hero.w, HERO_SIZES)} fetchpriority="high" width="${E.hero.w}" height="${E.hero.h}" alt="${E.hero.alt}" ${E.hero.open?`data-open="${E.hero.open}"`:''}></div><figcaption>${LAT(E.hero.caption)}</figcaption></figure>`
     : `<figure class="hero-fig"><div class="frame" style="aspect-ratio:16/9;display:grid;place-items:center"><svg viewBox="0 0 200 120" width="70%" aria-hidden="true"><g fill="none" stroke="#c99c45" stroke-width="1.2" opacity=".8"><rect x="70" y="30" width="60" height="60"/><rect x="70" y="30" width="60" height="60" transform="rotate(45 100 60)"/><circle cx="100" cy="60" r="12"/></g></svg></div><figcaption>${E.heroNote||''}</figcaption></figure>`;
   const nav = [`<a href="#tally">${tr('الحصيلة', 'Overview')}</a>`, `<a href="#timeline">${tr('خط الزمن', 'Timeline')}</a>`, `<a href="#corpus">${tr('المصاحف', 'Qur’ans')}</a>`, E.hasScale!==false?`<a href="#scale">${tr('المقاسات', 'Sizes')}</a>`:'', E.anat?`<a href="#anatomy">${tr('تشريح الخط', 'Anatomy of the script')}</a>`:'', `<a href="#sources">${tr('المصادر', 'Sources')}</a>`].join('');
   const html = `${header(E.name, true, nav)}
@@ -355,7 +359,7 @@ ${railHTML(E.key)}
   </div></section>` : ''}
   ${E.anat ? `<section id="anatomy"><div class="wrap">
     <div class="sec-head"><div><div class="kicker">${tr('تشريح الخط', 'Anatomy of the script')}</div><h2>${star}${E.anat.title}</h2><p>${E.anat.intro}</p></div></div>
-    <div class="anat${E.anat.w/E.anat.h > 1.8 ? ' wide' : ''}"><div class="anat-scroll"><figure class="anat-fig" id="anatFig"><img src="${PB}${E.anat.f}" width="${E.anat.w}" height="${E.anat.h}" alt="${E.anat.alt}"></figure><p class="m-hint">${tr('اسحب الصورة أفقياً لرؤية الأسطر كاملة.', 'Swipe the image sideways to see the full lines.')}</p></div><ol class="anat-list" id="anatList"></ol></div>
+    <div class="anat${E.anat.w/E.anat.h > 1.8 ? ' wide' : ''}"><div class="anat-scroll"><figure class="anat-fig" id="anatFig"><img loading="lazy" decoding="async" src="${PB}${E.anat.f}"${midSet(PB + E.anat.f, E.anat.w, E.anat.w/E.anat.h > 1.8 ? '(max-width: 860px) 820px, 1150px' : '(max-width: 860px) calc(100vw - 32px), 560px')} width="${E.anat.w}" height="${E.anat.h}" alt="${E.anat.alt}"></figure><p class="m-hint">${tr('اسحب الصورة أفقياً لرؤية الأسطر كاملة.', 'Swipe the image sideways to see the full lines.')}</p></div><ol class="anat-list" id="anatList"></ol></div>
   </div></section>` : ''}
   <section id="sources"><div class="wrap">
     <div class="sec-head"><div><div class="kicker">${tr('المصادر', 'Sources')}</div><h2>${star}${tr('المراجع وحقوق الصور', 'References and image rights')}</h2><p>${tr('كل معلومة في البطاقات مأخوذة من أحد هذه المصادر.', 'Every statement on the cards comes from one of these sources.')}${E.readNote?' '+E.readNote:''}</p></div></div>
@@ -546,7 +550,7 @@ function renderMs(E, id){
   if (!i) return;
   const era = ERAS.find(e=>e.key===E.key), m = msMeta(E, i), reign = reignOf(i), sp = samplePlate(i);
   const blank = svg => `<figure class="hero-fig"><div class="frame ms-blank">${svg}</div><figcaption>${i.group==='lost' ? tr('مصحف ذكرته المصادر ولا يُعرف له أثر اليوم.', 'A Qur’an recorded in the sources, with no known trace today.') : tr('رسم لهيئة الصفحة، إذ لا نعرف صورة منشورة لهذا المصحف.', 'A drawing of the page layout: we know of no published image of this Qur’an.')}</figcaption></figure>`;
-  const fig = sp ? `<figure class="hero-fig"><div class="frame"><img src="${sp.p.url || `${PB}plates/${sp.p.f}.jpg`}" width="${sp.p.w}" height="${sp.p.h}" alt="${sp.p.t}" data-open="${i.id}:${sp.k}"></div><figcaption><b>${sp.p.t}</b> · ${LAT(sp.p.loc)}${aiNote(sp.p)}</figcaption></figure>`
+  const fig = sp ? `<figure class="hero-fig"><div class="frame"><img src="${sp.p.url || `${PB}plates/${sp.p.f}.jpg`}"${sp.p.url ? '' : midSet(`${PB}plates/${sp.p.f}.jpg`, sp.p.w, HERO_SIZES)} fetchpriority="high" width="${sp.p.w}" height="${sp.p.h}" alt="${sp.p.t}" data-open="${i.id}:${sp.k}"></div><figcaption><b>${sp.p.t}</b> · ${LAT(sp.p.loc)}${aiNote(sp.p)}</figcaption></figure>`
     : i.group==='lost' ? blank(`<svg viewBox="0 0 200 200" width="46%" aria-hidden="true"><g fill="none" stroke="#c99c45" stroke-width="2" stroke-dasharray="6 5" opacity=".8"><rect x="50" y="50" width="100" height="100"/><rect x="50" y="50" width="100" height="100" transform="rotate(45 100 100)"/></g><text x="100" y="108" text-anchor="middle" font-size="22" fill="#cbb88f" font-family="Noto Kufi Arabic">${tr('مفقود', 'Lost')}</text></svg>`)
     : i.ruling ? blank(rulingSVG(i.ruling, Math.min(9, 320 / Math.max(i.ruling.w, i.ruling.h)), {paper:'#efe4cc', ink:'#2a1f15', frame:'#c99c45'})) : '';
   const browse = i.links && i.links.length && i.status.d !== 'no' ? `<a class="btn solid" href="${i.links[0][1]}" target="_blank" rel="noopener">${i.links[0][0]} ↗</a>` : '';
