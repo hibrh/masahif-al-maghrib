@@ -275,7 +275,7 @@ function entryBodyHTML(i){
   }
   if (i.journey) h += `<div class="journey"><h4>${i.journeyTitle||tr('رحلة المصحف', 'The journey of the manuscript')}</h4><div class="jsteps" style="--n:${i.journey.length}">${i.journey.map(j=>`<div class="jstep"><i></i><b>${j[0]}</b><span>${j[1]}</span></div>`).join('')}</div></div>`;
   if (i.plates && i.plates.length) {
-    const strip = i.plates.map((p,k)=>{ const hh = p.w/p.h > 2.4 ? 150 : 240; return `<figure class="plate" data-open="${i.id}:${k}" tabindex="0" role="button" aria-label="${tr('تكبير', 'Enlarge')}:${p.t}"><img loading="lazy" src="${p.turl||`${PB}plates/${p.f}-t.jpg`}" width="${Math.round(hh*p.w/p.h)}" height="${hh}" style="--h:${hh}px" alt="${p.t}"><figcaption><b>${p.t}</b> · ${LAT(p.loc)}${aiNote(p)}</figcaption></figure>`; }).join('');
+    const strip = i.plates.map((p,k)=>{ const hh = p.w/p.h > 2.4 ? 150 : 240; return `<div class="plate" data-open="${i.id}:${k}" tabindex="0" role="button" aria-label="${tr('تكبير', 'Enlarge')}:${p.t}"><img loading="lazy" src="${p.turl||`${PB}plates/${p.f}-t.jpg`}" width="${Math.round(hh*p.w/p.h)}" height="${hh}" style="--h:${hh}px" alt="${p.t}"><div class="figcap"><b>${p.t}</b> · ${LAT(p.loc)}${aiNote(p)}</div></div>`; }).join('');
     h += `<div class="gallery"><div class="gal-title"><span>${tr('عينات من الكتابة عن قرب', 'Close-ups of the script')} (${i.plates.length})</span><span>${tr('اضغط للتكبير', 'Click to enlarge')} ${FWD}</span></div><div class="strip">${strip}</div></div>`;
   } else if (i.ruling) {
     h += EN ? `<div class="ruling">${rulingSVG(i.ruling,4.6)}<p><b>No samples here.</b> ${i.noPlates || 'The manuscript is not digitised, and we found no published image of it.'} The drawing shows the layout of the page: ${i.ruling.n ? lines(i.ruling.n) : 'number of lines not published'}${i.ruling.unknown ? ', dimensions not published' : ''}.</p></div>`
@@ -570,7 +570,7 @@ ${railHTML(E.key)}
   ${fig}
 </div></div>
 <main>
-  <section id="card"><div class="wrap">${card}</div></section>
+  <section id="card"><div class="wrap"><h2 class="sr">${tr('بطاقة المصحف', 'The card')}</h2>${card}</div></section>
   <section id="more"><div class="wrap">
     <div class="sec-head"><div><div class="kicker">${E.name}</div><h2>${star}${tr('مصاحف أخرى من هذا العصر', 'Other Qur’ans of this era')}</h2></div></div>
     <div class="ms-pn">${prev ? `<a class="btn" href="../${prev.id}/">${BACK} ${prev.short||prev.title}</a>` : '<span></span>'}${next ? `<a class="btn" href="../${next.id}/">${next.short||next.title} ${FWD}</a>` : ''}</div>
