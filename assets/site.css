@@ -65,24 +65,24 @@
 @font-face { font-family: 'IBM Plex Sans Label'; font-style: normal; font-weight: 400 600; font-stretch: 100%; font-display: swap; src: url(fonts/ibmplexsans-label.woff2) format('woff2'); unicode-range: U+0020, U+0045, U+004E, U+0067, U+0068, U+0069, U+006C, U+006E, U+0073; }
 
 :root{
-  --bg:#f3ebdb; --bg2:#ebe1cc; --card:#fbf7ee; --ink:#231911; --ink2:#5b4a39; --ink3:#87735d;
-  --gold:#a5782a; --gold2:#c99c45; --green:#1c5444; --deep:#12362c; --lapis:#27466e; --red:#a23a2b;
+  --bg:#f3ebdb; --bg2:#ebe1cc; --card:#fbf7ee; --ink:#231911; --ink2:#5b4a39; --ink3:#786653;
+  --gold:#a5782a; --gold-t:#876222; --gold2:#c99c45; --green:#1c5444; --deep:#12362c; --lapis:#27466e; --red:#a23a2b;
   --line:rgba(35,25,17,.14); --shadow:0 1px 2px rgba(35,25,17,.08),0 8px 24px rgba(35,25,17,.08);
-  --ok:#2e6b4f; --no:#9b3b2c; --part:#9a6b14;
+  --ok:#2e6b4f; --no:#9b3b2c; --part:#8c6112;
   --kufi:"Noto Kufi Arabic",sans-serif; --naskh:"Amiri",serif; --ui:"IBM Plex Sans Arabic",system-ui,sans-serif;
   color-scheme:light;
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
     --bg:#14110d; --bg2:#1b1712; --card:#211c16; --ink:#efe6d4; --ink2:#c7b8a0; --ink3:#9a8a74;
-    --gold:#d2a650; --gold2:#e6c27a; --green:#62a88f; --deep:#0e2820; --lapis:#94b3e0; --red:#e4866f;
+    --gold:#d2a650; --gold-t:#d2a650; --gold2:#e6c27a; --green:#62a88f; --deep:#0e2820; --lapis:#94b3e0; --red:#e4866f;
     --line:rgba(239,230,212,.13); --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
     --ok:#6fbf98; --no:#e4866f; --part:#e2b356; color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
   --bg:#14110d; --bg2:#1b1712; --card:#211c16; --ink:#efe6d4; --ink2:#c7b8a0; --ink3:#9a8a74;
-  --gold:#d2a650; --gold2:#e6c27a; --green:#62a88f; --deep:#0e2820; --lapis:#94b3e0; --red:#e4866f;
+  --gold:#d2a650; --gold-t:#d2a650; --gold2:#e6c27a; --green:#62a88f; --deep:#0e2820; --lapis:#94b3e0; --red:#e4866f;
   --line:rgba(239,230,212,.13); --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
   --ok:#6fbf98; --no:#e4866f; --part:#e2b356; color-scheme:dark;
 }
@@ -140,7 +140,7 @@ section + section{border-top:1px solid var(--line)}
 .sec-head h2{font-size:clamp(26px,3.4vw,36px);color:var(--ink);display:flex;align-items:center;gap:12px}
 .sec-head h2 .star{width:20px;height:20px;color:var(--gold);flex:none}
 .sec-head p{margin:6px 0 0;color:var(--ink2);max-width:62ch;font-size:17px}
-.kicker{font-family:var(--ui);font-size:13px;color:var(--gold);font-weight:600;margin-bottom:6px}
+.kicker{font-family:var(--ui);font-size:13px;color:var(--gold-t);font-weight:600;margin-bottom:6px}
 
 /* tally */
 .tally{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px}
@@ -170,7 +170,7 @@ section + section{border-top:1px solid var(--line)}
 .matrix tr:last-child td{border-bottom:0}
 .matrix td.name a{font-family:var(--naskh);font-size:17px;font-weight:700;color:var(--ink);text-decoration:none}
 .matrix td.name a:hover{color:var(--red)}
-.matrix .grp td{background:color-mix(in srgb,var(--gold) 9%,var(--card));font-family:var(--ui);font-weight:600;font-size:14px;color:var(--gold);padding:8px 14px}
+.matrix .grp td{background:color-mix(in srgb,var(--gold) 9%,var(--card));font-family:var(--ui);font-weight:600;font-size:14px;color:var(--gold-t);padding:8px 14px}
 .dot{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
 .dot i{width:9px;height:9px;border-radius:50%;display:inline-block;background:currentColor}
 @media (max-width:820px){
@@ -205,7 +205,7 @@ section + section{border-top:1px solid var(--line)}
 /* entries */
 .entry{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);margin-bottom:26px;overflow:hidden;scroll-margin-top:72px}
 .entry-head{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:start;padding:22px 24px 18px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,color-mix(in srgb,var(--gold) 7%,transparent),transparent)}
-.num{font-family:var(--kufi);font-size:15px;color:var(--gold);border:1px solid var(--gold);width:40px;height:40px;display:grid;place-items:center;transform:rotate(45deg);margin:6px 4px 0}
+.num{font-family:var(--kufi);font-size:15px;color:var(--gold-t);border:1px solid var(--gold);width:40px;height:40px;display:grid;place-items:center;transform:rotate(45deg);margin:6px 4px 0}
 .num span{transform:rotate(-45deg)}
 .entry h3{font-size:clamp(21px,2.6vw,27px);color:var(--ink)}
 .entry .when{font-family:var(--ui);font-size:14.5px;color:var(--ink2);margin-top:4px}
@@ -464,10 +464,10 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 @media (max-width:560px){ .lb{background:#0e0b08} .lb-prev{right:6px} .lb-next{left:6px} }
 .lb .lb-nav{direction:ltr;unicode-bidi:isolate}
 
-.plate .figcap i.ai,.lb-cap i.ai{font-style:normal;color:var(--gold);font-size:.92em}
+.plate .figcap i.ai,.lb-cap i.ai{font-style:normal;color:var(--gold-t);font-size:.92em}
 
 /* reign line on cards */
-.entry-head .reign{font-family:var(--ui);font-size:13.5px;color:var(--gold);margin-top:2px}
+.entry-head .reign{font-family:var(--ui);font-size:13.5px;color:var(--gold-t);margin-top:2px}
 /* sample thumbnails in the summary table */
 .matrix th.mx-s,.matrix td.mx-s{width:84px;padding-left:6px;padding-right:12px}
 .mx-thumb{display:block;width:76px;height:54px;padding:0;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--bg2);cursor:zoom-in}
@@ -481,13 +481,14 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   .mx-thumb{width:96px;height:64px}
 }
 /* "more" hint under each name in the summary table: the name opens the Qur'an's card */
-.matrix td.name .mx-more{display:block;margin-top:3px;font-family:var(--ui);font-size:12.5px;font-weight:500;color:var(--gold);white-space:nowrap}
+.matrix td.name .mx-more{display:block;margin-top:3px;font-family:var(--ui);font-size:12.5px;font-weight:500;color:var(--gold-t);white-space:nowrap}
 .matrix td.name a:hover .mx-more,.matrix td.name a:focus-visible .mx-more{text-decoration:underline;text-underline-offset:3px}
 /* home page on phones: the hero fills the first screen, so its title is the first and largest paint */
 @media (max-width:860px){ [data-era="hub"] .hero{min-height:calc(100vh - 110px);display:flex;align-items:center} [data-era="hub"] .hero > .wrap{width:100%;padding-top:40px} }
-/* sections are laid out and painted only as they come near the screen: less work while the page loads, nothing changes
-   on screen (the 64px section padding is wider than any shadow inside, and the fixed overlays live outside main) */
-main > section{content-visibility:auto;contain-intrinsic-size:auto 1200px}
+/* the Qur'an cards are laid out and painted only as they come near the screen: less work while the page loads, nothing
+   changes on screen. Whole sections are not skipped: a skipped box keeps its estimated height, and a whole section's
+   text then reached over the dark footer for contrast checkers; a skipped card still paints its own light background */
+#entries > *{content-visibility:auto;contain-intrinsic-size:auto 1100px}
 
 /* the author: card above the home-page footer, and the about page */
 .author-card{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:22px 26px}
