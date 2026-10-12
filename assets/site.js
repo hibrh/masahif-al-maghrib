@@ -264,16 +264,17 @@ function lostHTML(i, reign, msLink){
   return `<div class="yr">${i.dateH}</div><h3>${i.title}</h3><div style="font-family:var(--ui);font-size:13px;color:var(--ink3);margin-bottom:8px">${i.dateG}${reign ? ' · ' + reign : ''}</div>${badges(i.status)}<p>${i.text}</p><div class="src">${tr('المصدر', 'Source')}: ${i.src}</div>${msLink ? `<a class="ms-link" href="${i.id}/">${tr('صفحة المصحف', 'Page of this Qur’an')} ${FWD}</a>` : ''}`;
 }
 /* everything in a surviving / edge card below its head: facts, prose, links, colophon, journey, samples or ruling */
-function entryBodyHTML(i){
+/* hl: tag of the colophon and journey titles (h4 under a card's h3; h3 on a manuscript page, whose card has no h3) */
+function entryBodyHTML(i, hl = 'h4'){
   const facts = i.facts.map(f=>`<dt>${f[0]}</dt><dd>${LAT(f[1])}</dd>`).join('');
   const prose = i.prose.map(p=>`<p>${p}</p>`).join('') + (i.why ? `<p class="why">${i.why}</p>` : '');
   const links = i.links && i.links.length ? `<div class="links">${i.links.map(l=>`<a href="${l[1]}" target="_blank" rel="noopener">${l[0]}</a>`).join('')}</div>` : '';
   let h = `<div class="entry-body"><dl class="facts">${facts}</dl><div class="prose">${prose}${links}</div></div>`;
   if (i.colophon) {
     const k = i.plates.findIndex(x=>x.f===i.colophon.plate), p = i.plates[k];
-    h += `<div class="colophon"><figure data-open="${i.id}:${k}"><img loading="lazy" src="${p.url||`${PB}plates/${p.f}.jpg`}" alt="${p.t}"></figure><div class="tr"><h4>${i.colophon.title}</h4><p class="ar"${EN ? ' lang="ar" dir="rtl"' : ''}>${i.colophon.ar}</p>${EN && i.colophon.tr ? `<p class="en-tr">${i.colophon.tr}</p>` : ''}<p class="gl">${i.colophon.gl}</p></div></div>`;
+    h += `<div class="colophon"><figure data-open="${i.id}:${k}"><img loading="lazy" src="${p.url||`${PB}plates/${p.f}.jpg`}" alt="${p.t}"></figure><div class="tr"><${hl}>${i.colophon.title}</${hl}><p class="ar"${EN ? ' lang="ar" dir="rtl"' : ''}>${i.colophon.ar}</p>${EN && i.colophon.tr ? `<p class="en-tr">${i.colophon.tr}</p>` : ''}<p class="gl">${i.colophon.gl}</p></div></div>`;
   }
-  if (i.journey) h += `<div class="journey"><h4>${i.journeyTitle||tr('رحلة المصحف', 'The journey of the manuscript')}</h4><div class="jsteps" style="--n:${i.journey.length}">${i.journey.map(j=>`<div class="jstep"><i></i><b>${j[0]}</b><span>${j[1]}</span></div>`).join('')}</div></div>`;
+  if (i.journey) h += `<div class="journey"><${hl}>${i.journeyTitle||tr('رحلة المصحف', 'The journey of the manuscript')}</${hl}><div class="jsteps" style="--n:${i.journey.length}">${i.journey.map(j=>`<div class="jstep"><i></i><b>${j[0]}</b><span>${j[1]}</span></div>`).join('')}</div></div>`;
   if (i.plates && i.plates.length) {
     const strip = i.plates.map((p,k)=>{ const hh = p.w/p.h > 2.4 ? 150 : 240; return `<div class="plate" data-open="${i.id}:${k}" tabindex="0" role="button" aria-label="${tr('تكبير', 'Enlarge')}:${p.t}"><img loading="lazy" src="${p.turl||`${PB}plates/${p.f}-t.jpg`}" width="${Math.round(hh*p.w/p.h)}" height="${hh}" style="--h:${hh}px" alt="${p.t}"><div class="figcap"><b>${p.t}</b> · ${LAT(p.loc)}${aiNote(p)}</div></div>`; }).join('');
     h += `<div class="gallery"><div class="gal-title"><span>${tr('عينات من الكتابة عن قرب', 'Close-ups of the script')} (${i.plates.length})</span><span>${tr('اضغط للتكبير', 'Click to enlarge')} ${FWD}</span></div><div class="strip">${strip}</div></div>`;
@@ -290,6 +291,9 @@ function renderEra(E){
   const reignOf = reignFn(E);
   const msPages = !!window.MS_PAGES;
   const count = g => items.filter(i=>i.group===g).length;
+  /* the published page already carries the rendered content: then only the listeners are attached, without a second
+     render, so the largest paint is not repeated after the scripts run */
+  const HY = !!document.querySelector('#entries > *');
   const heroFig = E.hero ? `<figure class="hero-fig"><div class="frame"><img src="${/^https?:/.test(E.hero.f) ? E.hero.f : PB + E.hero.f}" width="${E.hero.w}" height="${E.hero.h}" alt="${E.hero.alt}" ${E.hero.open?`data-open="${E.hero.open}"`:''}></div><figcaption>${LAT(E.hero.caption)}</figcaption></figure>`
     : `<figure class="hero-fig"><div class="frame" style="aspect-ratio:16/9;display:grid;place-items:center"><svg viewBox="0 0 200 120" width="70%" aria-hidden="true"><g fill="none" stroke="#c99c45" stroke-width="1.2" opacity=".8"><rect x="70" y="30" width="60" height="60"/><rect x="70" y="30" width="60" height="60" transform="rotate(45 100 60)"/><circle cx="100" cy="60" r="12"/></g></svg></div><figcaption>${E.heroNote||''}</figcaption></figure>`;
   const nav = [`<a href="#tally">${tr('الحصيلة', 'Overview')}</a>`, `<a href="#timeline">${tr('خط الزمن', 'Timeline')}</a>`, `<a href="#corpus">${tr('المصاحف', 'Qur’ans')}</a>`, E.hasScale!==false?`<a href="#scale">${tr('المقاسات', 'Sizes')}</a>`:'', E.anat?`<a href="#anatomy">${tr('تشريح الخط', 'Anatomy of the script')}</a>`:'', `<a href="#sources">${tr('المصادر', 'Sources')}</a>`].join('');
@@ -362,7 +366,7 @@ ${railHTML(E.key)}
 </main>
 <footer><div class="wrap"><div>${E.name} · ${E.footer}</div><div><a href="${ROOT || './'}">${tr('مصاحف المغرب: كل العصور', 'Masahif al-Maghrib: all eras')}</a></div>${byline()}</div></footer>
 ${commonOverlays()}${ldEra(E)}`;
-  $('#app').innerHTML = html;
+  if (!HY) $('#app').innerHTML = html;
 
   /* tally + matrix */
   const surv = count('surviving'), lost = count('lost'), edge = count('edge'), dig = items.filter(i=>i.status.d==='ok').length;
@@ -375,7 +379,7 @@ ${commonOverlays()}${ldEra(E)}`;
     [lost, agree(lost, ['مصحف ذكرته المصادر ولا يُعرف له أثر','مصحفان ذكرتهما المصادر ولا يُعرف لهما أثر','مصاحف ذكرتها المصادر ولا يُعرف لها أثر','مصحفاً ذكرته المصادر ولا يُعرف له أثر'])],
     [edge, agree(edge, ['مصحف على حافة الشرط، أدرجناه للمقارنة','مصحفان على حافة الشرط، أدرجناهما للمقارنة','مصاحف على حافة الشرط، أدرجناها للمقارنة','مصحفاً على حافة الشرط، أدرجناها للمقارنة'])],
     [dig, agree(dig, ['مصحف يُتصفَّح ما بقي منه كاملاً في مصدره','مصحفان يُتصفَّح ما بقي منهما كاملاً في مصدره','مصاحف يُتصفَّح ما بقي منها كاملاً في مصدره','مصحفاً يُتصفَّح ما بقي منه كاملاً في مصدره'])]];
-  $('#tallyTiles').innerHTML = tiles.map(t=>`<div class="tile"><div class="n">${t[0]}</div><div class="t">${t[1]}</div></div>`).join('');
+  if (!HY) $('#tallyTiles').innerHTML = tiles.map(t=>`<div class="tile"><div class="n">${t[0]}</div><div class="t">${t[1]}</div></div>`).join('');
   const dot = (cls,txt) => `<span class="dot ${cls}"><i></i>${txt}</span>`;
   const COL = EN ? ['Sample','Qur’an','Date','State','Completeness','Digitisation','Where today','Browse'] : ['نموذج','المصحف','التاريخ','الحال','التمام','الرقمنة','أين اليوم','تصفح'];
   let rows = '';
@@ -397,7 +401,7 @@ ${commonOverlays()}${ldEra(E)}`;
         <td data-l="${COL[7]}"${browse?'':' class="nil"'}>${browse ? `<a href="${i.links[0][1]}" target="_blank" rel="noopener">${tr('افتح', 'Open')} ↗</a>` : '—'}</td></tr>`;
     }
   }
-  $('#matrixWrap').innerHTML = `<table class="matrix"><thead><tr>${COL.map((c,k)=>`<th${k ? '' : ' class="mx-s"'}>${c}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table>`;
+  if (!HY) $('#matrixWrap').innerHTML = `<table class="matrix"><thead><tr>${COL.map((c,k)=>`<th${k ? '' : ' class="mx-s"'}>${c}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table>`;
   /* a card hidden by the active filter is shown before the link scrolls to it */
   $('#matrixWrap').addEventListener('click', e=>{ const a = e.target.closest('td.name a'); const t = a && document.getElementById(a.hash.slice(1)); if (t && t.closest('[hidden]')) setFilter('all'); });
 
@@ -434,14 +438,14 @@ ${commonOverlays()}${ldEra(E)}`;
     if (count('surviving')) s += `<text x="${W-4}" y="${lanes.surviving+4}" font-size="12" text-anchor="${la}" fill="var(--acc)">${tr('باقية', 'surviving')}</text>`;
     if (count('edge')) s += `<text x="${W-4}" y="${lanes.edge+4}" font-size="12" text-anchor="${la}" fill="var(--gold)">${tr('على الحافة', 'edge')}</text>`;
     if (count('lost')) s += `<text x="${W-4}" y="${lanes.lost+4}" font-size="12" text-anchor="${la}" fill="var(--ink3)">${tr('مفقودة', 'lost')}</text>`;
-    $('#tl').innerHTML = s + '</svg>';
+    if (!HY) $('#tl').innerHTML = s + '</svg>';
     $('#tl').addEventListener('click', e=>{ const g = e.target.closest('[data-go]'); if (g) goTo(g.dataset.go); });
     $('#tl').addEventListener('keydown', e=>{ const g = e.target.closest('[data-go]'); if (g && (e.key==='Enter'||e.key===' ')) { e.preventDefault(); goTo(g.dataset.go); } });
   })();
 
   /* entries */
   const box = $('#entries');
-  for (const g of ['surviving','edge','lost']) {
+  if (!HY) for (const g of ['surviving','edge','lost']) {
     const list = items.filter(i=>i.group===g); if (!list.length) continue;
     box.appendChild(el('h3', {class:'group-title', 'data-group':g}, `${GROUPS[g]} <small>${list.length}</small>`));
     if (g==='lost') {
@@ -457,17 +461,17 @@ ${commonOverlays()}${ldEra(E)}`;
     }
   }
   const FILTERS = (EN ? [['all','All'],['surviving','Surviving'],['digital','Digitised'],['lost','Lost'],['edge','On the edge']] : [['all','الكل'],['surviving','الباقية'],['digital','المرقمنة'],['lost','المفقودة'],['edge','على الحافة']]).filter(f=>f[0]==='all'||f[0]==='digital'||count(f[0]));
-  $('#filters').innerHTML = FILTERS.map(f=>`<button class="chip" type="button" data-f="${f[0]}" aria-pressed="${f[0]==='all'}">${f[1]}</button>`).join('');
+  if (!HY) $('#filters').innerHTML = FILTERS.map(f=>`<button class="chip" type="button" data-f="${f[0]}" aria-pressed="${f[0]==='all'}">${f[1]}</button>`).join('');
   $('#filters').addEventListener('click', e=>{ const c = e.target.closest('.chip'); if (c) setFilter(c.dataset.f); });
 
   if (E.hasScale!==false) {
     const list = items.filter(i=>i.ruling).sort((a,b)=>(b.ruling.w*b.ruling.h)-(a.ruling.w*a.ruling.h));
-    $('#scaleRow').innerHTML = list.map(i=>`<div class="scale-item">${rulingSVG(i.ruling,5)}<b>${i.short||i.title}</b><span>${i.ruling.unknown?tr('مقاس غير منشور', 'size not published'):i.ruling.w+' × '+i.ruling.h+tr(' سم', ' cm')} · ${i.ruling.n?lines(i.ruling.n):tr('الأسطر ؟', 'lines ?')}</span></div>`).join('');
+    if (!HY) $('#scaleRow').innerHTML = list.map(i=>`<div class="scale-item">${rulingSVG(i.ruling,5)}<b>${i.short||i.title}</b><span>${i.ruling.unknown?tr('مقاس غير منشور', 'size not published'):i.ruling.w+' × '+i.ruling.h+tr(' سم', ' cm')} · ${i.ruling.n?lines(i.ruling.n):tr('الأسطر ؟', 'lines ?')}</span></div>`).join('');
   }
 
   if (E.anat) {
     const fig = $('#anatFig'), list = $('#anatList');
-    E.anat.points.forEach((p,k)=>{
+    if (!HY) E.anat.points.forEach((p,k)=>{
       fig.appendChild(el('button', {class:'hs', type:'button', style:`right:${100-p.x}%;top:${p.y}%`, 'aria-label':p.t, 'data-k':k}, String(k+1)));
       list.appendChild(el('li', {'data-k':k, tabindex:'0'}, `<span class="k">${k+1}</span><div><b>${p.t}</b><span>${p.d}</span></div>`));
     });
@@ -483,10 +487,10 @@ ${commonOverlays()}${ldEra(E)}`;
     list.addEventListener('keydown', e=>{ const li = e.target.closest('li'); if (li && (e.key==='Enter'||e.key===' ')) { e.preventDefault(); on(li.dataset.k); show(li.dataset.k); } });
     on(0);
   }
-  $('#refs').innerHTML = E.refs.map(r=>`<li>${r}</li>`).join('');
+  if (!HY) $('#refs').innerHTML = E.refs.map(r=>`<li>${r}</li>`).join('');
   /* detection runs on the Arabic data, whose plate captions name the publications */
   const SRC = ERAS_DATA[E.key].items, fromPubs = SRC.some(i => (i.plates||[]).some(p => /عن (خبطة|بونجانينو|سجلماسي)/.test(p.loc || ''))), enhanced = SRC.some(i => (i.plates||[]).some(p => window.AI_ENH.has(p.f)));
-  $('#credits').innerHTML = (E.credits === 'لا صور في هذه الصفحة.' || E.credits === 'No images on this page.' ? '' : E.credits) + (fromPubs ? tr(' وبعض الصور منقولة من دراسات منشورة، أغلبها بجودة منخفضة، للتعريف بمصاحف لم تُرقمن؛ ومصدر كل صورة مذكور تحتها، والحقوق لأصحابها والمكتبات التي تحفظ المخطوطات.', ' Some images are reproduced from published studies, mostly at low resolution, to introduce Qur’ans that have not been digitised; the source of each image is given under it, and the rights belong to their owners and to the libraries that hold the manuscripts.') : '') + (enhanced ? tr(' وحُسّنت جودة الصور الضعيفة بالذكاء الاصطناعي (Real-ESRGAN، ممزوجاً بتكبير عادي حتى لا تتغير صور الحروف)، وكل صورة محسّنة معلَّمة تحتها.', ' Weak images were enhanced with AI (Real-ESRGAN, blended with a plain enlargement so that the letter forms do not change), and each enhanced image is marked under it.') : '');
+  if (!HY) $('#credits').innerHTML = (E.credits === 'لا صور في هذه الصفحة.' || E.credits === 'No images on this page.' ? '' : E.credits) + (fromPubs ? tr(' وبعض الصور منقولة من دراسات منشورة، أغلبها بجودة منخفضة، للتعريف بمصاحف لم تُرقمن؛ ومصدر كل صورة مذكور تحتها، والحقوق لأصحابها والمكتبات التي تحفظ المخطوطات.', ' Some images are reproduced from published studies, mostly at low resolution, to introduce Qur’ans that have not been digitised; the source of each image is given under it, and the rights belong to their owners and to the libraries that hold the manuscripts.') : '') + (enhanced ? tr(' وحُسّنت جودة الصور الضعيفة بالذكاء الاصطناعي (Real-ESRGAN، ممزوجاً بتكبير عادي حتى لا تتغير صور الحروف)، وكل صورة محسّنة معلَّمة تحتها.', ' Weak images were enhanced with AI (Real-ESRGAN, blended with a plain enlargement so that the letter forms do not change), and each enhanced image is marked under it.') : '');
 
   setupLightbox(id => (items.find(x=>x.id===id)||{}).plates || [], id => items.find(x=>x.id===id));
   setupPresentation(E);
@@ -550,7 +554,7 @@ function renderMs(E, id){
   const alt = altNames(E.key, i.id), others1 = (EN ? [alt.fr ? `<span lang="fr">${alt.fr}</span>` : '', `<span lang="ar" dir="rtl">${ARABIC_TITLE(E.key, i.id)}</span>`] : [alt.en ? `<span lang="en" dir="ltr">${alt.en}</span>` : '', alt.fr ? `<span lang="fr" dir="ltr">${alt.fr}</span>` : '']).filter(Boolean);
   const card = i.group==='lost'
     ? `<article class="entry" id="${i.id}"><div class="ms-status">${badges(i.status)}</div><div class="entry-body" style="grid-template-columns:1fr"><div class="prose"><p>${i.text}</p><p class="why">${tr('المصدر', 'Source')}: ${i.src}</p></div></div></article>`
-    : `<article class="entry" id="${i.id}"><div class="ms-status">${badges(i.status)}</div>${entryBodyHTML(i)}</article>`;
+    : `<article class="entry" id="${i.id}"><div class="ms-status">${badges(i.status)}</div>${entryBodyHTML(i, 'h3')}</article>`;
   const k = items.indexOf(i), prev = items[k-1], next = items[k+1];
   const others = items.filter(x=>x!==i).map(x=>{ const s = samplePlate(x); return `<a class="ms-item" href="../${x.id}/"><span class="th">${s ? `<img loading="lazy" src="${s.p.turl || `${PB}plates/${s.p.f}-t.jpg`}" alt="">` : `<svg viewBox="0 0 24 24" width="26" height="26" style="color:var(--gold)"><use href="#star"/></svg>`}</span><span><b>${x.short||x.title}</b><span>${x.dateH}${x.group==='lost' ? ` · ${tr('مفقود', 'lost')}` : ''}</span></span></a>`; }).join('');
   const N = window.ERAS_EN_NAMES[E.key];
@@ -579,7 +583,7 @@ ${railHTML(E.key)}
 </main>
 <footer><div class="wrap"><div>${E.name} · ${E.footer}</div><div><a href="../">${E.name}</a> · <a href="${ROOT}">${tr('مصاحف المغرب: كل العصور', 'Masahif al-Maghrib: all eras')}</a></div>${byline()}</div></footer>
 ${commonOverlays()}${ldMs(E, i, m)}`;
-  $('#app').innerHTML = html;
+  if (!document.querySelector('#card article')) $('#app').innerHTML = html;
   setupLightbox(x => x===i.id ? (i.plates||[]) : [], x => x===i.id ? i : null);
 }
 /* the export page (build_hub.ps1) reads every manuscript page's metadata from here */
@@ -703,7 +707,7 @@ ${railHTML('about')}
 </main>
 <footer><div class="wrap"><div>${SN}</div>${byline()}</div></footer>
 ${ldAbout()}`;
-  $('#app').innerHTML = html;
+  if (!document.querySelector('.about-bio')) $('#app').innerHTML = html;
 }
 
 /* ================= HUB ================= */
