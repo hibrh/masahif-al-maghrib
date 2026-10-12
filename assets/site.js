@@ -58,8 +58,10 @@ const en = (n, one, many) => `${n} ${n===1 ? one : (many || one + 's')}`;
 const ROOT = window.ROOT || '';
 /* folder of the era's plates/ relative to the current page ('' on the era page, '../' on a manuscript page) */
 const PB = window.PLATE_BASE || '';
-/* phones get the 800 px copy of a wide plate (tools\make_mid.ps1 makes <name>-m.jpg next to each plate); larger screens keep the full file */
-const midSet = (src, w, sizes) => w > 900 && !/^https?:/.test(src) && /\.jpg$/.test(src) ? ` srcset="${src.replace(/\.jpg$/, '-m.jpg')} 800w, ${src} ${w}w" sizes="${sizes}"` : '';
+/* phones get the 800 px copy of a plate (tools\make_mid.ps1 makes <name>-m.jpg next to each plate); larger screens keep the full file.
+   The data width is that of the source image, and enhanced plates are stored two or three times larger, so the full
+   file is described as at least 1600 px wide */
+const midSet = (src, w, sizes) => !/^https?:/.test(src) && /\.jpg$/.test(src) ? ` srcset="${src.replace(/\.jpg$/, '-m.jpg')} 800w, ${src} ${Math.max(w, 1600)}w" sizes="${sizes}"` : '';
 const HERO_SIZES = '(max-width: 860px) calc(100vw - 50px), 540px';
 /* site credit, shown at the foot of every page; wa = WhatsApp number in international format, digits only */
 const WA_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2a9.8 9.8 0 0 0-8.4 14.8L2.3 21.7l4.8-1.3A9.8 9.8 0 1 0 12 2.2Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.6 7.4c.3-.3.8-.3 1 .1l.8 1.8c.1.3 0 .6-.2.8l-.6.6a6.6 6.6 0 0 0 3.6 3.6l.6-.6c.2-.2.5-.3.8-.2l1.8.8c.4.2.4.7.1 1-.9 1-2.2 1.3-3.4.8a10.4 10.4 0 0 1-5.3-5.3c-.5-1.2-.2-2.5.8-3.4Z" fill="currentColor"/></svg>';
@@ -705,7 +707,7 @@ ${railHTML('about')}
 <main>
   <section><div class="wrap about">
     <div class="about-bio">${CRED.bio.map(p => `<p>${p}</p>`).join('')}</div>
-    <div class="note"><h3>${tr('الشهادة والجائزة', 'Certificate and award')}</h3><ul><li>${CRED.cert}</li><li>${CRED.award}</li><li>${CRED.shows}</li></ul></div>
+    <div class="note"><h2>${tr('الشهادة والجائزة', 'Certificate and award')}</h2><ul><li>${CRED.cert}</li><li>${CRED.award}</li><li>${CRED.shows}</li></ul></div>
     <div class="about-actions">${waButton(tr('التواصل عبر واتساب', 'Contact on WhatsApp'))}<a class="btn" href="${ROOT || './'}">${tr('تصفح مصاحف المغرب', 'Browse Masahif al-Maghrib')} ${FWD}</a></div>
   </div></section>
 </main>
