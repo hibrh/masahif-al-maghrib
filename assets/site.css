@@ -90,6 +90,8 @@
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--naskh);font-size:19px;line-height:1.85;overflow-x:hidden}
 img{max-width:100%;display:block}
+/* the <picture> around a plate (AVIF source, site.js pic()) adds no box: every img rule applies as before */
+picture{display:contents}
 a{color:var(--lapis);text-underline-offset:3px}
 a:hover{color:var(--red)}
 .wrap{max-width:1180px;margin:0 auto;padding:0 16px}
@@ -106,7 +108,7 @@ h1,h2,h3{font-family:var(--kufi);font-weight:600;line-height:1.35;margin:0}
 .nav::-webkit-scrollbar{display:none}
 .nav a{font-family:var(--ui);font-size:14px;color:var(--ink2);text-decoration:none;padding:6px 10px;border-radius:8px;white-space:nowrap}
 .nav a:hover{background:var(--bg2);color:var(--ink)}
-.btn{font-family:var(--ui);font-size:14px;font-weight:500;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 14px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;white-space:nowrap;text-decoration:none}
+.btn{font-family:var(--ui);font-size:14px;font-weight:600;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 14px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;white-space:nowrap;text-decoration:none}
 .btn:hover{border-color:var(--gold);color:var(--ink)}
 .btn.gold{background:var(--deep);color:#f4e6c4;border-color:transparent}
 .btn.gold:hover{background:var(--acc);color:#fff}
@@ -159,7 +161,7 @@ section + section{border-top:1px solid var(--line)}
 
 /* badges */
 .badges{display:flex;flex-wrap:wrap;gap:6px}
-.badge{font-family:var(--ui);font-size:12.5px;font-weight:500;border-radius:999px;padding:3px 10px 3px 10px;border:1px solid currentColor;display:inline-flex;align-items:center;gap:6px;line-height:1.5;white-space:nowrap}
+.badge{font-family:var(--ui);font-size:12.5px;font-weight:600;border-radius:999px;padding:3px 10px 3px 10px;border:1px solid currentColor;display:inline-flex;align-items:center;gap:6px;line-height:1.5;white-space:nowrap}
 .badge::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
 .b-ok{color:var(--ok)} .b-no{color:var(--no)} .b-part{color:var(--part)} .b-mut{color:var(--ink3)}
 
@@ -481,7 +483,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   .mx-thumb{width:96px;height:64px}
 }
 /* "more" hint under each name in the summary table: the name opens the Qur'an's card */
-.matrix td.name .mx-more{display:block;margin-top:3px;font-family:var(--ui);font-size:12.5px;font-weight:500;color:var(--gold-t);white-space:nowrap}
+.matrix td.name .mx-more{display:block;margin-top:3px;font-family:var(--ui);font-size:12.5px;font-weight:600;color:var(--gold-t);white-space:nowrap}
 .matrix td.name a:hover .mx-more,.matrix td.name a:focus-visible .mx-more{text-decoration:underline;text-underline-offset:3px}
 /* home page on phones: the hero fills the first screen, so its title is the first and largest paint */
 @media (max-width:860px){ [data-era="hub"] .hero{min-height:calc(100vh - 110px);display:flex;align-items:center} [data-era="hub"] .hero > .wrap{width:100%;padding-top:40px} }
@@ -539,7 +541,8 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 /* both languages: language switch, names in other languages */
 .lang-btn{font-size:13.5px}
 .lang-btn[lang="ar"]{font-family:"IBM Plex Sans Arabic",system-ui,sans-serif}
-.lang-btn[lang="en"]{font-family:"IBM Plex Sans Label","IBM Plex Sans",system-ui,sans-serif}
+/* no full IBM Plex Sans behind the label face: while the label face loaded, the browser fetched that 45 KB file too */
+.lang-btn[lang="en"]{font-family:"IBM Plex Sans Label",system-ui,sans-serif}
 /* short label on narrow screens (the long one is hidden by .btn .lbl-long below 720px) */
 .lang-btn .lbl-short{display:none}
 @media (max-width:720px){ .lang-btn .lbl-short{display:inline} .lang-btn{padding-left:12px;padding-right:12px} }
