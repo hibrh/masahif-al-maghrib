@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url><loc>https://masahif-al-maghrib.com/</loc><lastmod>2026-10-12</lastmod>
-    <image:image><image:loc>https://masahif-al-maghrib.com/adarisa/plates/hero.jpg</image:loc></image:image>
-    <image:image><image:loc>https://masahif-al-maghrib.com/murabitun/plates/hero.jpg</image:loc></image:image>
-    <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/hero.jpg</image:loc></image:image>
-    <image:image><image:loc>https://masahif-al-maghrib.com/marini/plates/mc-hero.jpg</image:loc></image:image>
-    <image:image><image:loc>https://masahif-al-maghrib.com/wattasi/plates/hero.jpg</image:loc></image:image>
-    <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0004r.jpg/pct:30,41,62,14/1600,/0/default.jpg</image:loc></image:image>
-    <image:image><image:loc>https://masahif-al-maghrib.com/alawi/plates/hero.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/adarisa/plates/hero-card.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/murabitun/plates/hero-card.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/muwahhidun/plates/hero-card.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/marini/plates/hero-card.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/wattasi/plates/hero-card.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/saadi/plates/hero-card.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/alawi/plates/hero-card.jpg</image:loc></image:image>
   </url>
   <url><loc>https://masahif-al-maghrib.com/adarisa/</loc><lastmod>2026-10-12</lastmod>
     <image:image><image:loc>https://masahif-al-maghrib.com/adarisa/plates/hero.jpg</image:loc></image:image>
@@ -482,13 +482,13 @@
     <image:image><image:loc>https://masahif-al-maghrib.com/en/alawi/../../alawi/plates/mh-cert.jpg</image:loc></image:image>
   </url>
   <url><loc>https://masahif-al-maghrib.com/en/</loc><lastmod>2026-10-12</lastmod>
-    <image:image><image:loc>https://masahif-al-maghrib.com/en/../adarisa/plates/hero.jpg</image:loc></image:image>
-    <image:image><image:loc>https://masahif-al-maghrib.com/en/../murabitun/plates/hero.jpg</image:loc></image:image>
-    <image:image><image:loc>https://masahif-al-maghrib.com/en/../muwahhidun/plates/hero.jpg</image:loc></image:image>
-    <image:image><image:loc>https://masahif-al-maghrib.com/en/../marini/plates/mc-hero.jpg</image:loc></image:image>
-    <image:image><image:loc>https://masahif-al-maghrib.com/en/../wattasi/plates/hero.jpg</image:loc></image:image>
-    <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0004r.jpg/pct:30,41,62,14/1600,/0/default.jpg</image:loc></image:image>
-    <image:image><image:loc>https://masahif-al-maghrib.com/en/../alawi/plates/hero.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/en/../adarisa/plates/hero-card.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/en/../murabitun/plates/hero-card.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/en/../muwahhidun/plates/hero-card.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/en/../marini/plates/hero-card.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/en/../wattasi/plates/hero-card.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/en/../saadi/plates/hero-card.jpg</image:loc></image:image>
+    <image:image><image:loc>https://masahif-al-maghrib.com/en/../alawi/plates/hero-card.jpg</image:loc></image:image>
   </url>
   <url><loc>https://masahif-al-maghrib.com/en/adarisa/qarawiyyin902/</loc><lastmod>2026-10-12</lastmod>
     <image:image><image:loc>https://masahif-al-maghrib.com/adarisa/plates/q902-text.jpg</image:loc></image:image>

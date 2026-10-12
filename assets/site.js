@@ -708,6 +708,8 @@ ${ldAbout()}`;
 
 /* ================= HUB ================= */
 function renderHub(){
+  /* the published home page carries its prerendered content and no era data, so it is not rendered again */
+  if (document.getElementById('eras')) return;
   const ready = ERAS.filter(e=>ERAS_READY.includes(e.key) && ERAS_DATA[e.key]);
   /* the English hub sits in /en/, one level below the era folders that hold the images */
   const AR = window.ASSET_ROOT || '';
@@ -716,7 +718,8 @@ function renderHub(){
   const cnt = (e,g) => ERAS_DATA[e.key] ? ERAS_DATA[e.key].items.filter(i=>i.group===g).length : 0;
   const cards = ERAS.map(e=>{
     const D = eraData(e.key), ok = ERAS_READY.includes(e.key) && D, N = window.ERAS_EN_NAMES[e.key];
-    const band = ok && D.hero ? `<img src="${/^https?:/.test(D.hero.f) ? D.hero.f : AR + e.path + D.hero.f}" alt="">` : '';
+    /* plates/hero-card.jpg: a 640 px copy of the era's hero made for this card (tools\make_og.ps1) */
+    const band = ok && D.hero ? `<img src="${AR + e.path}plates/hero-card.jpg" alt="" loading="lazy" decoding="async">` : '';
     const counts = ok ? (EN ? `<div class="counts"><span class="badge b-ok">${cnt(e,'surviving')} surviving</span><span class="badge b-no">${cnt(e,'lost')} lost</span><span class="badge b-part">${cnt(e,'edge')} on the edge</span></div>`
       : `<div class="counts"><span class="badge b-ok">${cnt(e,'surviving')} باقية</span><span class="badge b-no">${cnt(e,'lost')} مفقودة</span><span class="badge b-part">${cnt(e,'edge')} على الحافة</span></div>`)
       : `<div class="counts"><span class="badge b-mut">${tr('قيد الإعداد', 'In preparation')}</span></div>`;
@@ -811,7 +814,10 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const key = window.ERA_KEY;
   if (key==='hub') renderHub(); else if (key==='about') renderAbout(); else if (key==='__export') exportItems(); else if (window.MS_ID) renderMs(eraData(key), window.MS_ID); else renderEra(eraData(key));
   setupTheme(); setupTracking(); setupLang();
-  const cur = document.querySelector('.rail [aria-current]'); if (cur && cur.scrollIntoView) cur.scrollIntoView({block:'nearest', inline:'center'});
-  if (location.hash) { const t = document.getElementById(location.hash.slice(1)); if (t) setTimeout(()=>t.scrollIntoView(), 60); }
+  /* after the first paint, so the layout is not forced while the page is still being built */
+  requestAnimationFrame(()=>{
+    const cur = document.querySelector('.rail [aria-current]'); if (cur && !cur.classList.contains('home') && cur.scrollIntoView) cur.scrollIntoView({block:'nearest', inline:'center'});
+    if (location.hash) { const t = document.getElementById(location.hash.slice(1)); if (t) setTimeout(()=>t.scrollIntoView(), 60); }
+  });
 });
 })();
