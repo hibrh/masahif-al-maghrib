@@ -63,6 +63,18 @@ const PB = window.PLATE_BASE || '';
    file is described as at least 1600 px wide */
 const midSet = (src, w, sizes) => !/^https?:/.test(src) && /\.jpg$/.test(src) ? ` srcset="${src.replace(/\.jpg$/, '-m.jpg')} 800w, ${src} ${Math.max(w, 1600)}w" sizes="${sizes}"` : '';
 const HERO_SIZES = '(max-width: 860px) calc(100vw - 50px), 540px';
+/* timeline dots closer than gap are spread evenly around their mean position, so no dot hides (and catches the clicks
+   of) another; neighbouring groups that then touch are merged. The exact date stays in each dot's title */
+function spreadDots(xs, gap){
+  const groups = xs.map((x,i)=>({x,i})).sort((a,b)=>a.x-b.x).map(p=>({ps:[p], c:p.x}));
+  const left = g => g.c - (g.ps.length-1)*gap/2;
+  for (let k = 0; k < groups.length-1; ) {
+    const a = groups[k], b = groups[k+1];
+    if (left(b) - (left(a) + (a.ps.length-1)*gap) < gap) { const ps = a.ps.concat(b.ps); groups.splice(k, 2, {ps, c:ps.reduce((s,p)=>s+p.x,0)/ps.length}); k = Math.max(0, k-1); }
+    else k++;
+  }
+  const out = []; groups.forEach(g=>g.ps.forEach((p,k)=>out[p.i] = Math.round((left(g) + k*gap)*10)/10)); return out;
+}
 /* site credit, shown at the foot of every page; wa = WhatsApp number in international format, digits only */
 const WA_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2a9.8 9.8 0 0 0-8.4 14.8L2.3 21.7l4.8-1.3A9.8 9.8 0 1 0 12 2.2Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.6 7.4c.3-.3.8-.3 1 .1l.8 1.8c.1.3 0 .6-.2.8l-.6.6a6.6 6.6 0 0 0 3.6 3.6l.6-.6c.2-.2.5-.3.8-.2l1.8.8c.4.2.4.7.1 1-.9 1-2.2 1.3-3.4.8a10.4 10.4 0 0 1-5.3-5.3c-.5-1.2-.2-2.5.8-3.4Z" fill="currentColor"/></svg>';
 /* role: the author's title on the about page and the home-page card; credit: the footer byline, worded by the user */
@@ -426,19 +438,24 @@ ${commonOverlays()}${ldEra(E)}`;
     });
     const lanes = {surviving:96, edge:170, lost:244}, levels = [-14, 26, -30, 42], placed = {};
     const order = [...items].sort((a,b)=>(a.y1?(a.y0+a.y1)/2:a.y0)-(b.y1?(b.y0+b.y1)/2:b.y0));
+    const dotX = {};
+    Object.keys(lanes).forEach(gr=>{ const its = order.filter(i=>i.group===gr); spreadDots(its.map(i=>i.y1 ? X((i.y0+i.y1)/2) : X(i.y0)), 19).forEach((x,k)=>dotX[its[k].id] = x); });
+    /* the date-range bars go under every dot and let clicks through, so a long range never catches a neighbour's click */
+    let bars = '', marks = '';
     order.forEach(i=>{
       const ly = lanes[i.group];
       const col = i.group==='lost' ? 'var(--ink3)' : (i.group==='edge' ? 'var(--gold)' : 'var(--acc)');
       let g = `<g class="mk" tabindex="0" role="link" data-go="${i.id}"><title>${i.title} — ${i.dateH}</title>`;
-      if (i.y1) g += `<line x1="${X(i.y0)}" x2="${X(i.y1)}" y1="${ly}" y2="${ly}" stroke="${col}" stroke-width="6" stroke-linecap="round" opacity=".5"/>`;
-      const cx = i.y1 ? X((i.y0+i.y1)/2) : X(i.y0);
+      if (i.y1) bars += `<line x1="${X(i.y0)}" x2="${X(i.y1)}" y1="${ly}" y2="${ly}" stroke="${col}" stroke-width="6" stroke-linecap="round" opacity=".5" pointer-events="none"/>`;
+      const cx = dotX[i.id];
       g += `<circle cx="${cx}" cy="${ly}" r="7.5" fill="${i.status.s==='no'?'var(--card)':col}" stroke="${col}" stroke-width="2"/>`;
       const lane = placed[i.group] || (placed[i.group] = []);
       let lv = 0; while (lv < levels.length-1 && lane.some(p=>p.lv===lv && Math.abs(p.x-cx) < 78)) lv++;
       lane.push({x:cx, lv});
       g += `<text x="${cx}" y="${ly+levels[lv]}" font-size="11.5" text-anchor="middle" fill="var(--ink)">${i.tl}</text></g>`;
-      s += g;
+      marks += g;
     });
+    s += bars + marks;
     /* lane labels in the right margin (anchor "start" is the right edge in Arabic, "end" in English) */
     const la = EN ? 'end' : 'start';
     if (count('surviving')) s += `<text x="${W-4}" y="${lanes.surviving+4}" font-size="12" text-anchor="${la}" fill="var(--acc)">${tr('باقية', 'surviving')}</text>`;
@@ -782,7 +799,15 @@ ${railHTML('hub')}
   for (let y = 800; y < B; y += 50) s += `<line x1="${X(y)}" x2="${X(y)}" y1="20" y2="${H-24}" stroke="var(--line)"/><text x="${X(y)}" y="${H-6}" font-size="12" text-anchor="middle" fill="var(--ink3)">${y}</text>`;
   ERAS.forEach((e,k)=>{ const a = X(e.a), b = X(e.b), yy = 24 + (k%2)*28; s += `<rect x="${Math.min(a,b)}" y="${yy}" width="${Math.abs(a-b)}" height="22" rx="4" fill="${e.c}" opacity="${ERAS_READY.includes(e.key)?.95:.35}"/><text x="${(a+b)/2}" y="${yy+15}" font-size="12" text-anchor="middle" fill="#fff">${eraName(e)}</text>`; });
   const lanes = {surviving:120, edge:165, lost:205};
-  all.forEach(({e,i})=>{ const cx = i.y1 ? X((i.y0+i.y1)/2) : X(i.y0), ly = lanes[i.group];
+  /* a dot that would cover another (and catch its clicks) moves up or down within its lane, or failing that a little
+     sideways; the exact date stays in its title */
+  const pos = all.map(({i})=>({x: i.y1 ? X((i.y0+i.y1)/2) : X(i.y0), y: lanes[i.group], offs: i.group==='lost' ? [0, 15] : [0, -15, 15]})), placed = [];
+  [...pos].sort((a,b)=>a.x-b.x).forEach(p=>{
+    for (let d = 0; d <= 40; d++) for (const dx of d ? [d, -d] : [0]) for (const o of p.offs)
+      if (placed.every(q=>Math.hypot(q.x-(p.x+dx), q.y-(p.y+o)) >= 16)) { p.x = Math.round((p.x+dx)*10)/10; p.y += o; placed.push(p); return; }
+    placed.push(p);
+  });
+  all.forEach(({e,i},k)=>{ const cx = pos[k].x, ly = pos[k].y;
     s += `<a href="${e.path}${window.MS_PAGES ? i.id + '/' : '#' + i.id}"><title>${i.title} — ${i.dateH}</title><circle cx="${cx}" cy="${ly}" r="6.5" fill="${i.status.s==='no'?'var(--card)':e.c}" stroke="${e.c}" stroke-width="2"/></a>`; });
   const la = EN ? 'end' : 'start';
   s += `<text x="${W-2}" y="${lanes.surviving+4}" font-size="12" text-anchor="${la}" fill="var(--ink2)">${tr('باقية', 'surviving')}</text><text x="${W-2}" y="${lanes.edge+4}" font-size="12" text-anchor="${la}" fill="var(--ink2)">${tr('على الحافة', 'edge')}</text><text x="${W-2}" y="${lanes.lost+4}" font-size="12" text-anchor="${la}" fill="var(--ink2)">${tr('مفقودة', 'lost')}</text>`;
