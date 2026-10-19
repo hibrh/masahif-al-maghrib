@@ -485,6 +485,10 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 /* "more" hint under each name in the summary table: the name opens the Qur'an's card */
 .matrix td.name .mx-more{display:block;margin-top:3px;font-family:var(--ui);font-size:12.5px;font-weight:600;color:var(--gold-t);white-space:nowrap}
 .matrix td.name a:hover .mx-more,.matrix td.name a:focus-visible .mx-more{text-decoration:underline;text-underline-offset:3px}
+/* direct PDF download links in the summary table */
+.matrix .mx-pdf{display:inline-block;font-weight:600;white-space:nowrap;color:var(--gold-t,var(--gold));text-decoration:none;border:1px solid var(--line);border-radius:6px;padding:1px 7px;margin:1px 0}
+.matrix .mx-pdf:hover,.matrix .mx-pdf:focus-visible{border-color:var(--gold)}
+
 /* home page on phones: the hero fills the first screen, so its title is the first and largest paint */
 @media (max-width:860px){ [data-era="hub"] .hero{min-height:calc(100vh - 110px);display:flex;align-items:center} [data-era="hub"] .hero > .wrap{width:100%;padding-top:40px} }
 /* the Qur'an cards are laid out and painted only as they come near the screen: less work while the page loads, nothing
