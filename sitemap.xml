@@ -97,7 +97,7 @@
     <image:image><image:loc>https://masahif-al-maghrib.com/wattasi/plates/hero.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/wattasi/plates/gr-text.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://masahif-al-maghrib.com/saadi/</loc><lastmod>2026-10-18</lastmod>
+  <url><loc>https://masahif-al-maghrib.com/saadi/</loc><lastmod>2026-10-19</lastmod>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0004r.jpg/pct:30,41,62,14/1600,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/saadi/plates/my-text.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/saadi/plates/aq-colo.jpg</image:loc></image:image>
@@ -113,6 +113,9 @@
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0264r.jpg/pct:30,62,62,15/1500,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0004r.jpg/pct:30,36,62,18/900,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0004r.jpg/pct:30,53,62,16/900,/0/default.jpg</image:loc></image:image>
+    <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0259r.jpg/pct:46,25,52,38/900,/0/default.jpg</image:loc></image:image>
+    <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0258v.jpg/pct:9,16,73,70/900,/0/default.jpg</image:loc></image:image>
+    <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0259r.jpg/pct:33,14,67,71/900,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0264r.jpg/pct:30,42,62,22/900,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0264r.jpg/pct:30,62,62,15/900,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/saadi/plates/gz-spread.jpg</image:loc></image:image>
@@ -291,9 +294,12 @@
   <url><loc>https://masahif-al-maghrib.com/saadi/ghalib/</loc><lastmod>2026-10-18</lastmod>
     <image:image><image:loc>https://masahif-al-maghrib.com/saadi/plates/gl-text.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://masahif-al-maghrib.com/saadi/mansur/</loc><lastmod>2026-10-18</lastmod>
+  <url><loc>https://masahif-al-maghrib.com/saadi/mansur/</loc><lastmod>2026-10-19</lastmod>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0004r.jpg/pct:30,36,62,18/1500,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0004r.jpg/pct:30,53,62,16/1500,/0/default.jpg</image:loc></image:image>
+    <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0259r.jpg/pct:46,25,52,38/1500,/0/default.jpg</image:loc></image:image>
+    <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0258v.jpg/pct:9,16,73,70/1500,/0/default.jpg</image:loc></image:image>
+    <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0259r.jpg/pct:33,14,67,71/1500,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0264r.jpg/pct:30,42,62,22/1500,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0264r.jpg/pct:30,62,62,15/1500,/0/default.jpg</image:loc></image:image>
   </url>
@@ -459,7 +465,7 @@
     <image:image><image:loc>https://masahif-al-maghrib.com/en/wattasi/../../wattasi/plates/hero.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/en/wattasi/../../wattasi/plates/gr-text.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://masahif-al-maghrib.com/en/saadi/</loc><lastmod>2026-10-18</lastmod>
+  <url><loc>https://masahif-al-maghrib.com/en/saadi/</loc><lastmod>2026-10-19</lastmod>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0004r.jpg/pct:30,41,62,14/1600,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/en/saadi/../../saadi/plates/my-text.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/en/saadi/../../saadi/plates/aq-colo.jpg</image:loc></image:image>
@@ -475,6 +481,9 @@
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0264r.jpg/pct:30,62,62,15/1500,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0004r.jpg/pct:30,36,62,18/900,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0004r.jpg/pct:30,53,62,16/900,/0/default.jpg</image:loc></image:image>
+    <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0259r.jpg/pct:46,25,52,38/900,/0/default.jpg</image:loc></image:image>
+    <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0258v.jpg/pct:9,16,73,70/900,/0/default.jpg</image:loc></image:image>
+    <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0259r.jpg/pct:33,14,67,71/900,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0264r.jpg/pct:30,42,62,22/900,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0264r.jpg/pct:30,62,62,15/900,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/en/saadi/../../saadi/plates/gz-spread.jpg</image:loc></image:image>
@@ -662,9 +671,12 @@
   <url><loc>https://masahif-al-maghrib.com/en/saadi/ghalib/</loc><lastmod>2026-10-18</lastmod>
     <image:image><image:loc>https://masahif-al-maghrib.com/saadi/plates/gl-text.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://masahif-al-maghrib.com/en/saadi/mansur/</loc><lastmod>2026-10-18</lastmod>
+  <url><loc>https://masahif-al-maghrib.com/en/saadi/mansur/</loc><lastmod>2026-10-19</lastmod>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0004r.jpg/pct:30,36,62,18/1500,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0004r.jpg/pct:30,53,62,16/1500,/0/default.jpg</image:loc></image:image>
+    <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0259r.jpg/pct:46,25,52,38/1500,/0/default.jpg</image:loc></image:image>
+    <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0258v.jpg/pct:9,16,73,70/1500,/0/default.jpg</image:loc></image:image>
+    <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0259r.jpg/pct:33,14,67,71/1500,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0264r.jpg/pct:30,42,62,22/1500,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0264r.jpg/pct:30,62,62,15/1500,/0/default.jpg</image:loc></image:image>
   </url>
@@ -830,7 +842,7 @@
     <image:image><image:loc>https://masahif-al-maghrib.com/fr/wattasi/../../wattasi/plates/hero.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/fr/wattasi/../../wattasi/plates/gr-text.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://masahif-al-maghrib.com/fr/saadi/</loc><lastmod>2026-10-18</lastmod>
+  <url><loc>https://masahif-al-maghrib.com/fr/saadi/</loc><lastmod>2026-10-19</lastmod>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0004r.jpg/pct:30,41,62,14/1600,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/fr/saadi/../../saadi/plates/my-text.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/fr/saadi/../../saadi/plates/aq-colo.jpg</image:loc></image:image>
@@ -846,6 +858,9 @@
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0264r.jpg/pct:30,62,62,15/1500,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0004r.jpg/pct:30,36,62,18/900,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0004r.jpg/pct:30,53,62,16/900,/0/default.jpg</image:loc></image:image>
+    <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0259r.jpg/pct:46,25,52,38/900,/0/default.jpg</image:loc></image:image>
+    <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0258v.jpg/pct:9,16,73,70/900,/0/default.jpg</image:loc></image:image>
+    <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0259r.jpg/pct:33,14,67,71/900,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0264r.jpg/pct:30,42,62,22/900,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0264r.jpg/pct:30,62,62,15/900,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/fr/saadi/../../saadi/plates/gz-spread.jpg</image:loc></image:image>
@@ -1033,9 +1048,12 @@
   <url><loc>https://masahif-al-maghrib.com/fr/saadi/ghalib/</loc><lastmod>2026-10-18</lastmod>
     <image:image><image:loc>https://masahif-al-maghrib.com/saadi/plates/gl-text.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://masahif-al-maghrib.com/fr/saadi/mansur/</loc><lastmod>2026-10-18</lastmod>
+  <url><loc>https://masahif-al-maghrib.com/fr/saadi/mansur/</loc><lastmod>2026-10-19</lastmod>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0004r.jpg/pct:30,36,62,18/1500,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0004r.jpg/pct:30,53,62,16/1500,/0/default.jpg</image:loc></image:image>
+    <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0259r.jpg/pct:46,25,52,38/1500,/0/default.jpg</image:loc></image:image>
+    <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0258v.jpg/pct:9,16,73,70/1500,/0/default.jpg</image:loc></image:image>
+    <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0259r.jpg/pct:33,14,67,71/1500,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0264r.jpg/pct:30,42,62,22/1500,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0264r.jpg/pct:30,62,62,15/1500,/0/default.jpg</image:loc></image:image>
   </url>
@@ -1201,7 +1219,7 @@
     <image:image><image:loc>https://masahif-al-maghrib.com/es/wattasi/../../wattasi/plates/hero.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/es/wattasi/../../wattasi/plates/gr-text.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://masahif-al-maghrib.com/es/saadi/</loc><lastmod>2026-10-18</lastmod>
+  <url><loc>https://masahif-al-maghrib.com/es/saadi/</loc><lastmod>2026-10-19</lastmod>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0004r.jpg/pct:30,41,62,14/1600,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/es/saadi/../../saadi/plates/my-text.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/es/saadi/../../saadi/plates/aq-colo.jpg</image:loc></image:image>
@@ -1217,6 +1235,9 @@
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0264r.jpg/pct:30,62,62,15/1500,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0004r.jpg/pct:30,36,62,18/900,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0004r.jpg/pct:30,53,62,16/900,/0/default.jpg</image:loc></image:image>
+    <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0259r.jpg/pct:46,25,52,38/900,/0/default.jpg</image:loc></image:image>
+    <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0258v.jpg/pct:9,16,73,70/900,/0/default.jpg</image:loc></image:image>
+    <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0259r.jpg/pct:33,14,67,71/900,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0264r.jpg/pct:30,42,62,22/900,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0264r.jpg/pct:30,62,62,15/900,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://masahif-al-maghrib.com/es/saadi/../../saadi/plates/gz-spread.jpg</image:loc></image:image>
@@ -1404,9 +1425,12 @@
   <url><loc>https://masahif-al-maghrib.com/es/saadi/ghalib/</loc><lastmod>2026-10-18</lastmod>
     <image:image><image:loc>https://masahif-al-maghrib.com/saadi/plates/gl-text.jpg</image:loc></image:image>
   </url>
-  <url><loc>https://masahif-al-maghrib.com/es/saadi/mansur/</loc><lastmod>2026-10-18</lastmod>
+  <url><loc>https://masahif-al-maghrib.com/es/saadi/mansur/</loc><lastmod>2026-10-19</lastmod>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0004r.jpg/pct:30,36,62,18/1500,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0004r.jpg/pct:30,53,62,16/1500,/0/default.jpg</image:loc></image:image>
+    <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0259r.jpg/pct:46,25,52,38/1500,/0/default.jpg</image:loc></image:image>
+    <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0258v.jpg/pct:9,16,73,70/1500,/0/default.jpg</image:loc></image:image>
+    <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0259r.jpg/pct:33,14,67,71/1500,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0264r.jpg/pct:30,42,62,22/1500,/0/default.jpg</image:loc></image:image>
     <image:image><image:loc>https://imagenes.patrimonionacional.es/iiif/2/Arabe1340%2FF-0264r.jpg/pct:30,62,62,15/1500,/0/default.jpg</image:loc></image:image>
   </url>
