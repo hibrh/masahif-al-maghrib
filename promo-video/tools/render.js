@@ -1,6 +1,7 @@
 // Render a cut to video, frame by frame, with several browser pages in parallel.
 //   node tools/render.js ar [workers] [from-second] [to-second]
-// Writes build/<lang>/video.mp4 (no sound) and build/<lang>/sfx.json (sound cues).
+//   node tools/render.js ar-teaser 8          (a shorter cut: <lang>-<cut>)
+// Writes build/<cut>/video.mp4 (no sound) and build/<cut>/sfx.json (sound cues).
 const path = require('path');
 const fs = require('fs');
 const { spawn } = require('child_process');
@@ -8,8 +9,10 @@ const { chromium } = require('playwright');
 const { serve } = require('./serve');
 
 const ROOT = path.resolve(__dirname, '..');
-const [lang = 'ar', workersArg = '3', fromArg, toArg] = process.argv.slice(2);
-const OUT = path.join(ROOT, 'build', lang);
+const [id = 'ar', workersArg = '3', fromArg, toArg] = process.argv.slice(2);
+const [lang, cut] = id.split('-');
+const QUERY = `lang=${lang}${cut ? '&cut=' + cut : ''}`;
+const OUT = path.join(ROOT, 'build', id);
 fs.mkdirSync(OUT, { recursive: true });
 
 // x264 at a high quality: these parts are joined without re-encoding
@@ -20,7 +23,7 @@ const X264 = ['-c:v', 'libx264', '-preset', 'slow', '-crf', '16', '-pix_fmt', 'y
 async function worker(browser, url, idx, frames, fps, file) {
   const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
   page.on('pageerror', e => console.log(`[${idx}] pageerror:`, e.message));
-  await page.goto(`${url}/promo-video/scene/index.html?lang=${lang}`);
+  await page.goto(`${url}/promo-video/scene/index.html?${QUERY}`);
   await page.evaluate(() => window.ready);
   const cdp = await page.context().newCDPSession(page);
   const ff = spawn('ffmpeg', ['-y', '-v', 'error', '-f', 'image2pipe', '-framerate', String(fps), '-c:v', 'png', '-i', '-',
@@ -44,7 +47,7 @@ async function worker(browser, url, idx, frames, fps, file) {
   const browser = await chromium.launch({ args: ['--disable-lcd-text', '--font-render-hinting=none', '--force-color-profile=srgb'] });
   // timing and sound cues come from the scene itself
   const probe = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
-  await probe.goto(`${url}/promo-video/scene/index.html?lang=${lang}`);
+  await probe.goto(`${url}/promo-video/scene/index.html?${QUERY}`);
   await probe.evaluate(() => window.ready);
   const { duration, fps, sfx } = await probe.evaluate(() => ({ duration: window.DURATION, fps: window.FPS, sfx: window.SFX }));
   await probe.close();

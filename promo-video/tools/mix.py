@@ -3,10 +3,11 @@
 chain on the voice, a touch of room, and effects synthesized here at the
 scene's own sound cues (whooshes, clicks, a soft impact). No music.
 
-    python tools/mix.py ar      → build/ar/mix.wav  (48 kHz stereo, -14 LUFS)
+    python tools/mix.py ar          → build/ar/mix.wav  (48 kHz stereo, -14 LUFS)
+    python tools/mix.py ar-teaser   → build/ar-teaser/mix.wav
 
-Needs numpy, scipy, soundfile and ffmpeg. Reads scene/timeline.<lang>.json,
-build/voice/<lang>/*.mp3 and build/<lang>/sfx.json (from render.js).
+Needs numpy, scipy, soundfile and ffmpeg. Reads scene/timeline.<cut>.json,
+build/voice/<lang>/*.mp3 and build/<cut>/sfx.json (from render.js).
 """
 import json
 import subprocess
@@ -226,9 +227,10 @@ def _hold(env, n):
     return maximum_filter1d(env, size=n, origin=(n - 1) // 2)
 
 
-def main(lang):
-    tl = json.loads((ROOT / "scene" / f"timeline.{lang}.json").read_text(encoding="utf-8"))
-    cues = json.loads((ROOT / "build" / lang / "sfx.json").read_text(encoding="utf-8"))
+def main(cut):
+    lang = cut.split("-")[0]
+    tl = json.loads((ROOT / "scene" / f"timeline.{cut}.json").read_text(encoding="utf-8"))
+    cues = json.loads((ROOT / "build" / cut / "sfx.json").read_text(encoding="utf-8"))
     total = int((tl["duration"] + 0.5) * SR)
 
     # narration, placed where the timeline says
@@ -269,7 +271,7 @@ def main(lang):
     mix[end:] = 0
     mix = mix[:end]
 
-    out = ROOT / "build" / lang
+    out = ROOT / "build" / cut
     raw = out / "mix_raw.wav"
     sf.write(raw, mix.astype(np.float32), SR, subtype="FLOAT")
     # two-pass loudness normalisation for social platforms: -14 LUFS, -1 dBTP

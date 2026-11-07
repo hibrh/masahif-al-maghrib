@@ -5,6 +5,7 @@
 (() => {
   const Q = new URLSearchParams(location.search);
   const LANG = Q.get('lang') === 'en' ? 'en' : 'ar';
+  const CUT = (Q.get('cut') || '').replace(/[^a-z0-9]/g, '');   // '' is the full cut
   const RTL = LANG === 'ar';
   const C = CONTENT[LANG];
   const FWD = RTL ? -1 : 1;                 // reading direction on screen
@@ -75,9 +76,21 @@
   const STAR = '<svg viewBox="0 0 64 64"><g fill="none" stroke="#e0b75a" stroke-width="2.6"><rect x="17" y="17" width="30" height="30"/><rect x="17" y="17" width="30" height="30" transform="rotate(45 32 32)"/></g><circle cx="32" cy="32" r="3.6" fill="#e0b75a"/></svg>';
 
   // ---------------------------------------------------------------- timeline
-  let TL, SG, SC, CU;
+  let TL, SG, SC, R, NEXT;
   const cue = (si, k) => SG[si].words[Math.min(k, SG[si].words.length - 1)].s;
   const segA = si => SG[si].speechStart;
+  // A cut may leave scenes out, so the scenes find their lines by scene name:
+  // R.hook (three lines), R.globe, R.eras, R.tre, R.feat, R.author, R.bil (the
+  // bilingual line of the call to action, full cut only) and R.visit (the address).
+  // NEXT[name] is when the scene after <name> starts.
+  function roles() {
+    const of = name => SG.map((sg, i) => (sg.scene === name ? i : -1)).filter(i => i >= 0);
+    const cta = of('cta');
+    R = { hook: of('hook'), globe: of('globe')[0], eras: of('eras')[0], tre: of('treasures')[0],
+      feat: of('features')[0], author: of('author')[0], bil: cta.length > 1 ? cta[0] : undefined, visit: cta[cta.length - 1] };
+    NEXT = {};
+    TL.order.forEach((k, i) => { NEXT[k] = i + 1 < TL.order.length ? SC[TL.order[i + 1]].start : TL.duration; });
+  }
 
   // ---------------------------------------------------------------- background
   function Background() {
@@ -359,8 +372,8 @@
       const sheen = el('div', 'sheen', card);
       const ar = h.w / h.h;
       let cw, ch;
-      if (ar < 0.75) { cw = 540; ch = 720; } else { ch = Math.min(690, 920 / ar); cw = ch * ar; }
-      const cy = 836;
+      if (ar < 0.75) { cw = 518; ch = 690; } else { ch = Math.min(690, 920 / ar); cw = ch * ar; }
+      const cy = 806;
       Object.assign(card.style, { width: cw + 'px', height: ch + 'px', left: (540 - cw / 2) + 'px', top: (cy - ch / 2) + 'px' });
       const loc = el('div', 'loc', g, `<div class="city">${h.name}</div><div class="place">${ICON.pin} ${h.place}</div>`);
       const meta = el('div', 'hookmeta', g, `<b>${h.title}</b><br><bdi>${h.date}</bdi>`);
@@ -373,9 +386,10 @@
         show(root, on);
         if (!on) return;
         items.forEach((it, i) => {
-          const tin = i === 0 ? 0.05 : segA(i) - 0.32;
-          const tout = i < 2 ? segA(i + 1) - 0.32 : SC.globe.start + 0.05;
-          const kin = i === 0 ? P(t, tin, tin + 1.0, E.out3) : P(t, tin, tin + 0.6, E.out3);
+          const tin = i === 0 ? 0 : segA(R.hook[i]) - 0.32;
+          const tout = i < 2 ? segA(R.hook[i + 1]) - 0.32 : SC.globe.start + 0.05;
+          const kin = i === 0 ? 1 : P(t, tin, tin + 0.6, E.out3);
+          const settle = i === 0 ? P(t, 0, 1.4, E.out3) : 1;
           const kout = P(t, tout, tout + 0.55, E.in3);
           const vis = kin > 0 && kout < 1;
           show(it.g, vis);
@@ -384,8 +398,8 @@
           const x = i === 0 ? 0 : FWD * 300 * (1 - kin);
           const xo = -FWD * 340 * kout;
           put(it.card, {
-            x: x + xo, y: i === 0 ? 40 * (1 - kin) : 0,
-            s: i === 0 ? 1.1 - 0.1 * kin : 0.92 + 0.08 * kin - 0.08 * kout,
+            x: x + xo, y: i === 0 ? 18 * (1 - settle) : 0,
+            s: i === 0 ? 1.04 - 0.04 * settle - 0.08 * kout : 0.92 + 0.08 * kin - 0.08 * kout,
             ry: FWD * 22 * (1 - kin) - FWD * 20 * kout, o,
           });
           const life = P(t, tin, tout + 0.6);
@@ -393,12 +407,12 @@
           const sw = P(t, tin + 0.5, tin + 1.6, E.io3);
           put(it.sheen, { x: lerp(-700, 700, sw) * -FWD, o: sw > 0 && sw < 1 ? 0.85 : 0 });
           put(it.bd, { s: 1.12 - 0.06 * life, o: 0.62 * o });
-          const tc = cue(i, C.cues.hook[i]);
+          const tc = cue(R.hook[i], C.cues.hook[i]);
           const kc = P(t, tc - 0.12, tc + 0.45, E.out3);
           const kp = P(t, tc + 0.05, tc + 0.6, E.out3);
           put(it.city, { y: 34 * (1 - kc), o: kc * (1 - kout) });
           put(it.place, { y: 20 * (1 - kp), o: kp * (1 - kout) });
-          const km = P(t, tin + 0.5, tin + 1.0, E.out3);
+          const km = i === 0 ? 1 : P(t, tin + 0.5, tin + 1.0, E.out3);
           put(it.meta, { y: 14 * (1 - km), o: km * (1 - kout) * 0.95 });
         });
       },
@@ -411,11 +425,11 @@
     const big = { cx: 540, cy: 716, R: 432 };
     const views = [[16, 33], [-4.5, 37.5], [3, 41]];
     const ids = C.hook.map(h => h.city);
-    const cues = [0, 1, 2].map(i => cue(i, C.cues.hook[i]));
+    const cues = [0, 1, 2].map(i => cue(R.hook[i], C.cues.hook[i]));
     // mini globe during the hook, following each city
     let lon = views[0][0], lat = views[0][1];
     for (let i = 1; i < 3; i++) {
-      const k = P(t, segA(i) - 0.32, segA(i) + 0.4, E.io3);
+      const k = P(t, segA(R.hook[i]) - 0.32, segA(R.hook[i]) + 0.4, E.io3);
       lon = lerp(lon, views[i][0], k); lat = lerp(lat, views[i][1], k);
     }
     let st = { ...mini, lon, lat, alpha: P(t, cues[0] - 0.25, cues[0] + 0.3, E.out2), glow: 0.3, arcs: [] };
@@ -428,11 +442,11 @@
     const kg = P(t, t0 - 0.1, t0 + 1.1, E.io5);
     if (kg > 0) {
       st.cx = lerp(mini.cx, big.cx, kg); st.cy = lerp(mini.cy, big.cy, kg); st.R = lerp(mini.R, big.R, kg);
-      st.lon = lerp(lon, -15, kg) - 6 * P(t, t0 + 1.1, SC.eras.start + 1, E.ioSine);
+      st.lon = lerp(lon, -15, kg) - 6 * P(t, t0 + 1.1, NEXT.globe + 1, E.ioSine);
       st.lat = lerp(lat, 33, kg);
       st.alpha = Math.max(st.alpha, kg);
-      const ts = cue(3, C.cues.scatter) - 0.35;
-      const tg = cue(3, C.cues.gather) - 0.1;
+      const ts = cue(R.globe, C.cues.scatter) - 0.35;
+      const tg = cue(R.globe, C.cues.gather) - 0.1;
       const others = CITIES.filter(c => c.id !== 'fez' && !ids.includes(c.id));
       others.forEach((c, j) => {
         const a = ts + j * 0.075;
@@ -448,7 +462,7 @@
       st.R = lerp(st.R, 300, kq); st.cy = lerp(st.cy, 760, kq);
       st.alpha *= 1 - 0.68 * kq;
       st.glow = 0.3 + 0.7 * P(t, tg, tg + 0.7, E.out2);
-      st.alpha *= 1 - P(t, SC.eras.start, SC.eras.start + 0.7, E.in2);
+      st.alpha *= 1 - P(t, NEXT.globe, NEXT.globe + 0.7, E.in2);
     }
     return st;
   }
@@ -464,8 +478,8 @@
     const q = [...logo.querySelectorAll('rect')], dot = logo.querySelector('circle');
     return {
       update(t) {
-        const tb = cue(3, C.cues.brand) - 0.25;
-        const tout = SC.eras.start - 0.3;     // gone before the first figure comes in
+        const tb = cue(R.globe, C.cues.brand) - 0.25;
+        const tout = NEXT.globe - 0.3;        // gone before the next scene comes in
         const on = t > tb - 0.1 && t < tout + 0.6;
         show(root, on);
         if (!on) return;
@@ -497,7 +511,7 @@
       d.style.left = (xs[i] - 160) + 'px';
       return { d, n: d.firstElementChild, s };
     });
-    const X0 = RTL ? 760 : 320, X1 = RTL ? 64 : 1016;
+    const X0 = RTL ? 690 : 320, X1 = RTL ? 64 : 950;
     const xOf = y => X0 + (X1 - X0) * (y - 780) / (2030 - 780);
     const TOP = 556, ROW = 84;
     const rows = ERAS.map((e, i) => {
@@ -543,13 +557,14 @@
     });
     return {
       update(t) {
+        if (!SC.eras) { show(root, false); return; }
         const a = SC.eras.start, b = SC.eras.end;
         const on = t > a - 0.2 && t < b + 0.6;
         show(root, on);
         if (!on) return;
         const ko = P(t, b - 0.3, b + 0.35, E.in3);
         stats.forEach((s, i) => {
-          const tc = cue(4, C.cues.stats[i]) - 0.12;
+          const tc = cue(R.eras, C.cues.stats[i]) - 0.12;
           const k = P(t, tc, tc + 0.5, E.outBack);
           const kn = P(t, tc, tc + 1.0, E.out3);
           s.n.textContent = (s.s.plus ? '+' : '') + Math.round(s.s.n * kn);
@@ -565,7 +580,7 @@
           r.bar.style.opacity = (0.92 * Math.min(1, kb * 3)).toFixed(3);
           put(r.r, { y: -50 * ko, o: 1 - ko });
         });
-        const ts = cue(4, C.cues.surviving) - 0.1, tl = cue(4, C.cues.lost) - 0.1;
+        const ts = cue(R.eras, C.cues.surviving) - 0.1, tl = cue(R.eras, C.cues.lost) - 0.1;
         dots.forEach(d => {
           const order = RTL ? (2030 - d.y) : (d.y - 780);
           const t0 = d.grp === 'lost' ? tl : d.grp === 'surviving' ? ts : a + 0.9 + d.i * 0.1;
@@ -612,20 +627,22 @@
     lgreen.style.width = '900px'; lgreen.style.left = '90px';
     return {
       update(t) {
+        if (!SC.treasures) { show(root, false); return; }
         const a = SC.treasures.start, b = SC.treasures.end;
         const on = t > a - 0.2 && t < b + 0.6;
         show(root, on);
         if (!on) return;
-        const tc = cue(5, C.cues.caliph) - 0.3, tsu = cue(5, C.cues.sultan) - 0.3;
-        const tg = cue(5, C.cues.gold) - 0.28, tv = cue(5, C.cues.silver) - 0.28;
+        const tc = cue(R.tre, C.cues.caliph) - 0.3, tsu = cue(R.tre, C.cues.sultan) - 0.3;
+        const tg = cue(R.tre, C.cues.gold) - 0.28, tv = cue(R.tre, C.cues.silver) - 0.28;
         const ko = P(t, b - 0.3, b + 0.35, E.in3);
         // A: the two hands
         const kA = P(t, tg, tg + 0.55, E.in3);
         [[caliph, lc, tc, 2.5 * -FWD], [sultan, ls, tsu, -2.5 * -FWD]].forEach(([c, l, t0, rot], j) => {
-          const k = P(t, t0, t0 + 0.7, E.out3);
+          const tk = j === 0 ? Math.min(t0, a + 0.1) : t0;      // the card; its label waits for the word
+          const k = P(t, tk, tk + 0.7, E.out3);
           const away = (j === 0 ? -FWD : FWD) * 520 * kA;
-          put(c.c, { x: away, y: 80 * (1 - k), s: 0.9 + 0.1 * k - 0.1 * kA, r: rot * k, o: P(t, t0, t0 + 0.35) * (1 - kA) });
-          c.i.style.transform = `scale(${(1.04 + 0.08 * P(t, t0, tg + 0.5)).toFixed(4)})`;
+          put(c.c, { x: away, y: 80 * (1 - k), s: 0.9 + 0.1 * k - 0.1 * kA, r: rot * k, o: P(t, tk, tk + 0.35) * (1 - kA) });
+          c.i.style.transform = `scale(${(1.04 + 0.08 * P(t, tk, tg + 0.5)).toFixed(4)})`;
           const sw = P(t, t0 + 0.4, t0 + 1.4, E.io3);
           put(c.sh, { x: lerp(-500, 500, sw) * -FWD, o: sw > 0 && sw < 1 ? 0.7 : 0 });
           const kl = P(t, t0 + 0.25, t0 + 0.7, E.out3);
@@ -659,7 +676,7 @@
   function Features(UIM) {
     const root = el('div', 'fill', scenes);
     root.style.perspective = '2200px';
-    const PW = 500, PH = 1053, PX = 540 - PW / 2, PY = 222;
+    const PW = 488, PH = 1028, PX = 540 - PW / 2, PY = 250;
     const phone = el('div', 'phone', root);
     Object.assign(phone.style, { width: PW + 'px', height: PH + 'px', left: PX + 'px', top: PY + 'px' });
     const screen = el('div', 'screen', phone);
@@ -697,18 +714,19 @@
       const startSide = (i !== 1) === RTL;   // right-hand column?
       d.style.left = (startSide ? PX + PW + 22 : PX - 22 - 240) + 'px';
       d.style.width = '240px';
-      d.style.top = [330, 640, 930][i] + 'px';
+      d.style.top = [350, 640, 890][i] + 'px';
       return d;
     });
     return {
       update(t) {
+        if (!SC.features) { show(root, false); return; }
         const a = SC.features.start, b = SC.features.end;
         const on = t > a - 0.2 && t < b + 0.6;
         show(root, on);
         if (!on) return;
         const ki = P(t, a, a + 0.8, E.out3), ko = P(t, b - 0.35, b + 0.35, E.in3);
         put(phone, { y: 220 * (1 - ki) + 160 * ko, ry: FWD * 10 * (1 - ki), r: -FWD * 2 * (1 - ki), o: ki * (1 - ko) });
-        const ts = cue(6, C.cues.samples) - 0.2, tl = cue(6, C.cues.links) - 0.25;
+        const ts = cue(R.feat, C.cues.samples) - 0.2, tl = cue(R.feat, C.cues.links) - 0.25;
         const s1 = CJ.strip - 560, s2 = CJ.strip - 390, s3 = CJ.links - 360;
         let y = lerp(0, s1, P(t, a + 0.55, ts, E.io3));
         y = lerp(y, s2, P(t, ts, ts + 0.45, E.io3));
@@ -730,7 +748,7 @@
         const L = CJ.linksBox;
         Object.assign(ring.style, { left: (L[0] * k - 10) + 'px', top: (STATUS + (L[1] - s3) * k - 10) + 'px', width: (L[2] * k + 20) + 'px', height: (L[3] * k + 20) + 'px' });
         put(ring, { s: 1.12 - 0.12 * kr, o: kr * (1 - ko) });
-        const cts = [cue(6, C.cues.card) + 0.15, ts + 0.35, tl + 0.2];
+        const cts = [cue(R.feat, C.cues.card) + 0.15, ts + 0.35, tl + 0.2];
         callouts.forEach((c, i) => {
           const kc = P(t, cts[i], cts[i] + 0.5, E.out3);
           const dx = (i === 1 ? 1 : -1) * FWD * 40 * (1 - kc);
@@ -763,6 +781,7 @@
     });
     return {
       update(t) {
+        if (!SC.author) { show(root, false); return; }
         const a = SC.author.start, b = SC.author.end;
         const on = t > a - 0.2 && t < b + 0.6;
         show(root, on);
@@ -773,18 +792,18 @@
         put(card, { y: 50 * (1 - ki) - 40 * ko, s: 0.96 + 0.04 * ki, o: ki * (1 - ko) });
         put(kick, { o: P(t, a + 0.25, a + 0.7) });
         put(orn, { r: 90 * (1 - P(t, a + 0.2, a + 1.0, E.out3)), s: 0.6 + 0.4 * P(t, a + 0.2, a + 0.9, E.outBack), o: P(t, a + 0.2, a + 0.6) });
-        const tn = cue(7, C.cues.name) - 0.18;
+        const tn = cue(R.author, C.cues.name) - 0.18;
         const kn = P(t, tn, tn + 0.75, E.io3);
         nm.style.clipPath = RTL ? `inset(-20% 0 -20% ${(100 * (1 - kn)).toFixed(2)}%)` : `inset(-20% ${(100 * (1 - kn)).toFixed(2)}% -20% 0)`;
         put(nm, { o: P(t, tn, tn + 0.2), blur: 6 * (1 - kn) });
-        const tr = cue(7, C.cues.role) - 0.15;
+        const tr = cue(R.author, C.cues.role) - 0.15;
         const kr = P(t, tr, tr + 0.5, E.out3);
         put(role, { y: 16 * (1 - kr), o: kr });
-        const tcy = cue(7, C.cues.city) - 0.2;
+        const tcy = cue(R.author, C.cues.city) - 0.2;
         const kc = P(t, tcy, tcy + 0.5, E.out3);
         put(city, { y: 16 * (1 - kc), s: 0.9 + 0.1 * P(t, tcy, tcy + 0.5, E.outBack), o: kc });
-        const ta = cue(7, C.cues.award) - 0.15;
-        const tb = [cue(7, C.cues.teach) - 0.15, cue(7, C.cues.grad) - 0.15, ta];   // teaching, diploma, prize
+        const ta = cue(R.author, C.cues.award) - 0.15;
+        const tb = [cue(R.author, C.cues.teach) - 0.15, cue(R.author, C.cues.grad) - 0.15, ta];   // teaching, diploma, prize
         badges.forEach((d, i) => {
           const k = P(t, tb[i], tb[i] + 0.55, E.out3);
           put(d, { x: -FWD * 50 * (1 - k), o: k });
@@ -836,15 +855,17 @@
           order.forEach(i => { chips[i].style.left = x + 'px'; x += ws[i] + gap; });
           laid = true;
         }
-        const tv = segA(9) - 0.45;
+        const tv = segA(R.visit) - 0.45;
         const ki = P(t, a, a + 0.8, E.out3), kx = P(t, tv, tv + 0.5, E.in3);
-        const tbil = cue(8, C.cues.bilingual) - 0.1;
+        const bil = R.bil !== undefined;
+        show(front.p, bil); show(back.p, bil); chips.forEach(c => show(c, bil));
+        const tbil = bil ? cue(R.bil, C.cues.bilingual) - 0.1 : a;
         const kb = P(t, tbil, tbil + 0.7, E.io3);
         put(front.p, { y: 200 * (1 - ki) + 300 * kx, r: front.r * (1 - 0.3 * kb), o: ki * (1 - kx) });
         put(back.p, { x: -FWD * 60 * (1 - P(t, a + 0.15, a + 0.9, E.out3)) + FWD * 30 * kb, y: 240 * (1 - ki) + 300 * kx + 40, s: 0.9 + 0.06 * kb,
           r: back.r * (1 - 0.4 * kb), o: P(t, a + 0.15, a + 0.9, E.out3) * (1 - kx) * (0.75 + 0.25 * kb) });
         chips.forEach((c, i) => {
-          const tc = cue(8, i === 0 ? C.cues.sourced : C.cues.bilingual) - 0.1;
+          const tc = bil ? cue(R.bil, i === 0 ? C.cues.sourced : C.cues.bilingual) - 0.1 : a;
           const k = P(t, tc, tc + 0.45, E.outBack);
           put(c, { y: 30 * (1 - P(t, tc, tc + 0.45, E.out3)) + 60 * kx, s: 0.8 + 0.2 * k, o: P(t, tc, tc + 0.3) * (1 - kx) });
         });
@@ -856,7 +877,7 @@
         put(bname, { y: 24 * (1 - kbr), o: kbr * (1 - kend) });
         const ka = P(t, tv + 0.1, tv + 0.65, E.out3);
         put(addr, { y: 60 * (1 - ka), s: 0.94 + 0.06 * ka, o: ka * (1 - kend) });
-        const w = SG[9].words[SG[9].words.length - 1];
+        const w = SG[R.visit].words[SG[R.visit].words.length - 1];
         const n = C.url.length;
         const typed = Math.round(n * P(t, w.s - 0.05, w.e - 0.1));
         txt.textContent = C.url.slice(0, typed);
@@ -913,10 +934,10 @@
     m.innerHTML = `${LOGO()}<span class="name">${C.brand}</span><span class="sep"></span><span class="url">${C.url}</span>`;
     return {
       update(t) {
-        const k = P(t, 0.35, 1.1, E.out3);
-        const hide1 = P(t, cue(3, C.cues.brand) - 0.5, cue(3, C.cues.brand) - 0.1) * (1 - P(t, SC.eras.start + 0.2, SC.eras.start + 0.7));
-        const hide2 = P(t, segA(9) - 0.45, segA(9) - 0.05);
-        put(m, { y: -14 * (1 - k), o: k * (1 - hide1) * (1 - hide2) * 0.92 });
+        const tb = cue(R.globe, C.cues.brand);
+        const hide1 = P(t, tb - 0.5, tb - 0.1) * (1 - P(t, NEXT.globe + 0.2, NEXT.globe + 0.7));
+        const hide2 = P(t, segA(R.visit) - 0.45, segA(R.visit) - 0.05);
+        put(m, { o: (1 - hide1) * (1 - hide2) * 0.92 });
       },
     };
   }
@@ -926,30 +947,40 @@
     const s = [];
     const add = (t, type, gain = 1) => s.push({ t: +t.toFixed(3), type, gain });
     add(0.05, 'swell', 0.8);
-    [1, 2].forEach(i => add(segA(i) - 0.32, 'whoosh', 0.8));
-    C.cues.hook.forEach((k, i) => add(cue(i, k) - 0.05, 'ping', 0.45));
+    [1, 2].forEach(i => add(segA(R.hook[i]) - 0.32, 'whoosh', 0.8));
+    C.cues.hook.forEach((k, i) => add(cue(R.hook[i], k) - 0.05, 'ping', 0.45));
     add(SC.globe.start - 0.1, 'whoosh', 1);
-    add(cue(3, C.cues.scatter) - 0.35, 'scatter', 0.7);
-    add(cue(3, C.cues.gather) - 0.1, 'reverse', 0.5);
-    add(cue(3, C.cues.brand), 'impact', 0.8);            // on the name, not in the pause before it
-    add(cue(3, C.cues.brand) + 0.1, 'shimmer', 0.6);
-    add(SC.eras.start, 'whoosh', 0.7);
-    C.cues.stats.forEach(k => add(cue(4, k) - 0.12, 'tick', 0.8));
-    add(cue(4, C.cues.surviving) - 0.1, 'sparkle', 0.6);
-    add(cue(4, C.cues.lost) - 0.1, 'sparkle', 0.45);
-    add(SC.treasures.start, 'whoosh', 0.7);
-    add(cue(5, C.cues.gold) - 0.28, 'whoosh', 0.8);
-    add(cue(5, C.cues.gold) + 0.3, 'shimmer', 0.6);
-    add(cue(5, C.cues.silver) - 0.28, 'whoosh', 0.7);
-    add(SC.features.start, 'whoosh', 0.8);
-    add(cue(6, C.cues.samples) + 0.3, 'tap', 0.9);
-    add(cue(6, C.cues.links) + 0.1, 'tick', 0.6);
-    add(SC.author.start, 'whoosh', 0.7);
-    add(cue(7, C.cues.award) + 0.35, 'shimmer', 0.5);
-    add(SC.cta.start, 'whoosh', 0.7);
-    [C.cues.sourced, C.cues.bilingual].forEach(k => add(cue(8, k) - 0.1, 'tick', 0.7));
-    add(segA(9) - 0.45, 'whoosh', 0.8);
-    const w = SG[9].words[SG[9].words.length - 1];
+    add(cue(R.globe, C.cues.scatter) - 0.35, 'scatter', 0.7);
+    add(cue(R.globe, C.cues.gather) - 0.1, 'reverse', 0.5);
+    add(cue(R.globe, C.cues.brand), 'impact', 0.8);            // on the name, not in the pause before it
+    add(cue(R.globe, C.cues.brand) + 0.1, 'shimmer', 0.6);
+    if (SC.eras) {
+      add(SC.eras.start, 'whoosh', 0.7);
+      C.cues.stats.forEach(k => add(cue(R.eras, k) - 0.12, 'tick', 0.8));
+      add(cue(R.eras, C.cues.surviving) - 0.1, 'sparkle', 0.6);
+      add(cue(R.eras, C.cues.lost) - 0.1, 'sparkle', 0.45);
+    }
+    if (SC.treasures) {
+      add(SC.treasures.start, 'whoosh', 0.7);
+      add(cue(R.tre, C.cues.gold) - 0.28, 'whoosh', 0.8);
+      add(cue(R.tre, C.cues.gold) + 0.3, 'shimmer', 0.6);
+      add(cue(R.tre, C.cues.silver) - 0.28, 'whoosh', 0.7);
+    }
+    if (SC.features) {
+      add(SC.features.start, 'whoosh', 0.8);
+      add(cue(R.feat, C.cues.samples) + 0.3, 'tap', 0.9);
+      add(cue(R.feat, C.cues.links) + 0.1, 'tick', 0.6);
+    }
+    if (SC.author) {
+      add(SC.author.start, 'whoosh', 0.7);
+      add(cue(R.author, C.cues.award) + 0.35, 'shimmer', 0.5);
+    }
+    if (R.bil !== undefined) {          // the phones come in; without them the address whoosh opens the scene
+      add(SC.cta.start, 'whoosh', 0.7);
+      [C.cues.sourced, C.cues.bilingual].forEach(k => add(cue(R.bil, k) - 0.1, 'tick', 0.7));
+    }
+    add(segA(R.visit) - 0.45, 'whoosh', 0.8);
+    const w = SG[R.visit].words[SG[R.visit].words.length - 1];
     const n = C.url.length;
     for (let i = 1; i <= n; i++) add(lerp(w.s - 0.05, w.e - 0.1, i / n), 'key', 0.5);
     add(w.e + 0.05, 'tap', 0.9);
@@ -963,13 +994,14 @@
   let parts;
   async function boot() {
     const [tl, land, morocco, card, viewer] = await Promise.all([
-      fetch(`timeline.${LANG}.json`).then(r => r.json()),
+      fetch(`timeline.${LANG}${CUT ? '-' + CUT : ''}.json`).then(r => r.json()),
       fetch('data/land-50m.json').then(r => r.json()),
       fetch('data/morocco.json').then(r => r.json()),
       fetch(UI + LANG + '/card.json').then(r => r.json()),
       fetch(UI + LANG + '/viewer.json').then(r => r.json()),
     ]);
     TL = tl; SG = TL.segments; SC = TL.scenes;
+    roles();
     const bg = Background();
     stage.appendChild(backs);
     const globe = Globe(land, morocco);
@@ -1003,7 +1035,7 @@
     // how much pattern, glow and dust each moment carries
     const m = { pattern: 1, glow: 1, tint: '233,190,110', dust: 0.7 };
     if (t < SC.hook.end) { m.pattern = 0.5; m.dust = 0.55; }
-    if (t >= SC.globe.start && t < SC.eras.start) { m.dust = 0.9; m.glow = 1.3; }
+    if (t >= SC.globe.start && t < NEXT.globe) { m.dust = 0.9; m.glow = 1.3; }
     if (t >= SC.end.start) { m.dust = 1.0; m.glow = 1.4; }
     return m;
   }
@@ -1025,7 +1057,7 @@
     parts.caps.update(t);
     parts.mark.update(t);
     parts.grain.update(t);
-    const black = Math.max(1 - P(t, 0, 0.6, E.out2), P(t, TL.duration - 0.75, TL.duration - 0.05, E.in2));
+    const black = P(t, TL.duration - 0.75, TL.duration - 0.05, E.in2);
     parts.fade.style.opacity = black.toFixed(3);
   }
 

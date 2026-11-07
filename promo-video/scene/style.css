@@ -30,8 +30,9 @@ bdi { unicode-bidi: isolate; }
 #grain { opacity: .06; mix-blend-mode: overlay; }
 #fade { position: absolute; inset: 0; background: #000; pointer-events: none; }
 
-/* watermark: the site's mark and address, always on */
-#mark { position: absolute; left: 0; right: 0; top: 112px; display: flex; justify-content: center;
+/* watermark: the site's mark and address, always on, below the top bar of
+   TikTok, Reels and Shorts (about the first 180 px of the frame) */
+#mark { position: absolute; left: 0; right: 0; top: 190px; display: flex; justify-content: center;
   align-items: center; gap: 16px; direction: ltr; }
 #mark .logo { width: 44px; height: 44px; }
 #mark .name { font-family: var(--kufi); font-weight: 600; font-size: 30px; color: var(--gold2); direction: rtl; }
@@ -40,16 +41,16 @@ html[lang="en"] #mark .name { font-weight: 600; font-size: 30px; letter-spacing:
 #mark .url { font-family: 'Plex', sans-serif; font-weight: 500; font-size: 27px; color: var(--ink2); letter-spacing: .02em; }
 
 /* captions: the narration, word by word */
-#caption { position: absolute; left: 60px; right: 60px; top: 1312px; height: 236px;
+#caption { position: absolute; left: 120px; right: 120px; top: 1272px; height: 236px;
   display: flex; align-items: center; justify-content: center; text-align: center; }
-#caption .chunk { font-family: var(--naskh); font-weight: 700; font-size: 62px; line-height: 1.52;
+#caption .chunk { font-family: var(--naskh); font-weight: 700; font-size: 62px; line-height: 1.52; text-wrap: balance;
   text-shadow: 0 2px 18px rgba(0, 0, 0, .85), 0 0 2px rgba(0, 0, 0, .6); }
 html[lang="en"] #caption .chunk { font-weight: 600; font-size: 56px; line-height: 1.32; letter-spacing: -.005em; }
 #caption .w { color: var(--ink); opacity: .34; }
 #caption .w.on { opacity: 1; }
 #caption .w.now { color: var(--gold3); opacity: 1; }
 #caption .url { font-family: 'Plex', sans-serif; font-weight: 600; font-size: .78em; letter-spacing: .01em; }
-#capband { position: absolute; left: 0; right: 0; top: 1240px; height: 380px; pointer-events: none;
+#capband { position: absolute; left: 0; right: 0; top: 1200px; height: 380px; pointer-events: none;
   background: linear-gradient(180deg, transparent, rgba(8, 6, 4, .62) 32%, rgba(8, 6, 4, .62) 68%, transparent); }
 
 /* shared pieces */
@@ -66,7 +67,7 @@ html[lang="en"] .kicker { font-family: 'Plex', sans-serif; text-transform: upper
 .pin { display: inline-block; width: 30px; height: 30px; vertical-align: middle; }
 
 /* hook */
-.loc { position: absolute; top: 236px; width: 760px; }
+.loc { position: absolute; top: 268px; width: 760px; }
 html[dir="rtl"] .loc { right: 200px; text-align: right; }
 html[dir="ltr"] .loc { left: 200px; text-align: left; }
 .loc .city { font-family: var(--kufi); font-weight: 700; font-size: 82px; line-height: 1.15; color: var(--gold2);
@@ -102,11 +103,11 @@ html[lang="en"] .stat .n { font-family: 'SerifVar', serif; font-weight: 700; fon
 html[lang="en"] .stat .l { font-family: 'Plex', sans-serif; font-weight: 500; font-size: 32px; letter-spacing: .04em; text-transform: uppercase; }
 .erarow { position: absolute; left: 0; width: 1080px; height: 80px; }
 .erarow .lab { position: absolute; top: 10px; width: 250px; font-family: var(--kufi); font-weight: 700; font-size: 31px; line-height: 1.2; }
-html[dir="rtl"] .erarow .lab { right: 50px; text-align: right; }
+html[dir="rtl"] .erarow .lab { right: 120px; text-align: right; }
 html[dir="ltr"] .erarow .lab { left: 50px; text-align: left; }
 html[lang="en"] .erarow .lab { font-weight: 700; font-size: 32px; }
 .erarow .yr { position: absolute; top: 50px; width: 250px; font-family: 'Plex', sans-serif; font-size: 20px; color: var(--ink3); direction: ltr; }
-html[dir="rtl"] .erarow .yr { right: 50px; text-align: right; }
+html[dir="rtl"] .erarow .yr { right: 120px; text-align: right; }
 html[dir="ltr"] .erarow .yr { left: 50px; text-align: left; }
 .erarow .track { position: absolute; top: 37px; height: 2px; background: rgba(241, 232, 214, .08); }
 .erarow .bar { position: absolute; top: 31px; height: 14px; border-radius: 7px; opacity: .92; }

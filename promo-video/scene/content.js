@@ -5,7 +5,7 @@ const UI = '../build/ui/';     // phone screenshots from tools/capture_ui.js
 
 const CITIES = [               // where the guide's Qur'ans are kept today [lon, lat]
   { id: 'fez', ll: [-5.0, 34.03], ar: 'فاس', en: 'Fez' },
-  { id: 'jerusalem', ll: [35.23, 31.78], ar: 'القدس', en: 'Jerusalem', label: [1, -1] },
+  { id: 'jerusalem', ll: [35.23, 31.78], ar: 'القدس', en: 'Jerusalem', label: [-1, -1] },
   { id: 'escorial', ll: [-4.15, 40.59], ar: 'الإسكوريال', en: 'El Escorial', label: [-1, 1] },
   { id: 'munich', ll: [11.58, 48.14], ar: 'ميونخ', en: 'Munich', label: [1, -1] },
   { id: 'istanbul', ll: [28.98, 41.01], ar: 'إسطنبول', en: 'Istanbul', label: [1, -1] },
@@ -78,7 +78,7 @@ const CONTENT = {
     },
     callouts: ['بطاقة لكل مصحف', 'عيّنات مقرّبة من الخط', 'روابط إلى النسخ المرقمنة'],
     author: {
-      kicker: 'عن المُعِدّ', name: 'إبراهيم الحسني الإدريسي',
+      kicker: 'عن المُعِدّ', name: 'إبراهيم حسني إدريسي',
       role: 'خطاط وباحث في المخطوطات والخطوط المغربية', city: 'فاس',
       badges: [
         { icon: 'pen', text: 'أستاذ الخطوط المغربية: المبسوط والمجوهر والثلث المغربي والأندلسي' },

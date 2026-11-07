@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 """Lay the narration out on a timeline that the scene and the mixer both read.
 
-    python tools/build_timeline.py ar     # or: en
+    python tools/build_timeline.py ar          # or: en
+    python tools/build_timeline.py ar teaser   # a shorter cut, listed in the script's "cuts"
 
 Reads voice/script.<lang>.json and build/voice/<lang>/*.json (from tts.py) and
-writes scene/timeline.<lang>.json: when each segment plays, when each word is
-spoken (as the caption shows it), how the captions are chunked, and when each
-scene starts and ends.
+writes scene/timeline.<lang>.json (or timeline.<lang>-<cut>.json): when each
+segment plays, when each word is spoken (as the caption shows it), how the
+captions are chunked, and when each scene starts and ends. A cut keeps some of
+the segments, in order, and may set its own "endCard" length.
 """
 import difflib
 import json
@@ -81,12 +83,17 @@ def chunk(words, lang, breaks=None):
     return merged
 
 
-def main(lang):
+def main(lang, cut=None):
     script = json.loads((ROOT / "voice" / f"script.{lang}.json").read_text(encoding="utf-8"))
     vdir = ROOT / "build" / "voice" / lang
+    chosen, end_card, name = script["segments"], END_CARD, lang
+    if cut:
+        spec = script["cuts"][cut]
+        chosen = [s for s in script["segments"] if s["id"] in spec["segments"]]
+        end_card, name = spec.get("endCard", END_CARD), f"{lang}-{cut}"
     t = LEAD_IN
     segments = []
-    for seg in script["segments"]:
+    for seg in chosen:
         meta = json.loads((vdir / f"{seg['id']}.json").read_text(encoding="utf-8"))
         spoken = meta["words"]
         n_say = len(seg["say"].split())
@@ -117,15 +124,16 @@ def main(lang):
         scenes[a]["end"] = scenes[b]["start"]
     end_start = segments[-1]["speechEnd"] + TAIL
     scenes[order[-1]]["end"] = end_start
-    scenes["end"] = {"start": end_start, "end": end_start + END_CARD}
+    scenes["end"] = {"start": end_start, "end": end_start + end_card}
     order.append("end")
-    duration = round(end_start + END_CARD, 3)
+    duration = round(end_start + end_card, 3)
     for k in scenes:
         scenes[k] = {"start": round(scenes[k]["start"], 3), "end": round(scenes[k]["end"], 3)}
 
-    out = {"lang": lang, "fps": FPS, "duration": duration, "frames": int(round(duration * FPS)),
-           "voice": script["voice"], "order": order, "scenes": scenes, "segments": segments}
-    path = ROOT / "scene" / f"timeline.{lang}.json"
+    out = {"lang": lang, "cut": cut or "full", "fps": FPS, "duration": duration,
+           "frames": int(round(duration * FPS)), "voice": script["voice"], "order": order,
+           "scenes": scenes, "segments": segments}
+    path = ROOT / "scene" / f"timeline.{name}.json"
     path.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"{path.name}: {duration:.2f}s, {out['frames']} frames")
     for k in order:
@@ -133,4 +141,4 @@ def main(lang):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    main(sys.argv[1], sys.argv[2] if len(sys.argv) > 2 else None)

@@ -75,5 +75,18 @@
       "say": "Visit Masaahif al-Maghrib dot com",
       "show": "Visit masahif-al-maghrib.com"
     }
-  ]
+  ],
+  "cuts": {
+    "teaser": {
+      "segments": [
+        "e1",
+        "e2",
+        "e3",
+        "e4",
+        "e6",
+        "e10"
+      ],
+      "endCard": 3.4
+    }
+  }
 }
