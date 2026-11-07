@@ -44,7 +44,8 @@
 والصور الثابتة صفحة أخرى (`posts/`) بالخطوط والألوان نفسها.
 
 ```bash
-pip install edge-tts numpy scipy soundfile        # والأدوات: ffmpeg وImageMagick وNode مع Playwright
+npm install                                                     # Playwright وChromium للرسم
+pip install edge-tts numpy scipy soundfile        # والأدوات: ffmpeg وImageMagick، وللفحص faster-whisper وtorch وtransformers
 python tools/tts.py ar && python tools/tts.py en               # التعليق الصوتي وتوقيت كل كلمة
 for l in ar en; do python tools/build_timeline.py $l; python tools/build_timeline.py $l teaser; done
 tools/prep_images.sh                                            # خلفيات مموهة
@@ -55,10 +56,16 @@ done                                                            # → out/video/
 node tools/posts.js                                             # → out/carousel/ وout/covers/ وout/stories/
 python tools/subtitles.py                                       # → out/subtitles/
 python tools/index.py                                           # → out/README.md، فهرس الملفات
+python tools/qa_voice.py                                        # الوقف والنطق في كل جملة عربية
+python tools/verify_asr.py                                      # Whisper على الفيديوهات النهائية
+tools/sheet.sh ar                                               # لقطات المقطع مع المناطق الآمنة
+python3 tools/playlist/serve.py                                 # المقاطع الأربعة قائمةَ تشغيل في المتصفح
 ```
 
 لتعديل النص: `voice/script.<lang>.json` (الحقل `say` لما يُنطق و`show` لما يُكتب إن اختلفا)،
 ثم أعد توليد الصوت والخط الزمني. وفي الملف نفسه `cuts`: الجمل التي يأخذها المقطع القصير، وطول ختامه.
+ولا يقف الصوت العربي على متحرك: الكلمة قبل الوقف تُكتب في `say` على صورة الوقف (`tools/waqf.py`)،
+وتبقى حركة آخرها في `show` وحده، أي على الشاشة. والقواعد كلها في `CLAUDE.md`.
 ونصوص الشاشة والصور ونقاط التزامن في `scene/content.js`، ونصوص الصور الثابتة في `posts/posts.js`.
 ولمعاينة لحظة بعينها: `node tools/stills.js ar-teaser 12.5 30` أو افتح `scene/index.html?lang=ar&cut=teaser&play`
 على خادم من جذر الموقع، ولمعاينة صورة: `posts/index.html?lang=ar&post=carousel-3`.
@@ -89,7 +96,9 @@ sits at 190 px, below the TikTok tabs and the Reels title. Captions end above 15
 clear of the name and description the apps draw at the bottom. The era labels stay clear of the buttons on the right.
 
 The narration (Microsoft neural voices Hamed and Andrew) was checked line by line with Whisper large-v3,
-the URL and the names included. There is no music, out of respect for the subject, only light synthesized
+the URL and the names included. The Arabic voice never stops on a vowel: a word before a pause is spoken
+in its pausal form while the caption keeps its final haraka (`tools/waqf.py`, checked with `tools/qa_voice.py`;
+the rules are in `CLAUDE.md`). There is no music, out of respect for the subject, only light synthesized
 sound effects, and the sound is at -14 LUFS. The commands above rebuild everything: `scene/` is an HTML page
 drawn as a pure function of time and captured frame by frame with Chromium, `posts/` draws the stills in the same
 look, and `voice/script.<lang>.json` lists the lines each cut keeps under `cuts`. Credits: “Website development

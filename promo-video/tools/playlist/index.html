@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Masahif al-Maghrib Playlist</title>
+<style>
+@font-face { font-family: 'Source Serif 4'; font-weight: 200 900; font-display: swap; src: url(fonts/source-serif-4-latin-wght-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Noto Kufi Arabic'; font-weight: 100 900; font-display: swap; src: url(fonts/noto-kufi-arabic-arabic-wght-normal.woff2) format('woff2'); unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF, U+200C-200F; }
+@font-face { font-family: 'IBM Plex Sans'; font-weight: 400; font-display: swap; src: url(fonts/ibm-plex-sans-latin-400-normal.woff2) format('woff2'); }
+@font-face { font-family: 'IBM Plex Sans'; font-weight: 500; font-display: swap; src: url(fonts/ibm-plex-sans-latin-500-normal.woff2) format('woff2'); }
+@font-face { font-family: 'IBM Plex Sans'; font-weight: 600; font-display: swap; src: url(fonts/ibm-plex-sans-latin-600-normal.woff2) format('woff2'); }
+
+/* A dark screening room in the videos' own palette: the player on the left, the running order and chapters beside it. */
+:root {
+  --bg: #0f0c09; --bg2: #1b1712; --bg3: #2a231b;
+  --ink: #f1e8d6; --ink2: #cdbfa7; --ink3: #9a8a74;
+  --gold: #d2a650; --gold2: #e9c879; --line: rgba(233, 200, 121, .22);
+  --serif: 'Source Serif 4', Georgia, serif;
+  --kufi: 'Noto Kufi Arabic', 'Source Serif 4', serif;
+  --ui: 'IBM Plex Sans', system-ui, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  min-height: 100vh; background-color: var(--bg); color: var(--ink); font: 15px/1.5 var(--ui); -webkit-font-smoothing: antialiased;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cg fill='none' stroke='%23e9c879' stroke-opacity='.045'%3E%3Crect x='42' y='42' width='36' height='36'/%3E%3Crect x='42' y='42' width='36' height='36' transform='rotate(45 60 60)'/%3E%3Ccircle cx='60' cy='60' r='7'/%3E%3C/g%3E%3C/svg%3E");
+}
+.wrap { max-width: 1180px; margin: 0 auto; padding-inline: max(16px, 3vw); }
+header.wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap; padding-block: 22px 10px; }
+.brand { display: flex; align-items: center; gap: 14px; }
+.mark { width: 34px; height: 34px; color: var(--gold2); flex: none; }
+.name { font: 650 24px/1.25 var(--serif); color: var(--gold2); }
+.name .ar { font: 600 17px/1 var(--kufi); color: var(--ink2); margin-left: 14px; }
+.sub { font-size: 13px; color: var(--ink3); margin-top: 2px; }
+code { font: 500 12.5px var(--ui); color: var(--ink2); }
+.total { font-size: 13px; color: var(--ink2); font-variant-numeric: tabular-nums; }
+
+main.wrap { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 36px; align-items: start; padding-block: 14px 48px; }
+.player { display: grid; gap: 14px; }
+.frame { height: min(82vh, 900px); aspect-ratio: 9 / 16; max-width: 100%; border-radius: 14px; overflow: hidden; background: #000; border: 1px solid var(--line); box-shadow: 0 28px 80px rgba(0, 0, 0, .55); }
+.frame video { display: block; width: 100%; height: 100%; object-fit: contain; background: #000; }
+.bar { width: 0; min-width: 100%; display: flex; align-items: center; gap: 12px; }
+.now { flex: 1; min-width: 0; }
+.now .t { font: 600 16px/1.3 var(--serif); color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.now .c { font-size: 13px; color: var(--ink3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+button { font: inherit; color: inherit; }
+.btn { flex: none; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg2); color: var(--ink); font: 500 13px var(--ui); cursor: pointer; }
+.btn:hover:not(:disabled) { border-color: var(--gold); }
+.btn:disabled { opacity: .35; cursor: default; }
+:focus-visible { outline: 2px solid var(--gold2); outline-offset: 2px; }
+
+.side { min-width: 0; }
+.opts { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; }
+.toggle { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--ink2); cursor: pointer; }
+.toggle input { accent-color: var(--gold); width: 16px; height: 16px; margin: 0; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; background: var(--bg2); }
+.seg button { border: 0; background: transparent; color: var(--ink3); font: 500 13px var(--ui); padding: 5px 12px; border-radius: 999px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--bg3); color: var(--gold2); }
+
+h2 { margin: 26px 0 10px; font: 600 12px var(--ui); letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
+ol { list-style: none; margin: 0; padding: 0; }
+.list { display: grid; gap: 6px; }
+.item { display: grid; grid-template-columns: 18px 56px minmax(0, 1fr) auto; gap: 14px; align-items: center; width: 100%; padding: 10px 12px; border: 1px solid transparent; border-radius: 12px; background: transparent; text-align: left; cursor: pointer; }
+.item:hover { background: var(--bg2); }
+.item[aria-current="true"] { background: var(--bg2); border-color: var(--line); }
+.item .n { font: 600 13px var(--ui); color: var(--ink3); text-align: center; font-variant-numeric: tabular-nums; }
+.item[aria-current="true"] .n { color: var(--gold2); }
+.thumb { display: block; width: 56px; aspect-ratio: 9 / 16; border-radius: 6px; overflow: hidden; background: #000; border: 1px solid var(--line); }
+.thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.txt { display: grid; min-width: 0; }
+.t1 { display: block; font: 600 19px/1.35 var(--serif); color: var(--ink); text-align: left; }
+.t1:lang(ar) { font: 700 18px/1.7 var(--kufi); }
+.item[aria-current="true"] .t1 { color: var(--gold2); }
+.t2 { display: block; font-size: 13px; color: var(--ink3); font-variant-numeric: tabular-nums; }
+.prog { display: block; height: 2px; margin-top: 8px; border-radius: 2px; background: var(--line); overflow: hidden; }
+.prog i { display: block; height: 100%; width: 0; background: var(--gold); }
+.item:not([aria-current="true"]) .prog { visibility: hidden; }
+.dur { font: 500 14px var(--ui); color: var(--ink2); font-variant-numeric: tabular-nums; }
+
+.chapters { display: grid; gap: 2px; }
+.chap { display: flex; gap: 14px; width: 100%; padding: 7px 12px; border: 0; border-radius: 8px; background: transparent; color: var(--ink2); font: 14px var(--ui); text-align: left; cursor: pointer; }
+.chap:hover { background: var(--bg2); }
+.chap .ts { min-width: 36px; color: var(--ink3); font-variant-numeric: tabular-nums; }
+.chap[aria-current="true"] { color: var(--gold2); }
+.chap[aria-current="true"] .ts { color: var(--gold); }
+.note { margin-top: 28px; font-size: 12.5px; color: var(--ink3); max-width: 60ch; }
+
+@media (max-width: 820px) {
+  main.wrap { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .frame { height: auto; width: min(100%, 440px); margin-inline: auto; }
+  .bar { width: min(100%, 440px); min-width: 0; margin-inline: auto; }
+}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <div class="brand">
+    <svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2"><rect x="11" y="11" width="18" height="18"/><rect x="11" y="11" width="18" height="18" transform="rotate(45 20 20)"/></g><circle cx="20" cy="20" r="3.4" fill="currentColor"/></svg>
+    <div>
+      <div class="name">Masahif al-Maghrib<span class="ar" lang="ar" dir="rtl">مصاحف المغرب</span></div>
+      <div class="sub">Promo videos on branch <code>promo-video-social-kit</code></div>
+    </div>
+  </div>
+  <div class="total" id="total"></div>
+</header>
+<main class="wrap">
+  <section class="player" aria-label="Player">
+    <div class="frame"><video id="v" controls playsinline preload="metadata"></video></div>
+    <div class="bar">
+      <button class="btn" id="prev" type="button" aria-label="Previous video">‹ Prev</button>
+      <div class="now"><div class="t" id="nowT"></div><div class="c" id="nowC"></div></div>
+      <button class="btn" id="next" type="button" aria-label="Next video">Next ›</button>
+    </div>
+  </section>
+  <section class="side" aria-label="Playlist">
+    <div class="opts">
+      <label class="toggle"><input type="checkbox" id="auto" checked> Play the next video automatically</label>
+      <div class="seg" role="group" aria-label="Quality">
+        <button type="button" id="qhi" aria-pressed="true">1080p</button>
+        <button type="button" id="qlo" aria-pressed="false">720p WhatsApp copy</button>
+      </div>
+    </div>
+    <h2>Running order</h2>
+    <ol class="list" id="list"></ol>
+    <h2>Chapters</h2>
+    <ol class="chapters" id="chapters"></ol>
+    <p class="note">Playing the files in <code>promo-video/out/video</code>. The 720p setting plays the light copies made for WhatsApp and Telegram.</p>
+  </section>
+</main>
+<script>
+const ITEMS = [
+  { lang: 'ar', cut: 'full', name: 'الفيديو الكامل', label: 'Arabic · full video', dur: 77.877, mb: [41.6, 16.8],
+    ch: [[0, 'Opening'], [10.71, 'Across the world'], [18.63, 'Seven dynasties'], [26.39, 'The treasures'], [35.03, 'Inside the guide'], [43.82, 'The author'], [61.97, 'Visit the site'], [73.28, 'End card']] },
+  { lang: 'ar', cut: 'teaser', name: 'المقطع القصير', label: 'Arabic · teaser', dur: 34.333, mb: [22.1, 6.9],
+    ch: [[0, 'Opening'], [10.71, 'Across the world'], [18.63, 'The treasures'], [27.26, 'Visit the site'], [30.92, 'End card']] },
+  { lang: 'en', cut: 'full', name: 'The full video', label: 'English · full video', dur: 73.913, mb: [40.9, 15.8],
+    ch: [[0, 'Opening'], [11.05, 'Across the world'], [19.48, 'Seven dynasties'], [27.0, 'The treasures'], [35.33, 'Inside the guide'], [42.06, 'The author'], [58.13, 'Visit the site'], [69.31, 'End card']] },
+  { lang: 'en', cut: 'teaser', name: 'The teaser', label: 'English · teaser', dur: 34.467, mb: [22.2, 7.0],
+    ch: [[0, 'Opening'], [11.05, 'Across the world'], [19.49, 'The treasures'], [27.81, 'Visit the site'], [31.05, 'End card']] },
+];
+const $ = id => document.getElementById(id);
+const v = $('v');
+const store = {
+  get(k, d) { try { const x = localStorage.getItem('mam-playlist.' + k); return x === null ? d : JSON.parse(x); } catch { return d; } },
+  set(k, x) { try { localStorage.setItem('mam-playlist.' + k, JSON.stringify(x)); } catch {} },
+};
+let cur = 0, chap = -1, hi = store.get('hi', true);
+$('auto').checked = store.get('auto', true);
+
+const base = it => `masahif-al-maghrib-${it.lang}-${it.cut}`;
+const src = it => `video/${base(it)}${hi ? '' : '-whatsapp'}.mp4`;
+const cover = it => `covers/${base(it)}-cover.jpg`;
+const fmt = s => { s = Math.floor(s); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
+
+$('total').textContent = `${ITEMS.length} videos · ${fmt(ITEMS.reduce((a, it) => a + it.dur, 0))}`;
+$('list').innerHTML = ITEMS.map((it, i) => `
+  <li><button class="item" type="button" data-i="${i}">
+    <span class="n">${i + 1}</span>
+    <span class="thumb"><img src="${cover(it)}" alt=""></span>
+    <span class="txt">
+      <span class="t1" lang="${it.lang}"${it.lang === 'ar' ? ' dir="rtl"' : ''}>${it.name}</span>
+      <span class="t2">${it.label} · <span class="mb"></span></span>
+      <span class="prog"><i></i></span>
+    </span>
+    <span class="dur">${fmt(it.dur)}</span>
+  </button></li>`).join('');
+const items = [...document.querySelectorAll('.item')];
+items.forEach(b => b.addEventListener('click', () => select(+b.dataset.i, true)));
+
+function sizes() {
+  items.forEach((b, i) => { b.querySelector('.mb').textContent = `${ITEMS[i].mb[hi ? 0 : 1].toFixed(1)} MB`; });
+  $('qhi').setAttribute('aria-pressed', String(hi));
+  $('qlo').setAttribute('aria-pressed', String(!hi));
+}
+
+function select(i, play) {
+  cur = i; chap = -1;
+  const it = ITEMS[i];
+  v.poster = cover(it);
+  v.src = src(it);
+  if (play) v.play().catch(() => {});
+  items.forEach((b, j) => { b.setAttribute('aria-current', String(j === i)); b.querySelector('.prog i').style.width = '0'; });
+  $('prev').disabled = i === 0;
+  $('next').disabled = i === ITEMS.length - 1;
+  $('nowT').textContent = `${i + 1} of ${ITEMS.length} · ${it.label}`;
+  $('chapters').innerHTML = it.ch.map(([t, name], k) =>
+    `<li><button class="chap" type="button" data-k="${k}"><span class="ts">${fmt(Math.floor(t))}</span><span>${name}</span></button></li>`).join('');
+  document.querySelectorAll('.chap').forEach(b => b.addEventListener('click', () => {
+    v.currentTime = it.ch[+b.dataset.k][0];
+    v.play().catch(() => {});
+  }));
+  tick();
+}
+
+function tick() {
+  const it = ITEMS[cur], t = v.currentTime || 0;
+  let k = 0;
+  it.ch.forEach(([s], j) => { if (t + 0.05 >= s) k = j; });
+  if (k !== chap) {
+    chap = k;
+    document.querySelectorAll('.chap').forEach((b, j) => b.setAttribute('aria-current', String(j === k)));
+    $('nowC').textContent = it.ch[k][1];
+  }
+  const d = v.duration || it.dur;
+  items[cur].querySelector('.prog i').style.width = `${Math.min(100, (t / d) * 100)}%`;
+}
+
+function setQuality(h) {
+  if (h === hi) return;
+  hi = h; store.set('hi', hi); sizes();
+  const t = v.currentTime, playing = !v.paused && !v.ended;
+  v.src = src(ITEMS[cur]);
+  v.addEventListener('loadedmetadata', () => { if (t) v.currentTime = t; if (playing) v.play().catch(() => {}); }, { once: true });
+}
+
+v.addEventListener('timeupdate', tick);
+v.addEventListener('seeked', tick);
+v.addEventListener('ended', () => { if ($('auto').checked && cur < ITEMS.length - 1) select(cur + 1, true); });
+$('prev').addEventListener('click', () => { if (cur > 0) select(cur - 1, true); });
+$('next').addEventListener('click', () => { if (cur < ITEMS.length - 1) select(cur + 1, true); });
+$('auto').addEventListener('change', e => store.set('auto', e.target.checked));
+$('qhi').addEventListener('click', () => setQuality(true));
+$('qlo').addEventListener('click', () => setQuality(false));
+sizes();
+select(0, false);
+</script>
+</body>
+</html>

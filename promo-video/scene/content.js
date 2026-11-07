@@ -90,7 +90,7 @@ const CONTENT = {
     credits: { role: 'تطوير الموقع وإنتاج الفيديو', name: 'خالد بن جلون', from: 'مطوّر من فاس',
       images: 'صور المخطوطات من المكتبات والمتاحف المذكورة في الموقع' },
     cues: { hook: [4, 5, 1], scatter: 2, gather: 6, brand: 9, stats: [0, 3, 5], surviving: 9, lost: 12,
-      caliph: 3, sultan: 5, gold: 7, silver: 12, card: 0, samples: 5, links: 10,
+      caliph: 4, sultan: 6, gold: 7, silver: 12, card: 0, samples: 5, links: 10,
       name: 5, role: 3, teach: 8, city: 11, grad: 12, award: 22, sourced: 0, bilingual: 2 },
   },
   en: {

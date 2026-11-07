@@ -820,7 +820,7 @@
     root.style.perspective = '2200px';
     const mkPhone = (lang, x, r) => {
       const p = el('div', 'phone', root);
-      Object.assign(p.style, { width: '402px', height: '843px', left: (x - 201) + 'px', top: '322px', borderRadius: '62px' });
+      Object.assign(p.style, { width: '402px', height: '843px', left: (x - 201) + 'px', top: '272px', borderRadius: '62px' });
       const s = el('div', 'screen', p);
       s.style.borderRadius = '50px';
       s.style.background = '#1d1712';

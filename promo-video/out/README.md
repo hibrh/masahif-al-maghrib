@@ -24,11 +24,11 @@ All of it is built from the sources in `promo-video/`; [`../README.md`](../READM
 | الملف · File | اللغة · Language | المدة · Length | الأبعاد · Size | الحجم · File size |
 |---|---|---|---|---|
 | [`video/masahif-al-maghrib-ar-full-whatsapp.mp4`](video/masahif-al-maghrib-ar-full-whatsapp.mp4) | العربية · Arabic | 78 s | 720×1280 | 16.8 MB |
-| [`video/masahif-al-maghrib-ar-full.mp4`](video/masahif-al-maghrib-ar-full.mp4) | العربية · Arabic | 78 s | 1080×1920 | 41.6 MB |
+| [`video/masahif-al-maghrib-ar-full.mp4`](video/masahif-al-maghrib-ar-full.mp4) | العربية · Arabic | 78 s | 1080×1920 | 41.9 MB |
 | [`video/masahif-al-maghrib-ar-teaser-whatsapp.mp4`](video/masahif-al-maghrib-ar-teaser-whatsapp.mp4) | العربية · Arabic | 34 s | 720×1280 | 6.9 MB |
-| [`video/masahif-al-maghrib-ar-teaser.mp4`](video/masahif-al-maghrib-ar-teaser.mp4) | العربية · Arabic | 34 s | 1080×1920 | 22.1 MB |
+| [`video/masahif-al-maghrib-ar-teaser.mp4`](video/masahif-al-maghrib-ar-teaser.mp4) | العربية · Arabic | 34 s | 1080×1920 | 21.6 MB |
 | [`video/masahif-al-maghrib-en-full-whatsapp.mp4`](video/masahif-al-maghrib-en-full-whatsapp.mp4) | الإنجليزية · English | 74 s | 720×1280 | 15.8 MB |
-| [`video/masahif-al-maghrib-en-full.mp4`](video/masahif-al-maghrib-en-full.mp4) | الإنجليزية · English | 74 s | 1080×1920 | 40.9 MB |
+| [`video/masahif-al-maghrib-en-full.mp4`](video/masahif-al-maghrib-en-full.mp4) | الإنجليزية · English | 74 s | 1080×1920 | 40.5 MB |
 | [`video/masahif-al-maghrib-en-teaser-whatsapp.mp4`](video/masahif-al-maghrib-en-teaser-whatsapp.mp4) | الإنجليزية · English | 34 s | 720×1280 | 7.0 MB |
 | [`video/masahif-al-maghrib-en-teaser.mp4`](video/masahif-al-maghrib-en-teaser.mp4) | الإنجليزية · English | 34 s | 1080×1920 | 22.2 MB |
 

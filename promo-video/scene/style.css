@@ -183,7 +183,7 @@ html[lang="en"] #authorcard .city { font-family: 'Plex', sans-serif; font-weight
 html[lang="en"] .badge .tx { font-size: 27px; line-height: 1.32; }
 
 /* call to action */
-.chip { position: absolute; top: 1206px; padding: 12px 30px; border-radius: 999px; font-family: var(--ui); font-weight: 600;
+.chip { position: absolute; top: 1156px; padding: 12px 30px; border-radius: 999px; font-family: var(--ui); font-weight: 600;
   font-size: 30px; color: #1b1510; background: var(--gold2); white-space: nowrap; box-shadow: 0 10px 30px rgba(0, 0, 0, .45); }
 .chip .ck { display: inline-block; margin-inline-end: 10px; }
 #addr { position: absolute; left: 60px; right: 60px; top: 880px; height: 132px; border-radius: 66px; direction: ltr;
