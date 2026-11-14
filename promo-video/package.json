@@ -1,0 +1,8 @@
+{
+  "name": "masahif-promo-video",
+  "private": true,
+  "description": "Renders the Masahif al-Maghrib promo videos and stills with Playwright's Chromium",
+  "devDependencies": {
+    "playwright": "1.64.0"
+  }
+}

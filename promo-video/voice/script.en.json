@@ -1,0 +1,92 @@
+{
+  "lang": "en",
+  "voice": "en-US-AndrewNeural",
+  "rate": "+0%",
+  "pitch": "-2Hz",
+  "segments": [
+    {
+      "id": "e1",
+      "scene": "hook",
+      "gap": 0.35,
+      "say": "A Moroccan sultan's Qur'an, in his own hand, at the al-Aqsa Mosque."
+    },
+    {
+      "id": "e2",
+      "scene": "hook",
+      "gap": 0.35,
+      "say": "Another, from the royal library of al-Mansur, in Spain."
+    },
+    {
+      "id": "e3",
+      "scene": "hook",
+      "gap": 0.3,
+      "say": "And a third, in Munich."
+    },
+    {
+      "id": "e4",
+      "scene": "globe",
+      "gap": 1.1,
+      "say": "Morocco's Qur'an manuscripts are scattered across the world. Now, one guide brings them together: Masaahif al-Maghrib.",
+      "show": "Morocco's Qur'an manuscripts are scattered across the world. Now, one guide brings them together: Masahif al-Maghrib."
+    },
+    {
+      "id": "e5",
+      "scene": "eras",
+      "gap": 0.5,
+      "say": "Twelve centuries, seven dynasties, and more than sixty Qur'ans: those that survive, and those that were lost."
+    },
+    {
+      "id": "e6",
+      "scene": "treasures",
+      "gap": 0.45,
+      "say": "Some were copied by a caliph or a sultan in his own hand; others written in gold on lapis blue, or in silver on green paper."
+    },
+    {
+      "id": "e7",
+      "scene": "features",
+      "gap": 0.5,
+      "say": "Each one has a card that tells its story, with close-up samples of the script, and links to the digitized copies."
+    },
+    {
+      "id": "e8",
+      "scene": "author",
+      "gap": 0.5,
+      "say": "Prepared by Ibrahim Hassani Eedreesi, a calligrapher and manuscript researcher from Fez, who teaches Maghribi scripts, holds a Diploma in the Art of Calligraphy from al-Qarawiyyeen, and won the Encouragement Prize of the Mohammed the Sixth Award for Maghribi Calligraphy.",
+      "show": "Prepared by Ibrahim Hassani Idrissi, a calligrapher and manuscript researcher from Fez, who teaches Maghribi scripts, holds a Diploma in the Art of Calligraphy from al-Qarawiyyin, and won the Encouragement Prize of the Mohammed VI Award for Maghribi Calligraphy.",
+      "breaks": [
+        5,
+        12,
+        16,
+        24,
+        26,
+        33
+      ]
+    },
+    {
+      "id": "e9",
+      "scene": "cta",
+      "gap": 0.5,
+      "say": "A well-sourced guide, in Arabic and English, for every researcher, calligrapher, and lover of Morocco's heritage."
+    },
+    {
+      "id": "e10",
+      "scene": "cta",
+      "gap": 0.45,
+      "say": "Visit Masaahif al-Maghrib dot com",
+      "show": "Visit masahif-al-maghrib.com"
+    }
+  ],
+  "cuts": {
+    "teaser": {
+      "segments": [
+        "e1",
+        "e2",
+        "e3",
+        "e4",
+        "e6",
+        "e10"
+      ],
+      "endCard": 3.4
+    }
+  }
+}
